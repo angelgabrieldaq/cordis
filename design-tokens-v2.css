@@ -1,0 +1,281 @@
+/*
+ * ═══════════════════════════════════════════════════════════════
+ *  KAIROS · ZENOXIA — Design Tokens v2.0
+ *  Fuente de verdad para todos los módulos del sistema.
+ *
+ *  NOVEDADES v2.0
+ *  + Sección de Iconografía (tokens de tamaño y trazo)
+ *  + Sección de Triage (colores por nivel)
+ *  + Sección de Estados de Cama
+ *  + Sección de Tipografía
+ *  + Sección de Espaciado
+ *  + Reglas de uso actualizadas
+ *
+ *  USO:
+ *  1. Copiar el bloque :root completo al <style> de cada pantalla.
+ *  2. Incluir el SVG Sprite (archivo kairos-icons.svg o bloque
+ *     <svg style="display:none"> al inicio del <body>).
+ *  3. Usar iconos con: <svg><use href="#ki-nombre"/></svg>
+ *  4. Nunca hardcodear colores ni tamaños fuera de este bloque.
+ *
+ * ───────────────────────────────────────────────────────────────
+ *  ÍNDICE DE SECCIONES
+ * ───────────────────────────────────────────────────────────────
+ *
+ *  1. PRIMARIO       Azul royal — branding, acciones, estados activos
+ *  2. NEUTROS        Fondos, texto, bordes
+ *  3. SEMÁNTICOS     OK / WARN / ERR / INFO
+ *  4. TRIAGE         Colores por nivel (N1–N5)
+ *  5. ESTADOS CAMA   Ciclo de vida de boxes y camas
+ *  6. TIPOGRAFÍA     Familias, tamaños, pesos
+ *  7. ICONOGRAFÍA    Trazo, tamaño, uso
+ *  8. ESPACIADO      Radios, gaps, padding estándar
+ *
+ * ───────────────────────────────────────────────────────────────
+ *  REGLAS DE USO — RESUMEN
+ * ───────────────────────────────────────────────────────────────
+ *
+ *  ✓ Estados OK/validado      → --s-ok, --s-ok-l, --s-ok-m
+ *  ✓ Pendiente/advertencia    → --s-warn, --s-warn-l, --s-warn-m
+ *  ✓ Error/bloqueante         → --s-err, --s-err-l, --s-err-m
+ *  ✓ Info neutral             → --s-info, --s-info-l, --s-info-m
+ *  ✓ Branding/acciones        → --p, --p-dark, --p-light, --p-mid
+ *  ✓ Niveles de triage        → --t1 … --t5 (con variantes -l)
+ *  ✓ Estados de cama          → --cama-libre, --cama-ocupada, etc.
+ *  ✓ Iconos SVG               → stroke="currentColor", width/height="var(--icon-size)"
+ *
+ *  ✗ No usar --p para estados de éxito       → usar --s-ok
+ *  ✗ No usar --s-err para advertencias leves → usar --s-warn
+ *  ✗ No hardcodear hex fuera de este bloque
+ *  ✗ No hardcodear tamaños de ícono          → usar --icon-size-*
+ *  ✗ No usar fill en iconos outline          → solo stroke="currentColor"
+ *
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+:root {
+
+  /* ─────────────────────────────────────────────────────────────
+     1. PRIMARIO — Azul royal
+  ───────────────────────────────────────────────────────────── */
+  --p-light: #EBF2FF;   /* fills, fondos de badge, card activa       */
+  --p-mid:   #A3C0F8;   /* bordes de badge, separadores              */
+  --p:       #2B57D9;   /* botones, íconos primarios, links activos  */
+  --p-dark:  #1A3FAA;   /* topbar, logo, nav activo, texto activo    */
+
+  /* ─────────────────────────────────────────────────────────────
+     2. NEUTROS — Fondos, texto, bordes
+  ───────────────────────────────────────────────────────────── */
+  --bg:   #ffffff;              /* cards, modales, panels              */
+  --bg2:  #f5f4f0;              /* inputs, fondos de sección, filas    */
+  --bg3:  #f0efea;              /* fondo del body                      */
+  --txt:  #1a1a18;              /* texto principal                     */
+  --txt2: #5f5e5a;              /* texto secundario                    */
+  --txt3: #888780;              /* labels, placeholders, tertiary      */
+  --brd:  rgba(0,0,0,0.10);    /* borde sutil                         */
+  --brd2: rgba(0,0,0,0.18);    /* borde medio — inputs, énfasis       */
+
+  /* ─────────────────────────────────────────────────────────────
+     3. SEMÁNTICOS — Estados del sistema
+  ───────────────────────────────────────────────────────────── */
+
+  /* Éxito — confirmado, validado, OK */
+  --s-ok:   #0F6E56;
+  --s-ok-l: #E1F5EE;
+  --s-ok-m: #9FE1CB;
+
+  /* Advertencia — pendiente, alerta leve */
+  --s-warn:   #633806;
+  --s-warn-l: #FAEEDA;
+  --s-warn-m: #EF9F27;
+
+  /* Error — bloqueante, alergia, crítico */
+  --s-err:   #791F1F;
+  --s-err-l: #FCEBEB;
+  --s-err-m: #E24B4A;
+
+  /* Info — informativo neutro, estado secundario */
+  --s-info:   #0C447C;
+  --s-info-l: #E6F1FB;
+  --s-info-m: #B5D4F4;
+
+  /* ─────────────────────────────────────────────────────────────
+     4. TRIAGE — Colores por nivel de prioridad
+     Uso: siempre con opacidad baja en fondos (nunca saturados).
+     Convención: --tN     = color base para texto e íconos
+                 --tN-l   = fondo claro (10-15% opacidad)
+                 --tN-brd = borde sutil
+  ───────────────────────────────────────────────────────────── */
+
+  /* Nivel 1 — Resucitación (Rojo) */
+  --t1:     #C0392B;
+  --t1-l:   rgba(192, 57, 43, 0.10);
+  --t1-brd: rgba(192, 57, 43, 0.25);
+
+  /* Nivel 2 — Emergencia (Naranja) */
+  --t2:     #D4680A;
+  --t2-l:   rgba(212, 104, 10, 0.10);
+  --t2-brd: rgba(212, 104, 10, 0.25);
+
+  /* Nivel 3 — Urgencia (Amarillo oscuro) */
+  --t3:     #A07C00;
+  --t3-l:   rgba(160, 124, 0, 0.10);
+  --t3-brd: rgba(160, 124, 0, 0.25);
+
+  /* Nivel 4 — Menor (Verde) */
+  --t4:     #2E7D4F;
+  --t4-l:   rgba(46, 125, 79, 0.10);
+  --t4-brd: rgba(46, 125, 79, 0.25);
+
+  /* Nivel 5 — No urgente (Azul) */
+  --t5:     #1565A8;
+  --t5-l:   rgba(21, 101, 168, 0.10);
+  --t5-brd: rgba(21, 101, 168, 0.25);
+
+  /* ─────────────────────────────────────────────────────────────
+     5. ESTADOS DE CAMA — Ciclo de vida hotelero
+     Cada estado tiene: base (texto/icono), -l (fondo), -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  /* Libre y limpia — disponible para asignar */
+  --cama-libre:   #0F6E56;
+  --cama-libre-l: #E1F5EE;
+  --cama-libre-m: #9FE1CB;
+
+  /* Ocupada — paciente activo */
+  --cama-ocup:   #1A3FAA;
+  --cama-ocup-l: #EBF2FF;
+  --cama-ocup-m: #A3C0F8;
+
+  /* Alta pendiente — médico firmó, paciente aún en cama */
+  --cama-alta:   #7B3FA0;
+  --cama-alta-l: #F3E8FF;
+  --cama-alta-m: #C9A0E0;
+
+  /* En limpieza — personal trabajando */
+  --cama-limp:   #B45309;
+  --cama-limp-l: #FEF3C7;
+  --cama-limp-m: #FCD34D;
+
+  /* Lista para usar — limpieza hecha, esperando confirmación */
+  --cama-lista:   #0E7490;
+  --cama-lista-l: #E0F7FA;
+  --cama-lista-m: #67E8F9;
+
+  /* Bloqueada — mantenimiento, falla reportada */
+  --cama-bloq:   #4B4B4B;
+  --cama-bloq-l: #F0F0F0;
+  --cama-bloq-m: #AAAAAA;
+
+  /* ─────────────────────────────────────────────────────────────
+     6. TIPOGRAFÍA
+  ───────────────────────────────────────────────────────────── */
+
+  /* Familias */
+  --font-sans:  system-ui, -apple-system, sans-serif;  /* UI general    */
+  --font-mono:  'Courier New', Courier, monospace;      /* tiempos, DNI  */
+
+  /* Tamaños (escala modular) */
+  --text-2xs: 8px;    /* badges internos, actor labels      */
+  --text-xs:  10px;   /* labels uppercase, metadata         */
+  --text-sm:  11px;   /* body secundario, chips, notas      */
+  --text-md:  13px;   /* body principal                     */
+  --text-lg:  15px;   /* títulos de sección                 */
+  --text-xl:  18px;   /* KPIs, valores destacados           */
+  --text-2xl: 22px;   /* nombres de paciente en detalle     */
+  --text-3xl: 28px;   /* números grandes en dashboards      */
+
+  /* Pesos */
+  --fw-normal:  400;
+  --fw-medium:  500;
+  --fw-semibold:600;
+  --fw-bold:    700;
+  --fw-black:   800;
+
+  /* ─────────────────────────────────────────────────────────────
+     7. ICONOGRAFÍA — Sistema de íconos SVG outline
+     Todos los íconos usan stroke="currentColor" y fill="none".
+     El color siempre se hereda del contexto — nunca hardcodeado.
+     Referencia de uso: <svg width="var(--icon-size)" height="var(--icon-size)">
+                          <use href="#ki-nombre"/>
+                        </svg>
+  ───────────────────────────────────────────────────────────── */
+
+  /* Tamaños */
+  --icon-xs:  12px;   /* inline en texto, badges compactos         */
+  --icon-sm:  14px;   /* chips, filas densas, metadata             */
+  --icon-md:  18px;   /* nav lateral, botones — tamaño estándar    */
+  --icon-lg:  22px;   /* cabeceras de sección, cards               */
+  --icon-xl:  32px;   /* empty states, ilustraciones               */
+
+  /* Grosor de trazo */
+  --icon-stroke-thin:   1.2px;  /* contextos muy densos              */
+  --icon-stroke:        1.4px;  /* estándar — usar siempre este      */
+  --icon-stroke-medium: 1.6px;  /* énfasis, alertas                  */
+  --icon-stroke-thick:  2px;    /* íconos grandes, ilustraciones     */
+
+  /* Regla: stroke-linecap="round" stroke-linejoin="round" siempre */
+
+  /* ─────────────────────────────────────────────────────────────
+     8. ESPACIADO Y RADIO
+  ───────────────────────────────────────────────────────────── */
+
+  /* Border radius */
+  --r-xs: 4px;    /* badges internos, chips pequeños               */
+  --r:    8px;    /* estándar — inputs, cards, botones             */
+  --r-lg: 12px;   /* panels, modales, shells                       */
+  --r-xl: 16px;   /* cards grandes, app móvil                      */
+  --r-full: 999px;/* pills, avatares                               */
+
+  /* Gap estándar entre elementos */
+  --gap-xs:  4px;
+  --gap-sm:  8px;
+  --gap-md:  12px;
+  --gap-lg:  16px;
+  --gap-xl:  24px;
+
+  /* Padding interno de componentes */
+  --pad-xs:  6px 8px;
+  --pad-sm:  8px 12px;
+  --pad-md:  12px 16px;
+  --pad-lg:  16px 20px;
+
+}
+
+/*
+ * ═══════════════════════════════════════════════════════════════
+ *  CLASES UTILITARIAS DE ICONOS
+ *  Incluir estas clases en el <style> de cada módulo.
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* Contenedor base de ícono SVG */
+.ki {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+/* Tamaños */
+.ki-xs { width: var(--icon-xs);  height: var(--icon-xs); }
+.ki-sm { width: var(--icon-sm);  height: var(--icon-sm); }
+.ki-md { width: var(--icon-md);  height: var(--icon-md); }
+.ki-lg { width: var(--icon-lg);  height: var(--icon-lg); }
+.ki-xl { width: var(--icon-xl);  height: var(--icon-xl); }
+
+/* Colores semánticos de ícono */
+.ki-primary  { color: var(--p); }
+.ki-ok       { color: var(--s-ok); }
+.ki-warn     { color: var(--s-warn-m); }
+.ki-err      { color: var(--s-err-m); }
+.ki-info     { color: var(--s-info); }
+.ki-muted    { color: var(--txt3); }
+
+/* Colores de triage */
+.ki-t1 { color: var(--t1); }
+.ki-t2 { color: var(--t2); }
+.ki-t3 { color: var(--t3); }
+.ki-t4 { color: var(--t4); }
+.ki-t5 { color: var(--t5); }

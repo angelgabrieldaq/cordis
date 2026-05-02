@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cordis · by Zenoxia — Ecosystem Navigator</title>
+<style>
+:root {
+  --p-light:#EBF2FF; --p-mid:#A3C0F8; --p:#2B57D9; --p-dark:#1A3FAA;
+  --bg:#ffffff; --bg2:#f5f4f0; --bg3:#f0efea;
+  --txt:#1a1a18; --txt2:#5f5e5a; --txt3:#888780;
+  --brd:rgba(0,0,0,.10); --brd2:rgba(0,0,0,.18);
+  --s-ok:#0F6E56; --s-ok-l:#E1F5EE; --s-ok-m:#9FE1CB;
+  --s-warn:#633806; --s-warn-l:#FAEEDA; --s-warn-m:#EF9F27;
+  --s-err:#791F1F; --s-err-l:#FCEBEB; --s-err-m:#E24B4A;
+  --s-info:#0C447C; --s-info-l:#E6F1FB; --s-info-m:#B5D4F4;
+  --r:8px; --r-lg:12px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  font-family: system-ui,-apple-system,sans-serif;
+  background: var(--bg3);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HEADER ─────────────────────────────── */
+.header {
+  background: var(--p-dark);
+  padding: 48px 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  pointer-events: none;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 20%;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.03);
+  pointer-events: none;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.brand-logo {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+}
+
+.brand-sep {
+  width: 1px; height: 16px;
+  background: rgba(255,255,255,.2);
+}
+
+.brand-product {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,.5);
+}
+
+.header-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.header-title span {
+  color: var(--p-mid);
+}
+
+.header-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,.55);
+  line-height: 1.6;
+  max-width: 540px;
+  margin-bottom: 32px;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.65);
+}
+
+.meta-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+/* ── CONTENIDO PRINCIPAL ─────────────────── */
+.content {
+  flex: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 48px;
+  width: 100%;
+}
+
+/* ── SECCIÓN DE MÓDULOS ──────────────────── */
+.seccion {
+  margin-bottom: 40px;
+}
+
+.sec-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sec-icon {
+  width: 32px; height: 32px;
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.sec-info { flex: 1; }
+
+.sec-title {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--txt2);
+}
+
+.sec-desc {
+  font-size: 11px;
+  color: var(--txt3);
+  margin-top: 2px;
+}
+
+.sec-line {
+  flex: 1;
+  height: 1px;
+  background: var(--brd2);
+}
+
+/* ── GRID DE MÓDULOS ─────────────────────── */
+.modulos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+/* ── CARD DE MÓDULO ──────────────────────── */
+.modulo-card {
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.modulo-card:not(.pendiente):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.09);
+  border-color: var(--p-mid);
+}
+
+.modulo-card.pendiente {
+  opacity: .6;
+  cursor: default;
+}
+
+/* Barra de estado superior */
+.mc-estado-bar {
+  height: 3px;
+  width: 100%;
+}
+
+.mc-body {
+  padding: 16px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mc-modulo-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.mc-badges {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.badge-listo    { background: var(--s-ok-l);   color: var(--s-ok);   border-color: var(--s-ok-m); }
+.badge-wip      { background: var(--p-light);  color: var(--p-dark); border-color: var(--p-mid); }
+.badge-pendiente{ background: var(--bg2);      color: var(--txt3);   border-color: var(--brd2); }
+
+.mc-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--txt);
+  line-height: 1.2;
+}
+
+.mc-subtitle {
+  font-size: 11px;
+  color: var(--p);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.mc-desc {
+  font-size: 12px;
+  color: var(--txt2);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* Roles que usan este módulo */
+.mc-roles {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid var(--brd);
+}
+
+.rol-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--bg2);
+  color: var(--txt2);
+  border: 1px solid var(--brd2);
+}
+
+.rol-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Features list */
+.mc-features {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mc-feature {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--txt2);
+}
+
+.mf-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--brd2);
+  flex-shrink: 0;
+}
+
+/* Botón de acceso */
+.mc-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--brd);
+  background: var(--bg2);
+}
+
+.btn-acceder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px;
+  background: var(--p);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+.btn-acceder:hover { background: var(--p-dark); }
+
+.btn-pendiente {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px;
+  background: transparent;
+  color: var(--txt3);
+  border: 1px solid var(--brd2);
+  border-radius: var(--r);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: default;
+}
+
+/* ── ARCHIVOS DE SISTEMA ─────────────────── */
+.archivos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.archivo-card {
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: .15s;
+}
+
+.archivo-card:hover {
+  border-color: var(--p-mid);
+  background: var(--p-light);
+}
+
+.archivo-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--r);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  background: var(--bg2);
+  border: 1px solid var(--brd);
+}
+
+.archivo-info { flex: 1; min-width: 0; }
+
+.archivo-nombre {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--txt);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.archivo-desc {
+  font-size: 10px;
+  color: var(--txt3);
+  margin-top: 2px;
+}
+
+.archivo-ext {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--bg2);
+  color: var(--txt3);
+  border: 1px solid var(--brd2);
+  font-family: 'Courier New', monospace;
+  flex-shrink: 0;
+}
+
+/* ── FOOTER ──────────────────────────────── */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--brd);
+  padding: 20px 48px;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer-brand {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--txt3);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.footer-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--txt3);
+}
+
+/* ── LEYENDA DE ESTADOS ──────────────────── */
+.leyenda {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+}
+
+.ley-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--txt2);
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9S4.86 16.5 9 16.5 16.5 13.14 16.5 9" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M9 5v4l3 2" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="14" cy="4" r="2" fill="rgba(163,192,248,.8)"/>
+        </svg>
+      </div>
+      <span class="brand-name">Zenoxia</span>
+      <div class="brand-sep"></div>
+      <span class="brand-product">Ecosystem Navigator</span>
+    </div>
+
+    <div class="header-title">Cordis <span>·</span><br>by Zenoxia</div>
+    <div class="header-sub">
+      Plataforma de orquestación inteligente para Servicios de Urgencias.
+      Trazabilidad en tiempo real, reducción de carga cognitiva e insights
+      operativos sobre los sistemas existentes del hospital.
+    </div>
+
+    <div class="header-meta">
+      <div class="meta-pill">
+        <div class="meta-dot" style="background:#9FE1CB;"></div>
+        3 módulos disponibles
+      </div>
+      <div class="meta-pill">
+        <div class="meta-dot" style="background:var(--p-mid);"></div>
+        4 en desarrollo
+      </div>
+      <div class="meta-pill">
+        <div class="meta-dot" style="background:rgba(255,255,255,.3);"></div>
+        v0.1.0 · Prototipo
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENIDO -->
+<div class="content">
+
+  <!-- Leyenda -->
+  <div class="leyenda">
+    <span style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;">Estado:</span>
+    <div class="ley-item"><span class="badge badge-listo">✓ Listo</span> Prototipo navegable disponible</div>
+    <div class="ley-item"><span class="badge badge-wip">En desarrollo</span> En construcción activa</div>
+    <div class="ley-item"><span class="badge badge-pendiente">Pendiente</span> Próximo en el roadmap</div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       GUARDIA
+  ════════════════════════════════════ -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#EBF2FF;">🏥</div>
+      <div class="sec-info">
+        <div class="sec-title">Guardia · Urgencias</div>
+        <div class="sec-desc">Flujo completo de ingreso, triage y atención en el Servicio de Urgencias</div>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="modulos-grid">
+
+      <!-- Command Center Guardia -->
+      <div class="modulo-card">
+        <div class="mc-estado-bar" style="background:var(--s-ok);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:var(--p-light);">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="var(--p-dark)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1.5" y="1.5" width="6" height="6" rx="1"/><rect x="10.5" y="1.5" width="6" height="6" rx="1"/>
+                <rect x="1.5" y="10.5" width="6" height="6" rx="1"/><rect x="10.5" y="10.5" width="6" height="6" rx="1"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-listo">✓ Listo</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">Command Center · Guardia</div>
+            <div class="mc-subtitle">Cordis · Guardia</div>
+          </div>
+          <div class="mc-desc">Torre de control del Servicio de Urgencias. Tablero de pacientes por etapa del flujo, mapa de camas con gestión hotelera completa y métricas operativas en tiempo real.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>Tablero de pacientes por etapa</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Mapa de 15 boxes con ciclo hotelero</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Admisión por DNI + contingencia offline</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Métricas colapsables por especialidad</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--p);"></div>Recepcionista de Guardia</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <a href="guardia/command-center.html" class="btn-acceder">
+            <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5L11.5 9 7 13.5"/></svg>
+            Abrir módulo
+          </a>
+        </div>
+      </div>
+
+      <!-- Enfermeros de Guardia -->
+      <div class="modulo-card">
+        <div class="mc-estado-bar" style="background:var(--p);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:#E1F5EE;">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="var(--s-ok)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 2v14M2 9h14"/><rect x="5.5" y="5.5" width="7" height="7" rx="1"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-wip">En desarrollo</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">Enfermeros de Guardia</div>
+            <div class="mc-subtitle">Cordis · Triage</div>
+          </div>
+          <div class="mc-desc">Estación de triage asistida por IA. El motor de Cordis analiza texto libre y signos vitales para sugerir el nivel de prioridad. El enfermero valida y confirma — la IA asiste, no prescribe.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>HC del paciente pre-cargada desde HIS</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Signos vitales + motivo de consulta</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Sugerencia de nivel por IA (N1–N5)</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Pre-órdenes en borrador para el médico</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--s-ok);"></div>Enfermero/a de Triage</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <div class="btn-pendiente">
+            <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M9 5.5V9l2.5 2.5"/></svg>
+            En construcción
+          </div>
+        </div>
+      </div>
+
+      <!-- App del Paciente -->
+      <div class="modulo-card">
+        <div class="mc-estado-bar" style="background:var(--p);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:#F3E8FF;">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="#7B3FA0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="5.5" r="3"/><path d="M2.5 17c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-wip">En desarrollo</span>
+              <span class="badge" style="background:#F3E8FF;color:#7B3FA0;border-color:#C9A0E0;">Mobile</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">App del Paciente</div>
+            <div class="mc-subtitle">Cordis · Patient</div>
+          </div>
+          <div class="mc-desc">El paciente anuncia su llegada desde el celular antes de ingresar a la guardia. Carga síntomas, el sistema hace un pre-triage y asigna posición en la cola dinámica estimada.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>Identificación por DNI</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Pre-triage sintomático</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Cola dinámica con estado en tiempo real</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Disclaimer de responsabilidad explícito</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:#7B3FA0;"></div>Paciente</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <div class="btn-pendiente">
+            <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="7"/><path d="M9 5.5V9l2.5 2.5"/></svg>
+            En construcción
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       IMÁGENES
+  ════════════════════════════════════ -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#E6F1FB;">🩻</div>
+      <div class="sec-info">
+        <div class="sec-title">Imágenes Diagnósticas</div>
+        <div class="sec-desc">Gestión de estudios ambulatorios y urgencias integradas desde Guardia</div>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="modulos-grid">
+
+      <!-- Command Center Imágenes -->
+      <div class="modulo-card pendiente">
+        <div class="mc-estado-bar" style="background:var(--brd2);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:var(--s-info-l);">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="var(--s-info)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="14" height="14" rx="2"/><circle cx="9" cy="9" r="3"/>
+                <path d="M2 6h14M6 2v4"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-pendiente">Pendiente</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">Command Center · Imágenes</div>
+            <div class="mc-subtitle">Cordis · Imágenes</div>
+          </div>
+          <div class="mc-desc">Vista unificada y dividida de la agenda ambulatoria y las urgencias integradas desde Guardia. Gestión de equipos, SLA y estados de cada estudio en tiempo real.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>Vista unificada + vista dividida (toggle)</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Urgencias de Guardia con flag de origen</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Agenda ambulatoria con SLA 6-48hs</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Estado de equipos: TC, RM, RX, Eco</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--s-info);"></div>Recepcionista de Imágenes</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <div class="btn-pendiente">Próximamente</div>
+        </div>
+      </div>
+
+      <!-- Worklist TC -->
+      <div class="modulo-card">
+        <div class="mc-estado-bar" style="background:var(--s-ok);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:var(--s-info-l);">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="var(--s-info)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 2h4M9 2v6l4 7a1 1 0 01-.87 1.5H5.87A1 1 0 015 15l4-7V2"/>
+                <path d="M6.5 13h5"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-listo">✓ Listo</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">Worklist · Técnico TC</div>
+            <div class="mc-subtitle">Cordis · Imágenes</div>
+          </div>
+          <div class="mc-desc">Lista de trabajo del técnico de tomografía. Recibe órdenes desde el Box de Urgencias en tiempo real. Gestión del workflow completo: pendiente → ejecución → aprobación → entrega.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>Worklist por prioridad y SLA</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Indicación clínica del médico solicitante</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Protocolo de adquisición por estudio</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Trazabilidad de estados con timestamps</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--s-info);"></div>Técnico Radiólogo</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <a href="imagenes/worklist-tc.html" class="btn-acceder">
+            <svg width="14" height="14" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5L11.5 9 7 13.5"/></svg>
+            Abrir módulo
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       CAMILLEROS
+  ════════════════════════════════════ -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:#FAEEDA;">🚑</div>
+      <div class="sec-info">
+        <div class="sec-title">Traslados · Camilleros</div>
+        <div class="sec-desc">Coordinación y ejecución de traslados internos dentro del hospital</div>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="modulos-grid">
+
+      <!-- Central de Camilleros -->
+      <div class="modulo-card pendiente">
+        <div class="mc-estado-bar" style="background:var(--brd2);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:var(--s-warn-l);">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="var(--s-warn-m)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1.5" y="1.5" width="6" height="6" rx="1"/><rect x="10.5" y="1.5" width="6" height="6" rx="1"/>
+                <rect x="1.5" y="10.5" width="6" height="6" rx="1"/><rect x="10.5" y="10.5" width="6" height="6" rx="1"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-pendiente">Pendiente</span>
+              <span class="badge" style="background:var(--bg2);color:var(--txt3);border-color:var(--brd2);">Desktop</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">Central de Camilleros</div>
+            <div class="mc-subtitle">Cordis · Traslados</div>
+          </div>
+          <div class="mc-desc">Tablero de coordinación de traslados internos. Asignación de camilleros, monitoreo de estado en tiempo real y registro de cada movimiento con actor y timestamp.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>Tablero de traslados activos y pendientes</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Asignación de camillero a cada traslado</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Estado en tiempo real desde mobile</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Trazabilidad origen → destino</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--s-warn-m);"></div>Coordinador de Camilleros</div>
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--p);"></div>Recepcionista de Guardia</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <div class="btn-pendiente">Próximamente</div>
+        </div>
+      </div>
+
+      <!-- Camilleros Mobile -->
+      <div class="modulo-card pendiente">
+        <div class="mc-estado-bar" style="background:var(--brd2);"></div>
+        <div class="mc-body">
+          <div class="mc-top">
+            <div class="mc-modulo-icon" style="background:var(--s-warn-l);">
+              <svg width="22" height="22" viewBox="0 0 18 18" fill="none" stroke="var(--s-warn-m)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="1" width="8" height="16" rx="2"/>
+                <path d="M9 13.5h.01"/>
+              </svg>
+            </div>
+            <div class="mc-badges">
+              <span class="badge badge-pendiente">Pendiente</span>
+              <span class="badge" style="background:#F3E8FF;color:#7B3FA0;border-color:#C9A0E0;">Mobile</span>
+            </div>
+          </div>
+          <div>
+            <div class="mc-title">Camilleros Mobile</div>
+            <div class="mc-subtitle">Cordis · Traslados</div>
+          </div>
+          <div class="mc-desc">App móvil del camillero. Recibe traslados asignados, confirma inicio, llegada y entrega. Diseñada para operación con una mano y pantalla pequeña en movimiento.</div>
+          <div class="mc-features">
+            <div class="mc-feature"><div class="mf-dot"></div>Lista de traslados asignados</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Confirmación en un toque</div>
+            <div class="mc-feature"><div class="mf-dot"></div>Datos del paciente y destino</div>
+            <div class="mc-feature"><div class="mf-dot"></div>UX optimizada para movimiento</div>
+          </div>
+          <div class="mc-roles">
+            <div class="rol-tag"><div class="rol-dot" style="background:var(--s-warn-m);"></div>Camillero</div>
+          </div>
+        </div>
+        <div class="mc-footer">
+          <div class="btn-pendiente">Próximamente</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       ARCHIVOS DEL SISTEMA
+  ════════════════════════════════════ -->
+  <div class="seccion">
+    <div class="sec-header">
+      <div class="sec-icon" style="background:var(--bg2);">⚙</div>
+      <div class="sec-info">
+        <div class="sec-title">Design System · Archivos base</div>
+        <div class="sec-desc">Fuentes de verdad para todos los módulos de Cordis</div>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="archivos-grid">
+
+      <a href="design-tokens-v2.css" class="archivo-card">
+        <div class="archivo-icon">🎨</div>
+        <div class="archivo-info">
+          <div class="archivo-nombre">design-tokens-v2.css</div>
+          <div class="archivo-desc">Colores, tipografía, espaciado e iconografía</div>
+        </div>
+        <span class="archivo-ext">.css</span>
+      </a>
+
+      <a href="kairos-icons.svg" class="archivo-card">
+        <div class="archivo-icon">✦</div>
+        <div class="archivo-info">
+          <div class="archivo-nombre">kairos-icons.svg</div>
+          <div class="archivo-desc">Sprite SVG · 37 íconos outline</div>
+        </div>
+        <span class="archivo-ext">.svg</span>
+      </a>
+
+      <a href="README.md" class="archivo-card">
+        <div class="archivo-icon">📖</div>
+        <div class="archivo-info">
+          <div class="archivo-nombre">README.md</div>
+          <div class="archivo-desc">Documentación del proyecto y arquitectura</div>
+        </div>
+        <span class="archivo-ext">.md</span>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Cordis · by Zenoxia</div>
+    <div class="footer-meta">
+      <span>v0.1.0 · Prototipo</span>
+      <span>Design System v2.0</span>
+      <span>37 íconos · 6 módulos</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

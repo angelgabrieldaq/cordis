@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cordis · Command Center · Guardia · Cordis</title>
+<style>
+/* ═══════════════════════════════════════════
+   KAIROS · Design Tokens v1.0
+═══════════════════════════════════════════ */
+:root {
+  --p-light:#EBF2FF; --p-mid:#A3C0F8; --p:#2B57D9; --p-dark:#1A3FAA;
+  --bg:#ffffff; --bg2:#f5f4f0; --bg3:#f0efea;
+  --txt:#1a1a18; --txt2:#5f5e5a; --txt3:#888780;
+  --brd:rgba(0,0,0,.10); --brd2:rgba(0,0,0,.18);
+  --s-ok:#0F6E56;  --s-ok-l:#E1F5EE;  --s-ok-m:#9FE1CB;
+  --s-warn:#633806; --s-warn-l:#FAEEDA; --s-warn-m:#EF9F27;
+  --s-err:#791F1F;  --s-err-l:#FCEBEB;  --s-err-m:#E24B4A;
+  --s-info:#0C447C; --s-info-l:#E6F1FB; --s-info-m:#B5D4F4;
+  --r:8px; --r-lg:12px;
+  /* triage */
+  --t1:#C0392B; --t2:#D4680A; --t3:#A07C00; --t4:#2E7D4F; --t5:#1565A8;
+  /* estados de cama */
+  --libre:#0F6E56;    --libre-l:#E1F5EE;   --libre-m:#9FE1CB;
+  --ocupada:#1A3FAA;  --ocupada-l:#EBF2FF; --ocupada-m:#A3C0F8;
+  --alta:#7B3FA0;     --alta-l:#F3E8FF;    --alta-m:#C9A0E0;
+  --limpia-e:#B45309; --limpia-l:#FEF3C7;  --limpia-m:#FCD34D;
+  --lista:#0E7490;    --lista-l:#E0F7FA;   --lista-m:#67E8F9;
+  --bloq:#4B4B4B;     --bloq-l:#F0F0F0;    --bloq-m:#AAAAAA;
+  /* layout */
+  --nav-w:52px; --nav-open:200px; --metrics-w:280px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:system-ui,-apple-system,sans-serif;
+  background:var(--bg3);
+  height:100vh;
+  display:grid;
+  grid-template-rows:44px 1fr;
+  grid-template-columns:var(--nav-w) 1fr;
+  grid-template-areas:"tb tb" "nav main";
+  overflow:hidden;
+  transition:grid-template-columns .22s ease;
+}
+body.nav-open{grid-template-columns:var(--nav-open) 1fr;}
+
+/* ── TOPBAR ─────────────────────────────── */
+.topbar{
+  grid-area:tb; background:var(--p-dark);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 16px 0 0; z-index:50;
+}
+.tb-l{display:flex;align-items:center;height:100%;}
+.tb-burger{
+  width:var(--nav-w);height:100%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:background .15s;
+}
+.tb-burger:hover{background:rgba(255,255,255,.08);}
+.tb-brand{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;padding:0 14px 0 6px;}
+.tb-divider{width:1px;height:18px;background:rgba(255,255,255,.2);margin-right:14px;}
+.tb-title{font-size:12px;font-weight:500;color:rgba(255,255,255,.7);}
+.tb-r{display:flex;align-items:center;gap:16px;}
+.tb-sync{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--s-ok-m);animation:blink 2.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tb-clock{font-size:13px;font-weight:700;color:rgba(255,255,255,.85);font-family:'Courier New',monospace;}
+.tb-user{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.7);}
+.avatar{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;}
+
+/* ── NAV LATERAL ─────────────────────────── */
+.nav{
+  grid-area:nav;background:var(--bg);
+  border-right:1px solid var(--brd);
+  display:flex;flex-direction:column;overflow:hidden;z-index:40;
+}
+.nav-item{
+  display:flex;align-items:center;gap:12px;padding:0 14px;height:44px;
+  cursor:pointer;transition:background .15s;white-space:nowrap;
+  overflow:hidden;border-left:3px solid transparent;flex-shrink:0;
+}
+.nav-item:hover{background:var(--bg2);}
+.nav-item.active{background:var(--p-light);border-left-color:var(--p);}
+.nav-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:20px;color:var(--txt3);}
+.nav-item:hover .nav-icon{color:var(--txt2);}
+.nav-item.active .nav-icon{color:var(--p);}
+.nav-label{font-size:12px;font-weight:600;color:var(--txt2);opacity:0;transition:opacity .2s;white-space:nowrap;}
+.nav-item.active .nav-label{color:var(--p-dark);}
+body.nav-open .nav-label{opacity:1;}
+.nav-sep{height:1px;background:var(--brd);margin:4px 0;flex-shrink:0;}
+.nav-bottom{margin-top:auto;}
+
+/* ── MAIN AREA ───────────────────────────── */
+.main{
+  grid-area:main;display:grid;
+  grid-template-columns:1fr var(--metrics-w);
+  overflow:hidden;transition:grid-template-columns .22s ease;
+}
+.main.metrics-off{grid-template-columns:1fr 0px;}
+
+/* ── VISTAS ──────────────────────────────── */
+.view{display:none;flex:1;overflow:hidden;flex-direction:column;}
+.view.active{display:flex;}
+
+/* ── TABLERO ─────────────────────────────── */
+.tablero{overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;}
+
+.tbar{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;gap:10px;flex-wrap:wrap;
+}
+.tbar-l{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+
+.search-box{
+  display:flex;align-items:center;background:var(--bg);
+  border:1px solid var(--brd2);border-radius:var(--r);padding:0 10px;gap:6px;
+}
+.search-box input{border:none;background:transparent;font-size:12px;color:var(--txt);padding:6px 0;width:150px;outline:none;}
+.search-box input::placeholder{color:var(--txt3);}
+
+.fbtn{padding:5px 11px;border:1px solid var(--brd2);border-radius:var(--r);background:var(--bg);font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;transition:.15s;}
+.fbtn:hover,.fbtn.on{background:var(--p-light);border-color:var(--p-mid);color:var(--p-dark);}
+
+.metrics-toggle{display:flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--brd2);border-radius:var(--r);background:var(--bg);font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;transition:.15s;white-space:nowrap;}
+.metrics-toggle:hover{background:var(--bg2);}
+
+/* Sección del tablero */
+.sec{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);overflow:hidden;flex-shrink:0;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--bg2);border-bottom:1px solid var(--brd);cursor:pointer;user-select:none;}
+.sec-hdr-l{display:flex;align-items:center;gap:9px;}
+.sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);}
+.sec-count{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--txt3);border:1px solid var(--brd2);}
+.sec-count.alert{background:var(--s-err-l);color:var(--s-err);border-color:var(--s-err-m);animation:blink 1.5s infinite;}
+.sec-arrow{font-size:10px;color:var(--txt3);transition:transform .2s;}
+.sec.collapsed .sec-arrow{transform:rotate(-90deg);}
+.sec.collapsed .sec-body{display:none;}
+
+/* Fila de paciente */
+.pac-row{
+  display:flex;align-items:center;border-bottom:1px solid var(--brd);
+  cursor:pointer;transition:background .12s;min-height:40px;
+}
+.pac-row:last-child{border-bottom:none;}
+.pac-row:hover{background:var(--bg2);}
+.pac-row.expanded{background:var(--p-light);}
+
+.t-band{width:4px;align-self:stretch;flex-shrink:0;}
+.t-pill{display:flex;flex-direction:column;align-items:center;justify-content:center;width:44px;padding:4px;flex-shrink:0;gap:1px;}
+.tp-n{font-size:13px;font-weight:800;line-height:1;}
+.tp-l{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.7;line-height:1;}
+
+.t1 .t-band,.t1 .tp-n,.t1 .tp-l{background:var(--t1);} .t1 .t-band{background:var(--t1);} .t1 .tp-n,.t1 .tp-l{background:none;color:var(--t1);}
+.t2 .t-band{background:var(--t2);} .t2 .tp-n,.t2 .tp-l{color:var(--t2);}
+.t3 .t-band{background:var(--t3);} .t3 .tp-n,.t3 .tp-l{color:var(--t3);}
+.t4 .t-band{background:var(--t4);} .t4 .tp-n,.t4 .tp-l{color:var(--t4);}
+.t5 .t-band{background:var(--t5);} .t5 .tp-n,.t5 .tp-l{color:var(--t5);}
+
+.row-sep{width:1px;height:24px;background:var(--brd);flex-shrink:0;}
+.pac-id{padding:0 12px;min-width:155px;flex-shrink:0;}
+.pac-name{font-size:13px;font-weight:700;color:var(--txt);}
+.pac-meta{font-size:10px;color:var(--txt3);margin-top:1px;}
+.pac-motivo{flex:1;padding:0 12px;font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pac-chips{display:flex;gap:4px;padding:0 10px;flex-shrink:0;}
+.chip{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em;border:1px solid transparent;}
+.chip-p{background:var(--s-warn-l);color:var(--s-warn);border-color:var(--s-warn-m);}
+.chip-e{background:var(--s-info-l);color:var(--s-info);border-color:var(--s-info-m);}
+.chip-d{background:var(--s-ok-l);color:var(--s-ok);border-color:var(--s-ok-m);}
+.pac-tiempo{padding:0 12px;text-align:right;flex-shrink:0;min-width:68px;}
+.t-val{font-size:12px;font-weight:700;font-family:'Courier New',monospace;}
+.t-val.ok{color:var(--s-ok);} .t-val.warn{color:var(--s-warn-m);} .t-val.err{color:var(--s-err-m);}
+.t-lbl{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;}
+.pac-llamador{padding:0 12px;min-width:155px;flex-shrink:0;font-size:10px;}
+.llamador-on{display:flex;align-items:center;gap:5px;color:var(--p-dark);font-weight:600;}
+.ll-dot{width:5px;height:5px;border-radius:50%;background:var(--p);flex-shrink:0;}
+.ll-time{color:var(--txt3);font-size:9px;margin-top:1px;}
+.pac-arr{padding:0 12px;color:var(--txt3);font-size:10px;flex-shrink:0;transition:transform .2s;}
+.pac-row.expanded .pac-arr{transform:rotate(180deg);}
+
+/* Detalle expandido */
+.pac-detail{display:none;background:var(--bg);border-top:1px solid var(--brd);padding:16px 20px 16px 60px;gap:16px;}
+.pac-row.expanded+.pac-detail{display:grid;grid-template-columns:1fr 1fr 1fr;}
+.d-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:8px;}
+
+.tl{display:flex;flex-direction:column;}
+.tl-ev{display:flex;gap:10px;padding-bottom:10px;position:relative;}
+.tl-ev:not(:last-child)::before{content:'';position:absolute;left:5px;top:13px;bottom:0;width:1px;background:var(--brd2);}
+.tl-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;margin-top:2px;border:2px solid var(--brd2);background:var(--bg);}
+.tl-dot.ok{background:var(--s-ok);border-color:var(--s-ok);}
+.tl-dot.on{background:var(--p);border-color:var(--p);}
+.tl-dot.warn{background:var(--s-warn-m);border-color:var(--s-warn-m);}
+.tl-dot.emp{background:transparent;}
+.tl-actor{font-size:11px;font-weight:600;color:var(--txt);}
+.tl-desc{font-size:10px;color:var(--txt2);margin-top:1px;line-height:1.4;}
+.tl-t{font-size:9px;color:var(--txt3);font-family:'Courier New',monospace;flex-shrink:0;margin-top:2px;}
+
+.est-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:5px;}
+.est-tipo{font-size:11px;font-weight:700;color:var(--txt);flex:1;}
+.est-sol{font-size:9px;color:var(--txt3);}
+
+.vitals{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.vital-c{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:7px 10px;}
+.vc-l{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);font-weight:700;}
+.vc-v{font-size:14px;font-weight:700;color:var(--txt);}
+.vc-v.al{color:var(--s-err-m);}
+
+.d-actions{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
+.d-btn{padding:8px 12px;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;text-align:center;transition:.15s;border:1px solid transparent;}
+.d-btn.pri{background:var(--p);color:#fff;border-color:var(--p-dark);}
+.d-btn.pri:hover{background:var(--p-dark);}
+.d-btn.gh{background:transparent;color:var(--txt2);border-color:var(--brd2);}
+.d-btn.gh:hover{background:var(--bg2);}
+.d-btn.wa{background:var(--s-warn-l);color:var(--s-warn);border-color:var(--s-warn-m);}
+
+/* ── PANEL DE MÉTRICAS ───────────────────── */
+.metrics{border-left:1px solid var(--brd);background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:width .22s;}
+.main.metrics-off .metrics{border-left:none;}
+.metrics-hdr{padding:10px 14px;border-bottom:1px solid var(--brd);background:var(--bg2);flex-shrink:0;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);}
+.metrics-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:14px;}
+
+.esp-sel{display:flex;flex-wrap:wrap;gap:4px;}
+.esp-btn{padding:4px 10px;border:1px solid var(--brd2);border-radius:12px;font-size:10px;font-weight:700;color:var(--txt2);background:var(--bg);cursor:pointer;transition:.15s;}
+.esp-btn:hover{border-color:var(--p-mid);color:var(--p-dark);}
+.esp-btn.on{background:var(--p-light);border-color:var(--p-mid);color:var(--p-dark);}
+
+.kpi-stack{display:flex;flex-direction:column;gap:6px;}
+.kpi-card{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.kpi-ico{font-size:18px;flex-shrink:0;}
+.kpi-inf{flex:1;}
+.kpi-v{font-size:18px;font-weight:800;line-height:1;color:var(--txt);}
+.kpi-v.ok{color:var(--s-ok);} .kpi-v.warn{color:var(--s-warn-m);} .kpi-v.err{color:var(--s-err-m);}
+.kpi-l{font-size:10px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+.kpi-trend{font-size:9px;font-weight:700;padding:2px 5px;border-radius:4px;}
+.tr-up{background:var(--s-err-l);color:var(--s-err);}
+.tr-dn{background:var(--s-ok-l);color:var(--s-ok);}
+.tr-fl{background:var(--bg3);color:var(--txt3);}
+
+.t-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.t-cell{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:8px 6px;text-align:center;}
+.tc-v{font-size:13px;font-weight:800;line-height:1;}
+.tc-l{font-size:8px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-top:3px;}
+
+.srv-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);margin-bottom:4px;}
+.srv-name{font-size:11px;font-weight:600;color:var(--txt);}
+.srv-s{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;text-transform:uppercase;}
+.srv-ok{background:var(--s-ok-l);color:var(--s-ok);border:1px solid var(--s-ok-m);}
+.srv-warn{background:var(--s-warn-l);color:var(--s-warn);border:1px solid var(--s-warn-m);}
+.srv-err{background:var(--s-err-l);color:var(--s-err);border:1px solid var(--s-err-m);}
+.occ-track{height:4px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:3px;}
+.occ-fill{height:100%;border-radius:4px;}
+
+/* ── MAPA DE CAMAS ───────────────────────── */
+.mapa-wrap{display:flex;flex:1;overflow:hidden;}
+.mapa-scroll{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:14px;}
+
+.mapa-topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;flex-shrink:0;}
+.leyenda{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.ley-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
+.ley-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.mapa-resumen{display:flex;gap:14px;flex-shrink:0;}
+.mr-item{text-align:center;}
+.mr-v{font-size:18px;font-weight:800;line-height:1;}
+.mr-l{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);margin-top:2px;}
+
+.zona-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.zona-label::after{content:'';flex:1;height:1px;background:var(--brd2);}
+.zona-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+
+/* Card de cama */
+.cama{
+  width:148px;border:1.5px solid var(--brd);border-radius:var(--r-lg);
+  background:var(--bg);cursor:pointer;flex-shrink:0;
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+}
+.cama:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(0,0,0,.10);}
+.cama.sel{border-color:var(--p);box-shadow:0 0 0 2px var(--p-mid);}
+
+.cama-bar{height:5px;width:100%;flex-shrink:0;}
+@keyframes palp-a{0%,100%{opacity:1;}50%{opacity:.35;}}
+@keyframes palp-l{0%,100%{opacity:1;}50%{opacity:.45;}}
+
+.cama-head{padding:7px 9px 4px;display:flex;align-items:flex-start;justify-content:space-between;gap:4px;}
+.cama-num{font-size:14px;font-weight:800;color:var(--txt);line-height:1;}
+.cama-tipo{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 5px;border-radius:4px;}
+.ct-shock{background:var(--s-err-l);color:var(--s-err);border:1px solid var(--s-err-m);}
+.ct-inf{background:var(--s-info-l);color:var(--s-info);border:1px solid var(--s-info-m);}
+.ct-obs{background:var(--bg2);color:var(--txt3);border:1px solid var(--brd2);}
+
+.cama-estado{display:flex;align-items:center;gap:4px;padding:3px 9px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+.ce-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+
+.cama-pac{padding:3px 9px 6px;flex:1;}
+.cp-nombre{font-size:10px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cp-meta{font-size:9px;color:var(--txt3);margin-top:1px;}
+.cp-triage{display:inline-block;font-size:8px;font-weight:700;padding:2px 6px;border-radius:5px;margin-top:4px;}
+.cp-medico{font-size:9px;color:var(--txt3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.cama-vacio{flex:1;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.2;padding:6px 0;}
+
+.cama-foot{padding:5px 9px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;}
+.cf-t{font-size:9px;font-weight:700;font-family:'Courier New',monospace;color:var(--txt3);}
+.cf-t.warn{color:var(--s-warn-m);} .cf-t.ok{color:var(--libre);}
+.cf-actor{font-size:8px;color:var(--txt3);font-weight:600;}
+
+/* Panel detalle del mapa */
+.mapa-detail{
+  width:280px;border-left:1px solid var(--brd);background:var(--bg);
+  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
+}
+.md-hdr{padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--brd);flex-shrink:0;}
+.md-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);}
+.md-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+
+.md-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--txt3);text-align:center;padding:20px;}
+.md-empty-ico{font-size:28px;opacity:.3;}
+.md-empty-t{font-size:13px;font-weight:600;color:var(--txt2);}
+.md-empty-s{font-size:11px;line-height:1.6;}
+
+.md-box-head{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:12px 14px;}
+.mbh-num{font-size:20px;font-weight:800;color:var(--txt);line-height:1;}
+.mbh-tipo{font-size:11px;color:var(--txt2);margin-top:2px;}
+.mbh-estado{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid transparent;}
+
+.md-pac{border-radius:var(--r);padding:11px 13px;}
+.mdp-nombre{font-size:14px;font-weight:700;color:var(--txt);}
+.mdp-meta{font-size:11px;color:var(--txt2);margin-top:2px;}
+.mdp-triage{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;margin-top:6px;}
+.mdp-med{font-size:9px;color:var(--txt3);margin-top:5px;}
+
+.md-tl{display:flex;flex-direction:column;}
+.md-tl-ev{display:flex;gap:8px;padding-bottom:8px;position:relative;}
+.md-tl-ev:not(:last-child)::before{content:'';position:absolute;left:4px;top:11px;bottom:0;width:1px;background:var(--brd2);}
+.md-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:2px;border:2px solid var(--brd2);background:var(--bg);}
+.md-dot.ok{background:var(--libre);border-color:var(--libre);}
+.md-dot.on{background:var(--ocupada);border-color:var(--ocupada);}
+.md-dot.warn{background:var(--s-warn-m);border-color:var(--s-warn-m);}
+.md-dot.pur{background:var(--alta);border-color:var(--alta);}
+.md-dot.cln{background:var(--limpia-e);border-color:var(--limpia-e);}
+.md-tl-actor{font-size:10px;font-weight:600;color:var(--txt);}
+.md-badge{display:inline-block;font-size:7px;font-weight:700;padding:1px 4px;border-radius:3px;margin-left:3px;text-transform:uppercase;vertical-align:middle;}
+.mb-med{background:var(--s-info-l);color:var(--s-info);}
+.mb-enf{background:var(--s-ok-l);color:var(--s-ok);}
+.mb-rec{background:var(--p-light);color:var(--p-dark);}
+.mb-lim{background:#FEF3C7;color:#B45309;}
+.md-tl-desc{font-size:9px;color:var(--txt2);margin-top:1px;line-height:1.4;}
+.md-tl-time{font-size:8px;color:var(--txt3);font-family:'Courier New',monospace;flex-shrink:0;margin-top:2px;}
+
+.md-sep{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);padding:6px 0 3px;}
+.md-btn{width:100%;padding:9px 12px;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s;border:1px solid transparent;margin-bottom:4px;text-align:left;}
+.mb-pri{background:var(--p);color:#fff;border-color:var(--p-dark);}
+.mb-pri:hover{background:var(--p-dark);}
+.mb-ok{background:var(--libre-l);color:var(--libre);border-color:var(--libre-m);}
+.mb-ok:hover{opacity:.85;}
+.mb-warn{background:var(--limpia-l);color:var(--limpia-e);border-color:var(--limpia-m);}
+.mb-warn:hover{opacity:.85;}
+.mb-pur{background:var(--alta-l);color:var(--alta);border-color:var(--alta-m);}
+.mb-pur:hover{opacity:.85;}
+.mb-dark{background:var(--bloq-l);color:var(--bloq);border-color:var(--bloq-m);}
+.mb-dark:hover{background:#e0e0e0;}
+.mb-danger{background:var(--s-err-l);color:var(--s-err);border-color:var(--s-err-m);}
+.mb-danger:hover{opacity:.85;}
+.mb-ghost{background:transparent;color:var(--txt2);border-color:var(--brd2);}
+.mb-ghost:hover{background:var(--bg2);}
+.mb-actor{margin-left:auto;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;white-space:nowrap;background:var(--p-light);color:var(--p-dark);}
+
+/* ── PLACEHOLDER VIEWS ───────────────────── */
+.ph{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--txt3);text-align:center;padding:40px;}
+.ph-ico{font-size:36px;}
+.ph-t{font-size:15px;font-weight:600;color:var(--txt2);}
+.ph-s{font-size:12px;line-height:1.6;max-width:300px;}
+
+/* sec-label utility */
+.sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-l">
+    <div class="tb-burger" onclick="toggleNav()">
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+        <rect width="18" height="2" rx="1" fill="rgba(255,255,255,.7)"/>
+        <rect y="6" width="18" height="2" rx="1" fill="rgba(255,255,255,.7)"/>
+        <rect y="12" width="18" height="2" rx="1" fill="rgba(255,255,255,.7)"/>
+      </svg>
+    </div>
+    <span class="tb-brand">Kairos</span>
+    <div class="tb-divider"></div>
+    <span class="tb-title">Cordis · Guardia General</span>
+  </div>
+  <div class="tb-r">
+    <div class="tb-sync"><div class="sync-dot"></div>HIS sync · hace 18 seg</div>
+    <div class="tb-clock" id="reloj">--:--:--</div>
+    <div class="tb-user"><div class="avatar">MR</div>Rodríguez, María</div>
+  </div>
+</div>
+
+<!-- NAV LATERAL -->
+<nav class="nav">
+
+  <!-- Tablero: layout grid 3x3 -->
+  <div class="nav-item active" onclick="setView('tablero',this)">
+    <span class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1.5" y="1.5" width="6" height="6" rx="1"/>
+        <rect x="10.5" y="1.5" width="6" height="6" rx="1"/>
+        <rect x="1.5" y="10.5" width="6" height="6" rx="1"/>
+        <rect x="10.5" y="10.5" width="6" height="6" rx="1"/>
+      </svg>
+    </span>
+    <span class="nav-label">Tablero de Guardia</span>
+  </div>
+
+  <!-- Mapa: plano con cama -->
+  <div class="nav-item" onclick="setView('mapa',this)">
+    <span class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1.5" y="5" width="15" height="10" rx="1.5"/>
+        <path d="M1.5 9h15"/>
+        <path d="M6 9V5"/>
+        <path d="M12 9V5"/>
+        <path d="M1.5 13h2.5M14 13h2.5"/>
+      </svg>
+    </span>
+    <span class="nav-label">Mapa de Camas</span>
+  </div>
+
+  <!-- Ingresar: persona con símbolo + -->
+  <div class="nav-item" onclick="setView('ingreso',this)">
+    <span class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="7.5" cy="5.5" r="3"/>
+        <path d="M1.5 16c0-3.314 2.686-5 6-5"/>
+        <path d="M13 11v6M10 14h6"/>
+      </svg>
+    </span>
+    <span class="nav-label">Ingresar Paciente</span>
+  </div>
+
+  <!-- Buscar: lupa -->
+  <div class="nav-item" onclick="setView('buscar',this)">
+    <span class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="8" cy="8" r="5.5"/>
+        <path d="M12.5 12.5L16 16"/>
+      </svg>
+    </span>
+    <span class="nav-label">Buscar Paciente</span>
+  </div>
+
+  <div class="nav-sep"></div>
+
+  <!-- Constancias: documento con líneas -->
+  <div class="nav-item" onclick="setView('constancias',this)">
+    <span class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 1.5H4.5A1.5 1.5 0 003 3v12a1.5 1.5 0 001.5 1.5h9A1.5 1.5 0 0015 15V5.5L11 1.5z"/>
+        <path d="M11 1.5V5.5H15"/>
+        <path d="M6 9.5h6M6 12.5h4"/>
+      </svg>
+    </span>
+    <span class="nav-label">Constancias</span>
+  </div>
+
+  <!-- Prestaciones: billete / ticket -->
+  <div class="nav-item" onclick="setView('prestaciones',this)">
+    <span class="nav-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1.5" y="4.5" width="15" height="9" rx="1.5"/>
+        <circle cx="9" cy="9" r="2.5"/>
+        <path d="M1.5 7h2M14.5 7h2M1.5 11h2M14.5 11h2"/>
+      </svg>
+    </span>
+    <span class="nav-label">Prestaciones</span>
+  </div>
+
+  <div class="nav-sep"></div>
+
+  <div class="nav-bottom">
+    <!-- Contingencia: triángulo de advertencia -->
+    <div class="nav-item" onclick="setView('contingencia',this)" style="color:var(--s-warn-m);">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 2L16.5 15H1.5L9 2z"/>
+          <path d="M9 7.5v3.5"/>
+          <circle cx="9" cy="13" r="0.75" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <span class="nav-label" style="color:var(--s-warn);">Contingencia Offline</span>
+    </div>
+  </div>
+
+</nav>
+
+<!-- MAIN -->
+<div class="main" id="main">
+
+  <!-- ════════════════════════════════════
+       VISTA: TABLERO DE GUARDIA
+  ════════════════════════════════════ -->
+  <div class="view active" id="view-tablero">
+    <div class="tablero">
+
+      <div class="tbar">
+        <div class="tbar-l">
+          <div class="search-box">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="4" stroke="#888780" stroke-width="1.5"/><path d="M8.5 8.5L11 11" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input type="text" placeholder="Buscar en guardia...">
+          </div>
+          <button class="fbtn on">Todos</button>
+          <button class="fbtn">Nivel 1-2</button>
+          <button class="fbtn">Con estudios</button>
+          <button class="fbtn">SLA vencido</button>
+        </div>
+        <button class="metrics-toggle" onclick="toggleMetrics()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="6" width="3" height="7" rx="1" fill="#5f5e5a"/><rect x="6" y="3" width="3" height="10" rx="1" fill="#5f5e5a"/><rect x="11" y="1" width="3" height="12" rx="1" fill="#5f5e5a"/></svg>
+          <span id="m-toggle-lbl">Ocultar métricas</span>
+        </button>
+      </div>
+
+      <!-- Sala de Espera -->
+      <div class="sec" id="s-espera">
+        <div class="sec-hdr" onclick="toggleSec('s-espera')">
+          <div class="sec-hdr-l"><span class="sec-title">Sala de Espera</span><span class="sec-count alert">8</span></div>
+          <span class="sec-arrow">▼</span>
+        </div>
+        <div class="sec-body">
+
+          <div class="pac-row t2" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">2</span><span class="tp-l">Emerg.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Vega, Carlos A.</div><div class="pac-meta">DNI 12.345.678 · 62 años · M</div></div>
+            <div class="pac-motivo">Cefalea occipital brusca · HTA 180/100</div>
+            <div class="pac-chips"><span class="chip chip-e">TC</span><span class="chip chip-p">Lab</span></div>
+            <div class="pac-tiempo"><div class="t-val err">32 min</div><div class="t-lbl">En espera</div></div>
+            <div class="pac-llamador"><div class="llamador-on"><div class="ll-dot"></div>Dr. Méndez → Box 4</div><div class="ll-time">Llamado hace 3 min</div></div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div><div class="tl-desc">OSDE 310 validada</div></div><div class="tl-t">10:41</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage · Enf. López</div><div class="tl-desc">Nivel 2 asignado</div></div><div class="tl-t">10:48</div></div>
+                <div class="tl-ev"><div class="tl-dot warn"></div><div style="flex:1;"><div class="tl-actor">Dr. Méndez → Box 4</div><div class="tl-desc">Llamador activado</div></div><div class="tl-t">11:10</div></div>
+                <div class="tl-ev"><div class="tl-dot emp"></div><div style="flex:1;"><div class="tl-actor">TC Cerebro solicitada</div><div class="tl-desc">En ejecución · Tomógrafo 1</div></div><div class="tl-t">11:12</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Estudios solicitados</div>
+              <div class="est-row"><div class="est-tipo">TC Cerebro sin contraste</div><span class="chip chip-e">En ejecución</span><div class="est-sol">Dr. Méndez</div></div>
+              <div class="est-row"><div class="est-tipo">Lab · Perfil ACV</div><span class="chip chip-p">Pendiente</span><div class="est-sol">Dr. Méndez</div></div>
+              <div class="d-title" style="margin-top:12px;">Signos vitales · Triage</div>
+              <div class="vitals">
+                <div class="vital-c"><div class="vc-l">TA</div><div class="vc-v al">180/100</div></div>
+                <div class="vital-c"><div class="vc-l">FC</div><div class="vc-v">92 lpm</div></div>
+                <div class="vital-c"><div class="vc-l">SatO₂</div><div class="vc-v">97%</div></div>
+                <div class="vital-c"><div class="vc-l">Temp</div><div class="vc-v">36.5°</div></div>
+              </div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh">Editar datos administrativos</button>
+              <button class="d-btn gh">Generar constancia</button>
+              <button class="d-btn wa" style="margin-top:auto;">Escalar prioridad</button>
+            </div>
+          </div>
+
+          <div class="pac-row t3" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">3</span><span class="tp-l">Urgenc.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Martínez, Roberto</div><div class="pac-meta">DNI 28.901.234 · 45 años · M</div></div>
+            <div class="pac-motivo">Dolor abdominal fosa ilíaca derecha</div>
+            <div class="pac-chips"><span class="chip chip-p">Eco</span></div>
+            <div class="pac-tiempo"><div class="t-val warn">48 min</div><div class="t-lbl">En espera</div></div>
+            <div class="pac-llamador" style="font-size:10px;color:var(--txt3);">Sin llamado aún</div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div><div class="tl-desc">Swiss Medical validada</div></div><div class="tl-t">10:25</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage · Enf. Gómez</div><div class="tl-desc">Nivel 3 asignado</div></div><div class="tl-t">10:31</div></div>
+                <div class="tl-ev"><div class="tl-dot emp"></div><div style="flex:1;"><div class="tl-actor">Aguardando llamado médico</div><div class="tl-desc">SLA: 30 min restantes</div></div><div class="tl-t">—</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Estudios</div>
+              <div class="est-row"><div class="est-tipo">Ecografía abdominal</div><span class="chip chip-p">Pendiente</span><div class="est-sol">Borrador Enf.</div></div>
+              <div class="d-title" style="margin-top:12px;">Signos vitales</div>
+              <div class="vitals">
+                <div class="vital-c"><div class="vc-l">TA</div><div class="vc-v">125/80</div></div>
+                <div class="vital-c"><div class="vc-l">FC</div><div class="vc-v">88 lpm</div></div>
+                <div class="vital-c"><div class="vc-l">SatO₂</div><div class="vc-v">98%</div></div>
+                <div class="vital-c"><div class="vc-l">Temp</div><div class="vc-v">37.8°</div></div>
+              </div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh">Editar datos administrativos</button>
+              <button class="d-btn gh">Generar constancia</button>
+            </div>
+          </div>
+
+          <div class="pac-row t4" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">4</span><span class="tp-l">Menor</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Fernández, Silvia</div><div class="pac-meta">DNI 35.221.887 · 34 años · F</div></div>
+            <div class="pac-motivo">Traumatismo tobillo · sin deformidad aparente</div>
+            <div class="pac-chips"><span class="chip chip-d">RX</span></div>
+            <div class="pac-tiempo"><div class="t-val ok">1h 12m</div><div class="t-lbl">En espera</div></div>
+            <div class="pac-llamador" style="font-size:10px;color:var(--txt3);">Sin llamado aún</div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div><div class="tl-desc">Particular transitorio</div></div><div class="tl-t">10:01</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage · Nivel 4</div><div class="tl-desc">Enf. López</div></div><div class="tl-t">10:08</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">RX tobillo completada</div><div class="tl-desc">Sin fractura · Pendiente revisión</div></div><div class="tl-t">10:45</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Estudios</div>
+              <div class="est-row"><div class="est-tipo">RX Tobillo izquierdo AP/Lat</div><span class="chip chip-d">Resultado listo</span><div class="est-sol">Enf. López</div></div>
+              <div style="margin-top:8px;padding:8px;background:var(--s-ok-l);border:1px solid var(--s-ok-m);border-radius:var(--r);font-size:11px;color:var(--s-ok);">✓ Resultado disponible · Pendiente revisión médica</div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh">Ver resultado RX</button>
+              <button class="d-btn gh">Generar constancia</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- En Triage -->
+      <div class="sec" id="s-triage">
+        <div class="sec-hdr" onclick="toggleSec('s-triage')">
+          <div class="sec-hdr-l"><span class="sec-title">En Triage Ahora</span><span class="sec-count">1</span></div>
+          <span class="sec-arrow">▼</span>
+        </div>
+        <div class="sec-body">
+          <div class="pac-row t2" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">2</span><span class="tp-l">Emerg.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Suárez, Diego</div><div class="pac-meta">DNI 40.112.334 · 28 años · M</div></div>
+            <div class="pac-motivo">Dolor torácico irradiado a brazo izquierdo</div>
+            <div class="pac-chips"></div>
+            <div class="pac-tiempo"><div class="t-val ok">4 min</div><div class="t-lbl">En evaluación</div></div>
+            <div class="pac-llamador"><div class="llamador-on" style="color:var(--s-ok);font-size:10px;"><div class="ll-dot" style="background:var(--s-ok);"></div>Enf. López · Triage 1</div><div class="ll-time">Iniciado hace 4 min</div></div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div><div class="tl-desc">Galeno validada</div></div><div class="tl-t">11:05</div></div>
+                <div class="tl-ev"><div class="tl-dot on"></div><div style="flex:1;"><div class="tl-actor">En triage · Enf. López</div><div class="tl-desc">Evaluación en curso</div></div><div class="tl-t">11:09</div></div>
+              </div>
+            </div>
+            <div><div class="d-title">Sin estudios aún</div><div style="padding:12px;background:var(--bg2);border-radius:var(--r);font-size:11px;color:var(--txt3);">Evaluación en curso. Los estudios se solicitarán al finalizar el triage.</div></div>
+            <div class="d-actions"><div class="d-title">Acciones</div><button class="d-btn pri">Ver episodio</button><button class="d-btn gh">Editar administrativo</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- En Box -->
+      <div class="sec" id="s-box">
+        <div class="sec-hdr" onclick="toggleSec('s-box')">
+          <div class="sec-hdr-l"><span class="sec-title">En Box · Atención Médica</span><span class="sec-count">2</span></div>
+          <span class="sec-arrow">▼</span>
+        </div>
+        <div class="sec-body">
+          <div class="pac-row t1" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">1</span><span class="tp-l">Resucit.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Gómez, Sergio</div><div class="pac-meta">DNI 18.445.001 · 71 años · M</div></div>
+            <div class="pac-motivo">Trauma múltiple · Shockroom 1</div>
+            <div class="pac-chips"><span class="chip chip-e">TC</span><span class="chip chip-e">Lab</span></div>
+            <div class="pac-tiempo"><div class="t-val warn">58 min</div><div class="t-lbl">En box</div></div>
+            <div class="pac-llamador"><div class="llamador-on"><div class="ll-dot"></div>Dr. Torres · Shockroom 1</div><div class="ll-time">Llamado hace 55 min</div></div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div><div class="tl-desc">PAMI validada</div></div><div class="tl-t">10:08</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage · Nivel 1</div><div class="tl-desc">Enf. Gómez</div></div><div class="tl-t">10:10</div></div>
+                <div class="tl-ev"><div class="tl-dot warn"></div><div style="flex:1;"><div class="tl-actor">Dr. Torres → Shockroom 1</div><div class="tl-desc">Llamador automático activado</div></div><div class="tl-t">10:12</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Estudios</div>
+              <div class="est-row"><div class="est-tipo">TC Tórax-Abdomen</div><span class="chip chip-e">En ejecución</span><div class="est-sol">Dr. Torres</div></div>
+              <div class="est-row"><div class="est-tipo">Lab · Perfil trauma</div><span class="chip chip-e">En ejecución</span><div class="est-sol">Dr. Torres</div></div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh">Solicitar traslado</button>
+              <button class="d-btn wa" style="margin-top:auto;">Solicitar cama urgente</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Observación -->
+      <div class="sec" id="s-obs">
+        <div class="sec-hdr" onclick="toggleSec('s-obs')">
+          <div class="sec-hdr-l"><span class="sec-title">Observación · En Cama</span><span class="sec-count">3</span></div>
+          <span class="sec-arrow">▼</span>
+        </div>
+        <div class="sec-body">
+          <div class="pac-row t3" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">3</span><span class="tp-l">Urgenc.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Rodríguez, Ana</div><div class="pac-meta">DNI 22.778.990 · 58 años · F</div></div>
+            <div class="pac-motivo">Crisis asmática · Cama Obs. 3</div>
+            <div class="pac-chips"><span class="chip chip-d">Lab</span><span class="chip chip-d">RX</span></div>
+            <div class="pac-tiempo"><div class="t-val warn">2h 14m</div><div class="t-lbl">En obs.</div></div>
+            <div class="pac-llamador"><div class="llamador-on" style="color:var(--txt2);font-size:10px;">Dra. Soria · Cama Obs. 3</div><div class="ll-time">Internada hace 2h</div></div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div></div><div class="tl-t">08:59</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage · Nivel 3</div></div><div class="tl-t">09:05</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Box 2 · Dra. Soria</div></div><div class="tl-t">09:18</div></div>
+                <div class="tl-ev"><div class="tl-dot on"></div><div style="flex:1;"><div class="tl-actor">Pase a Observación · Cama 3</div><div class="tl-desc">Nebulizaciones c/4hs</div></div><div class="tl-t">09:59</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Estudios</div>
+              <div class="est-row"><div class="est-tipo">Lab · Hemograma + gases</div><span class="chip chip-d">Resultado listo</span></div>
+              <div class="est-row"><div class="est-tipo">RX Tórax AP</div><span class="chip chip-d">Resultado listo</span></div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh">Solicitar cama internación</button>
+              <button class="d-btn gh">Generar constancia</button>
+              <button class="d-btn wa" style="margin-top:auto;">Preparar alta</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       VISTA: MAPA DE CAMAS
+  ════════════════════════════════════ -->
+  <div class="view" id="view-mapa" style="flex-direction:row;">
+    <div class="mapa-scroll">
+
+      <!-- Top bar del mapa -->
+      <div class="mapa-topbar">
+        <div class="leyenda">
+          <span style="font-size:10px;font-weight:700;color:var(--txt3);margin-right:3px;">ESTADOS:</span>
+          <span class="ley-pill" style="background:var(--libre-l);border:1px solid var(--libre-m);color:var(--libre);"><span class="ley-dot" style="background:var(--libre);"></span>Libre y limpia</span>
+          <span class="ley-pill" style="background:var(--ocupada-l);border:1px solid var(--ocupada-m);color:var(--ocupada);"><span class="ley-dot" style="background:var(--ocupada);"></span>Ocupada</span>
+          <span class="ley-pill" style="background:var(--alta-l);border:1px solid var(--alta-m);color:var(--alta);"><span class="ley-dot" style="background:var(--alta);"></span>Alta pendiente</span>
+          <span class="ley-pill" style="background:var(--limpia-l);border:1px solid var(--limpia-m);color:var(--limpia-e);"><span class="ley-dot" style="background:var(--limpia-e);"></span>En limpieza</span>
+          <span class="ley-pill" style="background:var(--lista-l);border:1px solid var(--lista-m);color:var(--lista);"><span class="ley-dot" style="background:var(--lista);"></span>Lista para usar</span>
+          <span class="ley-pill" style="background:var(--bloq-l);border:1px solid var(--bloq-m);color:var(--bloq);"><span class="ley-dot" style="background:var(--bloq);"></span>Bloqueada</span>
+        </div>
+        <div class="mapa-resumen">
+          <div class="mr-item"><div class="mr-v" style="color:var(--ocupada);">9</div><div class="mr-l">Ocupadas</div></div>
+          <div class="mr-item"><div class="mr-v" style="color:var(--libre);">2</div><div class="mr-l">Libres</div></div>
+          <div class="mr-item"><div class="mr-v" style="color:var(--alta);">1</div><div class="mr-l">Alta pend.</div></div>
+          <div class="mr-item"><div class="mr-v" style="color:var(--limpia-e);">2</div><div class="mr-l">Limpieza</div></div>
+          <div class="mr-item"><div class="mr-v" style="color:var(--lista);">1</div><div class="mr-l">Lista</div></div>
+        </div>
+      </div>
+
+      <!-- Shockrooms -->
+      <div>
+        <div class="zona-label">⚡ Zona Crítica · Shockrooms</div>
+        <div class="zona-grid" id="zona-shock"></div>
+      </div>
+      <!-- Infusión -->
+      <div>
+        <div class="zona-label">💉 Zona de Infusión</div>
+        <div class="zona-grid" id="zona-inf"></div>
+      </div>
+      <!-- Observación -->
+      <div>
+        <div class="zona-label">🛏 Observación · Boxes Generales</div>
+        <div class="zona-grid" id="zona-obs"></div>
+      </div>
+
+    </div>
+
+    <!-- Panel de detalle -->
+    <div class="mapa-detail">
+      <div class="md-hdr"><div class="md-title" id="md-title">Detalle del Box</div></div>
+      <div class="md-body" id="md-body">
+        <div class="md-empty">
+          <div class="md-empty-ico">🏥</div>
+          <div class="md-empty-t">Seleccioná un box</div>
+          <div class="md-empty-s">Hacé clic en cualquier box del mapa para ver el detalle, trazabilidad y acciones.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       VISTAS SECUNDARIAS
+  ════════════════════════════════════ -->
+  <div class="view" id="view-ingreso"><div class="ph"><div class="ph-ico">➕</div><div class="ph-t">Ingresar Paciente</div><div class="ph-s">Módulo de admisión con escaneo de DNI, validación de cobertura y generación de episodio.</div></div></div>
+  <div class="view" id="view-buscar"><div class="ph"><div class="ph-ico">🔍</div><div class="ph-t">Buscar Paciente</div><div class="ph-s">Búsqueda global en la base de datos del HIS. Por nombre, DNI, número de afiliado o episodio.</div></div></div>
+  <div class="view" id="view-constancias"><div class="ph"><div class="ph-ico">📄</div><div class="ph-t">Constancias</div><div class="ph-s">Emisión de constancias de asistencia con y sin alta médica.</div></div></div>
+  <div class="view" id="view-prestaciones"><div class="ph"><div class="ph-ico">💰</div><div class="ph-t">Prestaciones</div><div class="ph-s">Consulta de aranceles por prestación. Valores con y sin IVA.</div></div></div>
+  <div class="view" id="view-contingencia"><div class="ph"><div class="ph-ico">⚠</div><div class="ph-t">Contingencia Offline</div><div class="ph-s">Formularios imprimibles para operar en modo papel durante caídas del sistema.</div></div></div>
+
+  <!-- MÉTRICAS -->
+  <div class="metrics" id="metrics">
+    <div class="metrics-hdr">Métricas · Guardia</div>
+    <div class="metrics-body">
+      <div>
+        <div class="sl" style="margin-bottom:6px;">Filtrar por servicio</div>
+        <div class="esp-sel">
+          <button class="esp-btn on">General</button>
+          <button class="esp-btn">Clínica</button>
+          <button class="esp-btn">Traumato</button>
+          <button class="esp-btn">Cardiología</button>
+          <button class="esp-btn">Neurología</button>
+          <button class="esp-btn">Pediatría</button>
+        </div>
+      </div>
+      <div>
+        <div class="sl" style="margin-bottom:6px;">KPIs del turno</div>
+        <div class="kpi-stack">
+          <div class="kpi-card"><div class="kpi-ico">⏱</div><div class="kpi-inf"><div class="kpi-v warn">24 min</div><div class="kpi-l">Door-to-Doctor</div></div><div class="kpi-trend tr-up">↑ 4 min</div></div>
+          <div class="kpi-card"><div class="kpi-ico">🏥</div><div class="kpi-inf"><div class="kpi-v err">18/25</div><div class="kpi-l">Boxes ocupados</div></div><div class="kpi-trend tr-fl">72%</div></div>
+          <div class="kpi-card"><div class="kpi-ico">👥</div><div class="kpi-inf"><div class="kpi-v">47</div><div class="kpi-l">Episodios hoy</div></div><div class="kpi-trend tr-dn">↓ vs ayer</div></div>
+          <div class="kpi-card"><div class="kpi-ico">🔄</div><div class="kpi-inf"><div class="kpi-v ok">2</div><div class="kpi-l">Reingresos 72hs</div></div><div class="kpi-trend tr-fl">4.2%</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sl" style="margin-bottom:6px;">Espera promedio por nivel</div>
+        <div class="t-grid">
+          <div class="t-cell"><div class="tc-v" style="color:var(--t1);">8m</div><div class="tc-l">Nivel 1</div></div>
+          <div class="t-cell"><div class="tc-v" style="color:var(--t2);">19m</div><div class="tc-l">Nivel 2</div></div>
+          <div class="t-cell"><div class="tc-v" style="color:var(--t3);">41m</div><div class="tc-l">Nivel 3</div></div>
+          <div class="t-cell"><div class="tc-v" style="color:var(--t4);">1h 8m</div><div class="tc-l">Nivel 4</div></div>
+          <div class="t-cell"><div class="tc-v" style="color:var(--t5);">2h+</div><div class="tc-l">Nivel 5</div></div>
+          <div class="t-cell"><div class="tc-v">38m</div><div class="tc-l">General</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sl" style="margin-bottom:6px;">Estado de servicios</div>
+        <div class="srv-row"><div><div class="srv-name">Tomografía</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:40%;background:var(--s-ok);"></div></div></div><span class="srv-s srv-ok">Libre</span></div>
+        <div class="srv-row"><div><div class="srv-name">Laboratorio</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:75%;background:var(--s-warn-m);"></div></div></div><span class="srv-s srv-warn">3 pendientes</span></div>
+        <div class="srv-row"><div><div class="srv-name">Rayos X</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:30%;background:var(--s-ok);"></div></div></div><span class="srv-s srv-ok">Libre</span></div>
+        <div class="srv-row"><div><div class="srv-name">Ecografía</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:100%;background:var(--s-err-m);"></div></div></div><span class="srv-s srv-err">Ocupada</span></div>
+        <div class="srv-row"><div><div class="srv-name">Camas obs.</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:60%;background:var(--s-warn-m);"></div></div></div><span class="srv-s srv-warn">3/5</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   DATOS DE CAMAS
+══════════════════════════════════════════════════ */
+const CAMAS = [
+  // SHOCKROOMS
+  { id:'sh1', zona:'shock', num:'SH·1', tipo:'Shock', tipoClass:'ct-shock',
+    estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)',
+    estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)',
+    pac:{ nombre:'Gómez, Sergio', meta:'DNI 18.445.001 · 71 años · M', cob:'PAMI', t:'N1 · Resucitación', tc:'var(--t1)', med:'Dr. Torres' },
+    tl:[ {d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado · PAMI validada',t:'10:08'},
+         {d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 1',t:'10:10'},
+         {d:'on',a:'Dr. Torres',b:'mb-med',desc:'Llamador → Shockroom 1',t:'10:12'},
+         {d:'warn',a:'Dr. Torres',b:'mb-med',desc:'TC Tórax-Abdomen solicitada',t:'10:22'} ],
+    acc:[ {sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},
+          {sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},
+          {l:'Bloquear box',c:'mb-dark',ac:'Recepción'},
+          {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
+
+  { id:'sh2', zona:'shock', num:'SH·2', tipo:'Shock', tipoClass:'ct-shock',
+    estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)',
+    estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)',
+    pac:{ nombre:'Suárez, Diego', meta:'DNI 40.112.334 · 28 años · M', cob:'Galeno', t:'N2 · Emergencia', tc:'var(--t2)', med:'Dr. Méndez' },
+    tl:[ {d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'11:05'},
+         {d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 2',t:'11:09'},
+         {d:'on',a:'Dr. Méndez',b:'mb-med',desc:'Llamador → Shockroom 2',t:'11:12'} ],
+    acc:[ {sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},
+          {sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},
+          {l:'Bloquear box',c:'mb-dark',ac:'Recepción'},
+          {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
+
+  { id:'sh3', zona:'shock', num:'SH·3', tipo:'Shock', tipoClass:'ct-shock',
+    estado:'libre', estadoLabel:'Libre y limpia', barColor:'var(--libre)',
+    estadoColor:'var(--libre)', estadoBg:'var(--libre-l)', estadoBorder:'var(--libre-m)',
+    pac:null,
+    tl:[ {d:'cln',a:'Limpieza',b:'mb-lim',desc:'Limpieza completada',t:'09:43'},
+         {d:'ok',a:'Recepción',b:'mb-rec',desc:'Box habilitado',t:'09:44'} ],
+    acc:[ {sep:'Acciones',l:'Asignar paciente',c:'mb-pri',ac:'Médico / Enf.'},
+          {sep:'Gestión hotelera',l:'Bloquear box',c:'mb-dark',ac:'Recepción'},
+          {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
+
+  // INFUSIÓN
+  { id:'inf1', zona:'inf', num:'INF·1', tipo:'Infusión', tipoClass:'ct-inf',
+    estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)',
+    estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)',
+    pac:{ nombre:'Rodríguez, Ana', meta:'DNI 22.778.990 · 58 años · F', cob:'OSDE 210', t:'N3 · Urgencia', tc:'var(--t3)', med:'Dra. Soria' },
+    tl:[ {d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'08:59'},
+         {d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 3',t:'09:05'},
+         {d:'on',a:'Dra. Soria',b:'mb-med',desc:'Llamador → Infusión 1',t:'09:18'},
+         {d:'ok',a:'Dra. Soria',b:'mb-med',desc:'Medicación iniciada',t:'09:25'} ],
+    acc:[ {sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},
+          {sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},
+          {l:'Bloquear box',c:'mb-dark',ac:'Recepción'},
+          {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
+
+  { id:'inf2', zona:'inf', num:'INF·2', tipo:'Infusión', tipoClass:'ct-inf',
+    estado:'alta', estadoLabel:'Alta pendiente', barColor:'var(--alta)',
+    barAnim:'palp-a', estadoColor:'var(--alta)', estadoBg:'var(--alta-l)', estadoBorder:'var(--alta-m)',
+    pac:{ nombre:'Torres, Carlos', meta:'DNI 31.002.887 · 44 años · M', cob:'Swiss Medical', t:'N4 · Menor', tc:'var(--t4)', med:'Dr. Vidal · Alta firmada' },
+    tl:[ {d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'09:51'},
+         {d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 4',t:'09:56'},
+         {d:'on',a:'Dr. Vidal',b:'mb-med',desc:'Llamador → Infusión 2',t:'10:10'},
+         {d:'pur',a:'Dr. Vidal',b:'mb-med',desc:'Alta médica firmada',t:'11:01'} ],
+    acc:[ {sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},
+          {l:'Confirmar egreso físico',c:'mb-pur',ac:'Recepción / Enf.'},
+          {l:'Generar constancia de alta',c:'mb-ghost',ac:'Recepción'},
+          {sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},
+          {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
+
+  // OBSERVACIÓN
+  { id:'obs1', zona:'obs', num:'01', tipo:'Obs.', tipoClass:'ct-obs', estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)', estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)', pac:{ nombre:'Vega, Carlos A.', meta:'62 años · M', cob:'OSDE 310', t:'N2 · Emergencia', tc:'var(--t2)', med:'Dr. Méndez' }, tl:[{d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'10:41'},{d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 2',t:'10:48'},{d:'on',a:'Dr. Méndez',b:'mb-med',desc:'Llamador → Box 1',t:'11:10'}], acc:[{sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},{sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs2', zona:'obs', num:'02', tipo:'Obs.', tipoClass:'ct-obs', estado:'limpieza', estadoLabel:'En limpieza', barColor:'var(--limpia-e)', estadoColor:'var(--limpia-e)', estadoBg:'var(--limpia-l)', estadoBorder:'var(--limpia-m)', pac:null, tl:[{d:'pur',a:'Dr. Pérez',b:'mb-med',desc:'Alta médica firmada',t:'10:48'},{d:'ok',a:'Recepción',b:'mb-rec',desc:'Egreso confirmado',t:'10:51'},{d:'cln',a:'Limpieza',b:'mb-lim',desc:'Limpieza iniciada',t:'10:52'}], acc:[{sep:'Gestión hotelera',l:'Confirmar limpieza terminada',c:'mb-ok',ac:'Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs3', zona:'obs', num:'03', tipo:'Obs.', tipoClass:'ct-obs', estado:'lista', estadoLabel:'Lista para usar', barColor:'var(--lista)', barAnim:'palp-l', estadoColor:'var(--lista)', estadoBg:'var(--lista-l)', estadoBorder:'var(--lista-m)', pac:null, tl:[{d:'pur',a:'Dra. Soria',b:'mb-med',desc:'Alta firmada',t:'10:30'},{d:'ok',a:'Recepción',b:'mb-rec',desc:'Egreso confirmado',t:'10:33'},{d:'cln',a:'Limpieza',b:'mb-lim',desc:'Limpieza completada · Esperando OK',t:'10:48'}], acc:[{sep:'Pendiente de confirmación',l:'✓ Confirmar y habilitar box',c:'mb-ok',ac:'Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs4', zona:'obs', num:'04', tipo:'Obs.', tipoClass:'ct-obs', estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)', estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)', pac:{ nombre:'Martínez, Roberto', meta:'45 años · M', cob:'Swiss Medical', t:'N3 · Urgencia', tc:'var(--t3)', med:'Dra. Paredes' }, tl:[{d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'10:25'},{d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 3',t:'10:31'},{d:'on',a:'Dra. Paredes',b:'mb-med',desc:'Llamador → Box 4',t:'10:55'}], acc:[{sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},{sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs5', zona:'obs', num:'05', tipo:'Obs.', tipoClass:'ct-obs', estado:'libre', estadoLabel:'Libre y limpia', barColor:'var(--libre)', estadoColor:'var(--libre)', estadoBg:'var(--libre-l)', estadoBorder:'var(--libre-m)', pac:null, tl:[{d:'ok',a:'Recepción',b:'mb-rec',desc:'Box habilitado',t:'09:30'}], acc:[{sep:'Acciones',l:'Asignar paciente',c:'mb-pri',ac:'Médico / Enf.'},{sep:'Gestión hotelera',l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs6', zona:'obs', num:'06', tipo:'Obs.', tipoClass:'ct-obs', estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)', estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)', pac:{ nombre:'Fernández, Silvia', meta:'34 años · F', cob:'Particular', t:'N4 · Menor', tc:'var(--t4)', med:'Dr. Pérez' }, tl:[{d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'10:01'},{d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 4',t:'10:08'},{d:'on',a:'Dr. Pérez',b:'mb-med',desc:'Llamador → Box 6',t:'10:50'}], acc:[{sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},{sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs7', zona:'obs', num:'07', tipo:'Obs.', tipoClass:'ct-obs', estado:'limpieza', estadoLabel:'En limpieza', barColor:'var(--limpia-e)', estadoColor:'var(--limpia-e)', estadoBg:'var(--limpia-l)', estadoBorder:'var(--limpia-m)', pac:null, tl:[{d:'pur',a:'Dr. Vidal',b:'mb-med',desc:'Alta firmada',t:'11:00'},{d:'cln',a:'Limpieza',b:'mb-lim',desc:'Limpieza iniciada',t:'11:05'}], acc:[{sep:'Gestión hotelera',l:'Confirmar limpieza terminada',c:'mb-ok',ac:'Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs8', zona:'obs', num:'08', tipo:'Obs.', tipoClass:'ct-obs', estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)', estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)', pac:{ nombre:'López, Ricardo', meta:'67 años · M', cob:'PAMI', t:'N2 · Emergencia', tc:'var(--t2)', med:'Dra. Soria' }, tl:[{d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'10:32'},{d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 2',t:'10:38'},{d:'on',a:'Dra. Soria',b:'mb-med',desc:'Llamador → Box 8',t:'10:52'}], acc:[{sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},{sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+  { id:'obs9', zona:'obs', num:'09', tipo:'Obs.', tipoClass:'ct-obs', estado:'bloqueada', estadoLabel:'Bloqueada · Mantenimiento', barColor:'var(--bloq)', estadoColor:'var(--bloq)', estadoBg:'var(--bloq-l)', estadoBorder:'var(--bloq-m)', pac:null, tl:[{d:'warn',a:'Enfermería',b:'mb-enf',desc:'Falla: cama eléctrica sin funcionar',t:'08:20'},{d:'warn',a:'Recepción',b:'mb-rec',desc:'Box bloqueado hasta resolución',t:'08:22'}], acc:[{sep:'Mantenimiento',l:'Desbloquear box',c:'mb-ok',ac:'Recepción'},{l:'Editar motivo de bloqueo',c:'mb-ghost',ac:'Recepción'}] },
+  { id:'obs10', zona:'obs', num:'10', tipo:'Obs.', tipoClass:'ct-obs', estado:'ocupada', estadoLabel:'Ocupada', barColor:'var(--ocupada)', estadoColor:'var(--ocupada)', estadoBg:'var(--ocupada-l)', estadoBorder:'var(--ocupada-m)', pac:{ nombre:'Díaz, Patricia', meta:'52 años · F', cob:'Galeno', t:'N3 · Urgencia', tc:'var(--t3)', med:'Dr. Torres' }, tl:[{d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'10:18'},{d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 3',t:'10:25'},{d:'on',a:'Dr. Torres',b:'mb-med',desc:'Llamador → Box 10',t:'10:44'}], acc:[{sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},{sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},{l:'Bloquear box',c:'mb-dark',ac:'Recepción'},{l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'}] },
+];
+
+/* ══════════════════════════════════════════════════
+   RENDER DEL MAPA
+══════════════════════════════════════════════════ */
+function renderMapa() {
+  const zonas = { shock:'zona-shock', inf:'zona-inf', obs:'zona-obs' };
+  Object.values(zonas).forEach(id => document.getElementById(id).innerHTML = '');
+
+  CAMAS.forEach(c => {
+    const anim = c.barAnim ? `animation:${c.barAnim} 1.8s infinite;` : '';
+    const paciHTML = c.pac ? `
+      <div class="cama-pac">
+        <div class="cp-nombre">${c.pac.nombre}</div>
+        <div class="cp-meta">${c.pac.meta}</div>
+        <div class="cp-triage" style="color:${c.pac.tc};background:${c.pac.tc}1A;">${c.pac.t}</div>
+        <div class="cp-medico">👨‍⚕️ ${c.pac.med}</div>
+      </div>` : `<div class="cama-vacio">${iconoEstado(c.estado)}</div>`;
+
+    const footT = c.pac
+      ? `<span class="cf-t ${tiempoClase(c.estado)}">${tiempoStr(c.id)}</span>`
+      : `<span class="cf-t" style="color:${c.estadoColor};">${footLabel(c.estado)}</span>`;
+
+    const edotAnim = c.barAnim ? `animation:${c.barAnim} 1.8s infinite;` : '';
+
+    const html = `
+      <div class="cama" id="card-${c.id}" onclick="seleccionarCama('${c.id}')">
+        <div class="cama-bar" style="background:${c.barColor};${anim}"></div>
+        <div class="cama-head">
+          <span class="cama-num">${c.num}</span>
+          <span class="cama-tipo ${c.tipoClass}">${c.tipo}</span>
+        </div>
+        <div class="cama-estado" style="color:${c.estadoColor};">
+          <span class="ce-dot" style="background:${c.barColor};${edotAnim}"></span>
+          ${c.estadoLabel}
+        </div>
+        ${paciHTML}
+        <div class="cama-foot">
+          ${footT}
+          <span class="cf-actor">${c.pac ? 'Médico' : '—'}</span>
+        </div>
+      </div>`;
+
+    document.getElementById(zonas[c.zona]).insertAdjacentHTML('beforeend', html);
+  });
+}
+
+function iconoEstado(e) {
+  return { libre:'🛏', limpieza:'🧹', lista:'✓', bloqueada:'🔒' }[e] || '🛏';
+}
+
+function tiempoClase(e) {
+  return e === 'alta' ? 'warn' : '';
+}
+
+function tiempoStr(id) {
+  const map = { sh1:'58 min', sh2:'34 min', inf1:'2h 14m', inf2:'18 min', obs1:'32 min', obs4:'48 min', obs6:'1h 12m', obs8:'41 min', obs10:'1h 05m' };
+  return map[id] || '—';
+}
+
+function footLabel(e) {
+  return { libre:'Disponible', limpieza:'En limpieza', lista:'Esperando confirm.', bloqueada:'Mantenimiento' }[e] || '—';
+}
+
+/* ══════════════════════════════════════════════════
+   SELECCIONAR CAMA — muestra detalle
+══════════════════════════════════════════════════ */
+function seleccionarCama(id) {
+  document.querySelectorAll('.cama').forEach(c => c.classList.remove('sel'));
+  document.getElementById('card-' + id).classList.add('sel');
+
+  const c = CAMAS.find(x => x.id === id);
+  if (!c) return;
+
+  document.getElementById('md-title').textContent = `Box ${c.num}`;
+
+  let html = `
+    <div class="md-box-head">
+      <div class="mbh-num">Box ${c.num}</div>
+      <div class="mbh-tipo">${c.tipo === 'Obs.' ? 'Box de Observación' : c.tipo === 'Shock' ? 'Shockroom · Zona crítica' : 'Box de Infusión'}</div>
+      <div class="mbh-estado" style="background:${c.estadoBg};border-color:${c.estadoBorder};color:${c.estadoColor};">${c.estadoLabel}</div>
+    </div>`;
+
+  if (c.pac) {
+    html += `
+      <div>
+        <div class="sl">Paciente</div>
+        <div class="md-pac" style="background:${c.estadoBg};border:1px solid ${c.estadoBorder};">
+          <div class="mdp-nombre">${c.pac.nombre}</div>
+          <div class="mdp-meta">${c.pac.meta} · ${c.pac.cob}</div>
+          <div class="mdp-triage" style="color:${c.pac.tc};background:${c.pac.tc}1A;">${c.pac.t}</div>
+          <div class="mdp-med">👨‍⚕️ ${c.pac.med}</div>
+        </div>
+      </div>`;
+  }
+
+  html += `<div><div class="sl">Trazabilidad del box</div><div class="md-tl">`;
+  c.tl.forEach(ev => {
+    const dotClass = { ok:'ok', on:'on', warn:'warn', pur:'pur', cln:'cln' }[ev.d] || '';
+    html += `
+      <div class="md-tl-ev">
+        <div class="md-dot ${dotClass}"></div>
+        <div style="flex:1;">
+          <div class="md-tl-actor">${ev.a}<span class="md-badge ${ev.b}">${ev.b.replace('mb-','')}</span></div>
+          <div class="md-tl-desc">${ev.desc}</div>
+        </div>
+        <div class="md-tl-time">${ev.t}</div>
+      </div>`;
+  });
+  html += `</div></div>`;
+
+  html += `<div style="margin-top:auto;">`;
+  c.acc.forEach(a => {
+    if (a.sep) html += `<div class="md-sep">${a.sep}</div>`;
+    html += `<button class="md-btn ${a.c}">${a.l}${a.ac ? `<span class="mb-actor">${a.ac}</span>` : ''}</button>`;
+  });
+  html += `</div>`;
+
+  document.getElementById('md-body').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════
+   NAV, VISTAS, MÉTRICAS
+══════════════════════════════════════════════════ */
+function toggleNav() { document.body.classList.toggle('nav-open'); }
+
+function setView(nombre, item) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  item.classList.add('active');
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const t = document.getElementById('view-' + nombre);
+  if (t) t.classList.add('active');
+  // El mapa de camas no muestra el panel de métricas
+  const main = document.getElementById('main');
+  if (nombre === 'mapa') {
+    main.classList.add('metrics-off');
+    document.getElementById('metrics-toggle-lbl') && (document.getElementById('metrics-toggle-lbl').textContent = 'Ver métricas');
+  }
+}
+
+let metricsOn = true;
+function toggleMetrics() {
+  metricsOn = !metricsOn;
+  document.getElementById('main').classList.toggle('metrics-off', !metricsOn);
+  document.getElementById('m-toggle-lbl').textContent = metricsOn ? 'Ocultar métricas' : 'Ver métricas';
+}
+
+function toggleSec(id) { document.getElementById(id).classList.toggle('collapsed'); }
+
+function togglePac(row) {
+  const wasExp = row.classList.contains('expanded');
+  document.querySelectorAll('.pac-row.expanded').forEach(r => r.classList.remove('expanded'));
+  if (!wasExp) row.classList.add('expanded');
+}
+
+/* Filtros */
+document.querySelectorAll('.fbtn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.fbtn').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+}));
+
+document.querySelectorAll('.esp-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.esp-btn').forEach(x => x.classList.remove('on'));
+  b.classList.add('on');
+}));
+
+/* Reloj */
+function tick() {
+  const n = new Date();
+  document.getElementById('reloj').textContent =
+    [n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+}
+tick(); setInterval(tick, 1000);
+
+/* Init */
+renderMapa();
+</script>
+</body>
+</html>

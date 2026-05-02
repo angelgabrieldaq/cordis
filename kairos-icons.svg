@@ -1,0 +1,544 @@
+<!--
+  ═══════════════════════════════════════════════════════════════
+  KAIROS · ZENOXIA — Icon Sprite v1.0
+  ═══════════════════════════════════════════════════════════════
+
+  USO EN HTML:
+  1. Pegar este bloque al inicio del <body> (queda invisible).
+  2. Llamar cada ícono con:
+       <svg class="ki ki-md" aria-hidden="true">
+         <use href="#ki-tablero"/>
+       </svg>
+
+  REGLAS:
+  ✓ Todos los paths usan stroke="currentColor" fill="none"
+  ✓ stroke-linecap="round" stroke-linejoin="round" siempre
+  ✓ stroke-width se omite en el sprite — se controla con CSS
+    o con el atributo en el <svg> que llama al ícono
+  ✓ viewBox siempre "0 0 18 18"
+  ✓ El color lo hereda del contexto (.ki-ok, .ki-err, etc.)
+
+  ÍNDICE:
+  ── NAVEGACIÓN ─────────────────────────────────────────────
+  ki-tablero        Grid 2x2 — Tablero de Guardia
+  ki-mapa-camas     Plano de cama — Mapa de Camas
+  ki-ingresar       Persona con cruz — Ingresar Paciente
+  ki-buscar         Lupa — Buscar Paciente
+  ki-constancias    Documento con líneas — Constancias
+  ki-prestaciones   Billete — Prestaciones / Aranceles
+  ki-contingencia   Triángulo de alerta — Contingencia Offline
+  ki-traslados      Flecha circular — Traslados / Camilleros
+
+  ── CLÍNICA ────────────────────────────────────────────────
+  ki-paciente       Silueta persona
+  ki-triage         Cruz médica con flecha — Triage
+  ki-signos-vitales Corazón con pulso — Signos Vitales
+  ki-estudios       Microscopio / tubo — Estudios / Lab
+  ki-imagen         Placa radiológica — Imágenes / TC / RX
+  ki-alta           Persona con flecha salida — Alta Médica
+  ki-alerta-medica  Escudo con exclamación — Alerta Clínica
+  ki-alergia        Hoja con exclamación — Alergia
+
+  ── OPERACIONES ────────────────────────────────────────────
+  ki-cama           Cama simple — Estado de cama
+  ki-limpieza       Escoba — Limpieza
+  ki-bloqueo        Candado — Bloqueado / Mantenimiento
+  ki-falla          Herramienta con alerta — Reportar Falla
+  ki-llamador       Altavoz — Llamador de paciente
+  ki-pulsera        Brazalete — Pulsera identificatoria
+  ki-episodio       Carpeta con cruz — Episodio / HC
+
+  ── ESTADOS / UI ───────────────────────────────────────────
+  ki-ok             Check — Confirmado / Validado
+  ki-warn           Exclamación círculo — Advertencia
+  ki-error          X círculo — Error / Bloqueante
+  ki-info           I círculo — Información
+  ki-reloj          Reloj — Tiempo / SLA
+  ki-sync           Flechas circulares — Sincronización
+  ki-chevron-down   Chevron abajo — Colapsar
+  ki-chevron-right  Chevron derecha — Expandir
+  ki-cerrar         X — Cerrar / Cancelar
+  ki-menu           Hamburger — Nav toggle
+  ki-expand         Flechas esquinas — Expandir panel
+  ki-colapsar       Flechas internas — Colapsar panel
+  ki-metrics        Barras — Panel de métricas
+  ki-filtro         Embudo — Filtros
+  ki-imprimir       Impresora — Imprimir formularios
+  ki-origen-his     Base de datos — Dato de origen HIS
+  ki-origen-kairos  Rayo — Dato de origen Kairos Engine
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none;" aria-hidden="true">
+<defs>
+
+  <!-- ── NAVEGACIÓN ─────────────────────────────────────── -->
+
+  <!-- ki-tablero: grid 2x2 -->
+  <symbol id="ki-tablero" viewBox="0 0 18 18" fill="none">
+    <rect x="1.5" y="1.5" width="6" height="6" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="10.5" y="1.5" width="6" height="6" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="1.5" y="10.5" width="6" height="6" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="10.5" y="10.5" width="6" height="6" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-mapa-camas: plano de cama esquemático -->
+  <symbol id="ki-mapa-camas" viewBox="0 0 18 18" fill="none">
+    <rect x="1.5" y="5" width="15" height="10" rx="1.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1.5 9h15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M6 9V5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M12 9V5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    <path d="M2 14.5h2.5M13.5 14.5H16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ki-ingresar: persona con símbolo + -->
+  <symbol id="ki-ingresar" viewBox="0 0 18 18" fill="none">
+    <circle cx="7.5" cy="5.5" r="3"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1.5 16c0-3.314 2.686-5.5 6-5.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M13 11v6M10 14h6"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-buscar: lupa -->
+  <symbol id="ki-buscar" viewBox="0 0 18 18" fill="none">
+    <circle cx="8" cy="8" r="5.5"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.5 12.5L16.5 16.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-constancias: documento con líneas de texto -->
+  <symbol id="ki-constancias" viewBox="0 0 18 18" fill="none">
+    <path d="M11 1.5H4.5A1.5 1.5 0 003 3v12a1.5 1.5 0 001.5 1.5h9A1.5 1.5 0 0015 15V5.5L11 1.5z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11 1.5V5.5H15"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6 9.5h6M6 12.5h4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-prestaciones: billete / ticket -->
+  <symbol id="ki-prestaciones" viewBox="0 0 18 18" fill="none">
+    <rect x="1.5" y="4.5" width="15" height="9" rx="1.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="9" cy="9" r="2.5"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1.5 7h2M14.5 7h2M1.5 11h2M14.5 11h2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-contingencia: triángulo de advertencia -->
+  <symbol id="ki-contingencia" viewBox="0 0 18 18" fill="none">
+    <path d="M9 2L16.5 15.5H1.5L9 2z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 7.5V11"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <circle cx="9" cy="13.5" r="0.8"
+            fill="currentColor" stroke="none"/>
+  </symbol>
+
+  <!-- ki-traslados: persona con flechas de movimiento -->
+  <symbol id="ki-traslados" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="5" r="2.5"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4.5 16v-2a4.5 4.5 0 019 0v2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.5 9.5l2 2-2 2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3.5 9.5l-2 2 2 2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ── CLÍNICA ───────────────────────────────────────── -->
+
+  <!-- ki-paciente: silueta persona -->
+  <symbol id="ki-paciente" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="5.5" r="3"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M2.5 17c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-triage: cruz médica con prioridad -->
+  <symbol id="ki-triage" viewBox="0 0 18 18" fill="none">
+    <path d="M9 2v14M2 9h14"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="5.5" y="5.5" width="7" height="7" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-signos-vitales: onda de pulso -->
+  <symbol id="ki-signos-vitales" viewBox="0 0 18 18" fill="none">
+    <path d="M1 9h3l2.5-5.5 3 10 2.5-7L14 9h3"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-estudios: tubo de laboratorio -->
+  <symbol id="ki-estudios" viewBox="0 0 18 18" fill="none">
+    <path d="M7 2h4M9 2v6l4 7a1 1 0 01-.87 1.5H5.87A1 1 0 015 15l4-7V2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.5 13h5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ki-imagen: placa radiológica / scan -->
+  <symbol id="ki-imagen" viewBox="0 0 18 18" fill="none">
+    <rect x="2" y="2" width="14" height="14" rx="2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="9" cy="9" r="3"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M2 6h14M6 2v4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ki-alta: persona con flecha salida -->
+  <symbol id="ki-alta" viewBox="0 0 18 18" fill="none">
+    <circle cx="7" cy="5" r="2.5"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M2 16c0-3 2.5-5 5-5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 9l4 4-4 4M16 13H9"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-alerta-medica: escudo con exclamación -->
+  <symbol id="ki-alerta-medica" viewBox="0 0 18 18" fill="none">
+    <path d="M9 1.5L2 4.5v5c0 4 3.13 7.22 7 8 3.87-.78 7-4 7-8v-5L9 1.5z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 7v3"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <circle cx="9" cy="12.5" r="0.8"
+            fill="currentColor" stroke="none"/>
+  </symbol>
+
+  <!-- ki-alergia: hoja con exclamación -->
+  <symbol id="ki-alergia" viewBox="0 0 18 18" fill="none">
+    <path d="M9 2C5 2 2 5.5 2 9.5c0 2.5 1.5 4.5 4 5.5h6c2.5-1 4-3 4-5.5C16 5.5 13 2 9 2z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 7v3"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <circle cx="9" cy="12" r="0.8"
+            fill="currentColor" stroke="none"/>
+    <path d="M9 15.5V17"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ── OPERACIONES ────────────────────────────────────── -->
+
+  <!-- ki-cama: cama simple -->
+  <symbol id="ki-cama" viewBox="0 0 18 18" fill="none">
+    <path d="M1.5 13V7a1 1 0 011-1h13a1 1 0 011 1v6"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1.5 13h15"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <path d="M3 6V4M15 6V4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <rect x="5.5" y="8" width="7" height="3" rx="0.5"
+          stroke="currentColor" stroke-width="1.2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-limpieza: escoba -->
+  <symbol id="ki-limpieza" viewBox="0 0 18 18" fill="none">
+    <path d="M14 2L4 12"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 12c0 2 1 4 4 4 0-2 .5-3 2-4l-3-3c-1 1.5-3 1-3 3z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-bloqueo: candado -->
+  <symbol id="ki-bloqueo" viewBox="0 0 18 18" fill="none">
+    <rect x="3.5" y="8" width="11" height="8" rx="1.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6 8V6a3 3 0 016 0v2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="9" cy="12" r="1.2"
+            stroke="currentColor" stroke-width="1.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-falla: herramienta con alerta -->
+  <symbol id="ki-falla" viewBox="0 0 18 18" fill="none">
+    <path d="M13.5 2a3.5 3.5 0 00-3.38 4.38L3 13.5A1.5 1.5 0 105.5 16l7.12-7.12A3.5 3.5 0 0013.5 2z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="14" cy="14" r="2.5"
+            stroke="currentColor" stroke-width="1.3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 12.5v1.2"
+          stroke="currentColor" stroke-width="1.3"
+          stroke-linecap="round"/>
+    <circle cx="14" cy="15" r="0.4"
+            fill="currentColor" stroke="none"/>
+  </symbol>
+
+  <!-- ki-llamador: altavoz / megáfono -->
+  <symbol id="ki-llamador" viewBox="0 0 18 18" fill="none">
+    <path d="M3 7H1.5a1 1 0 00-1 1v2a1 1 0 001 1H3l5 4V3L3 7z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 6.5a4 4 0 010 5M14.5 4a7.5 7.5 0 010 10"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-pulsera: brazalete / wristband -->
+  <symbol id="ki-pulsera" viewBox="0 0 18 18" fill="none">
+    <rect x="5" y="3" width="8" height="12" rx="4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M5 7h8M5 11h8"
+          stroke="currentColor" stroke-width="1.2"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ki-episodio: carpeta con cruz médica -->
+  <symbol id="ki-episodio" viewBox="0 0 18 18" fill="none">
+    <path d="M2 5a1.5 1.5 0 011.5-1.5h3L8 5h7.5A1.5 1.5 0 0117 6.5V14a1.5 1.5 0 01-1.5 1.5H3.5A1.5 1.5 0 012 14V5z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 8.5v4M7 10.5h4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ── ESTADOS / UI ───────────────────────────────────── -->
+
+  <!-- ki-ok: check en círculo -->
+  <symbol id="ki-ok" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6 9.5l2 2 4-4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-warn: exclamación en círculo -->
+  <symbol id="ki-warn" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 6v4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <circle cx="9" cy="12.5" r="0.8"
+            fill="currentColor" stroke="none"/>
+  </symbol>
+
+  <!-- ki-error: X en círculo -->
+  <symbol id="ki-error" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.5 6.5l5 5M11.5 6.5l-5 5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-info: i en círculo -->
+  <symbol id="ki-info" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 12V9"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round"/>
+    <circle cx="9" cy="6.5" r="0.8"
+            fill="currentColor" stroke="none"/>
+  </symbol>
+
+  <!-- ki-reloj: reloj analógico -->
+  <symbol id="ki-reloj" viewBox="0 0 18 18" fill="none">
+    <circle cx="9" cy="9" r="7"
+            stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 5.5V9l2.5 2.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-sync: flechas circulares -->
+  <symbol id="ki-sync" viewBox="0 0 18 18" fill="none">
+    <path d="M1.5 9A7.5 7.5 0 0114 3.5l1.5 1.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M16.5 9A7.5 7.5 0 014 14.5L2.5 13"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M13.5 3l2 2-2 2M4.5 13l-2 2 2 2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-chevron-down -->
+  <symbol id="ki-chevron-down" viewBox="0 0 18 18" fill="none">
+    <path d="M4.5 7l4.5 4.5L13.5 7"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-chevron-right -->
+  <symbol id="ki-chevron-right" viewBox="0 0 18 18" fill="none">
+    <path d="M7 4.5L11.5 9 7 13.5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-cerrar: X simple -->
+  <symbol id="ki-cerrar" viewBox="0 0 18 18" fill="none">
+    <path d="M4 4l10 10M14 4L4 14"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-menu: hamburger 3 líneas -->
+  <symbol id="ki-menu" viewBox="0 0 18 18" fill="none">
+    <path d="M2 4.5h14M2 9h14M2 13.5h14"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-metrics: barras de gráfico -->
+  <symbol id="ki-metrics" viewBox="0 0 18 18" fill="none">
+    <rect x="1.5" y="9" width="3.5" height="7" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="7.25" y="5" width="3.5" height="11" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="13" y="2" width="3.5" height="14" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-filtro: embudo -->
+  <symbol id="ki-filtro" viewBox="0 0 18 18" fill="none">
+    <path d="M2 3h14l-5.5 7v5l-3-1.5V10L2 3z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-imprimir: impresora -->
+  <symbol id="ki-imprimir" viewBox="0 0 18 18" fill="none">
+    <rect x="4" y="11" width="10" height="6" rx="1"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4 13H2a1 1 0 01-1-1V8a1 1 0 011-1h14a1 1 0 011 1v4a1 1 0 01-1 1h-2"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M4 7V2h10v5"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6 14.5h6M6 16.5h4"
+          stroke="currentColor" stroke-width="1.2"
+          stroke-linecap="round"/>
+    <circle cx="14.5" cy="9.5" r="0.8"
+            fill="currentColor" stroke="none"/>
+  </symbol>
+
+  <!-- ki-origen-his: base de datos — dato viene del HIS -->
+  <symbol id="ki-origen-his" viewBox="0 0 18 18" fill="none">
+    <ellipse cx="9" cy="4.5" rx="6" ry="2"
+             stroke="currentColor" stroke-width="1.4"
+             stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 4.5v4c0 1.1 2.69 2 6 2s6-.9 6-2v-4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 8.5v4c0 1.1 2.69 2 6 2s6-.9 6-2v-4"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ki-origen-kairos: rayo — dato generado por Kairos Engine -->
+  <symbol id="ki-origen-kairos" viewBox="0 0 18 18" fill="none">
+    <path d="M11 1.5L4 10h5.5L7 16.5l9-9.5H11L13.5 1.5z"
+          stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+</defs>
+</svg>
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+  REFERENCIA RÁPIDA DE USO
+  ═══════════════════════════════════════════════════════════════
+
+  TAMAÑO ESTÁNDAR (nav, botones):
+    <svg class="ki ki-md" aria-hidden="true"><use href="#ki-buscar"/></svg>
+
+  TAMAÑO PEQUEÑO (chips, filas densas):
+    <svg class="ki ki-sm" aria-hidden="true"><use href="#ki-reloj"/></svg>
+
+  CON COLOR SEMÁNTICO:
+    <svg class="ki ki-md ki-ok"  aria-hidden="true"><use href="#ki-ok"/></svg>
+    <svg class="ki ki-md ki-err" aria-hidden="true"><use href="#ki-error"/></svg>
+    <svg class="ki ki-md ki-warn" aria-hidden="true"><use href="#ki-warn"/></svg>
+
+  CON COLOR DE TRIAGE:
+    <svg class="ki ki-sm ki-t2" aria-hidden="true"><use href="#ki-alerta-medica"/></svg>
+
+  TRAZO PERSONALIZADO (override puntual):
+    <svg class="ki ki-lg" stroke-width="1.6" aria-hidden="true"><use href="#ki-signos-vitales"/></svg>
+
+  ORIGEN DE DATO (badge inline junto a un valor):
+    <svg class="ki ki-xs ki-muted" aria-hidden="true"><use href="#ki-origen-his"/></svg>
+    <svg class="ki ki-xs" style="color:var(--p)" aria-hidden="true"><use href="#ki-origen-kairos"/></svg>
+
+  ═══════════════════════════════════════════════════════════════
+-->
