@@ -1,54 +1,63 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- *  KAIROS · ZENOXIA — Design Tokens v2.0
- *  Fuente de verdad para todos los módulos del sistema.
+ *  ZENOXIA — Design Tokens v2.1
+ *  Fuente de verdad compartida: Kairos · Cordis
  *
- *  NOVEDADES v2.0
- *  + Sección de Iconografía (tokens de tamaño y trazo)
- *  + Sección de Triage (colores por nivel)
- *  + Sección de Estados de Cama
- *  + Sección de Tipografía
- *  + Sección de Espaciado
- *  + Reglas de uso actualizadas
+ *  HISTORIAL
+ *  v1.0  Kairos — colores base, semánticos, radius
+ *  v2.0  Cordis — tipografía, iconografía, triage, estados de cama
+ *  v2.1  Unificación — estados de equipo, traslados, worklist, IA
+ *        Migración de tokens locales de command-center y camilleros
  *
- *  USO:
+ *  USO
  *  1. Copiar el bloque :root completo al <style> de cada pantalla.
- *  2. Incluir el SVG Sprite (archivo kairos-icons.svg o bloque
- *     <svg style="display:none"> al inicio del <body>).
- *  3. Usar iconos con: <svg><use href="#ki-nombre"/></svg>
- *  4. Nunca hardcodear colores ni tamaños fuera de este bloque.
+ *  2. Para íconos: incluir kairos-icons.svg al inicio del <body>.
+ *     Usar con: <svg><use href="#ki-nombre"/></svg>
+ *  3. Nunca hardcodear colores, tamaños ni fuentes fuera de este bloque.
  *
  * ───────────────────────────────────────────────────────────────
- *  ÍNDICE DE SECCIONES
+ *  ÍNDICE
+ * ───────────────────────────────────────────────────────────────
+ *  1.  PRIMARIO        Azul royal — branding, acciones
+ *  2.  NEUTROS         Fondos, texto, bordes
+ *  3.  SEMÁNTICOS      OK / WARN / ERR / INFO
+ *  4.  TRIAGE          Niveles N1–N5
+ *  5.  ESTADOS CAMA    Ciclo hotelero de boxes y camas
+ *  6.  ESTADOS EQUIPO  Equipamiento médico (TC, RM, etc.)
+ *  7.  TRASLADOS       Cola dinámica de camilleros
+ *  8.  CARGA LABORAL   Nivel de carga por operador
+ *  9.  WORKLIST        Estados de estudios (imágenes)
+ * 10.  IA              Gradiente de asistencia cognitiva
+ * 11.  SLA             Tiempos de respuesta clínicos
+ * 12.  TIPOGRAFÍA      Familias, tamaños, pesos
+ * 13.  ICONOGRAFÍA     Trazo, tamaños
+ * 14.  ESPACIADO       Radios, gaps, padding
+ *
+ * ───────────────────────────────────────────────────────────────
+ *  REGLAS DE USO
  * ───────────────────────────────────────────────────────────────
  *
- *  1. PRIMARIO       Azul royal — branding, acciones, estados activos
- *  2. NEUTROS        Fondos, texto, bordes
- *  3. SEMÁNTICOS     OK / WARN / ERR / INFO
- *  4. TRIAGE         Colores por nivel (N1–N5)
- *  5. ESTADOS CAMA   Ciclo de vida de boxes y camas
- *  6. TIPOGRAFÍA     Familias, tamaños, pesos
- *  7. ICONOGRAFÍA    Trazo, tamaño, uso
- *  8. ESPACIADO      Radios, gaps, padding estándar
- *
- * ───────────────────────────────────────────────────────────────
- *  REGLAS DE USO — RESUMEN
- * ───────────────────────────────────────────────────────────────
- *
- *  ✓ Estados OK/validado      → --s-ok, --s-ok-l, --s-ok-m
- *  ✓ Pendiente/advertencia    → --s-warn, --s-warn-l, --s-warn-m
- *  ✓ Error/bloqueante         → --s-err, --s-err-l, --s-err-m
- *  ✓ Info neutral             → --s-info, --s-info-l, --s-info-m
- *  ✓ Branding/acciones        → --p, --p-dark, --p-light, --p-mid
- *  ✓ Niveles de triage        → --t1 … --t5 (con variantes -l)
- *  ✓ Estados de cama          → --cama-libre, --cama-ocupada, etc.
- *  ✓ Iconos SVG               → stroke="currentColor", width/height="var(--icon-size)"
+ *  ✓ Branding / acciones primarias   → --p, --p-dark, --p-light, --p-mid
+ *  ✓ Éxito / validado                → --s-ok, --s-ok-l, --s-ok-m
+ *  ✓ Advertencia / pendiente         → --s-warn, --s-warn-l, --s-warn-m
+ *  ✓ Error / bloqueante              → --s-err, --s-err-l, --s-err-m
+ *  ✓ Info neutral                    → --s-info, --s-info-l, --s-info-m
+ *  ✓ Niveles de triage               → --t1 … --t5 (con variantes -l y -brd)
+ *  ✓ Ciclo hotelero de camas         → --cama-libre, --cama-ocup, etc.
+ *  ✓ Equipamiento médico             → --eq-libre, --eq-uso, --eq-limp, --eq-fuera
+ *  ✓ Cola de traslados               → --tr-pend, --tr-asig, --tr-curso, --tr-done, --tr-urg
+ *  ✓ Identificación de equipamiento  → --equip-silla, --equip-camilla, etc.
+ *  ✓ Carga laboral operador          → --carga-leve, --carga-mod, --carga-alta, --carga-limite
+ *  ✓ Estados de estudio              → --ws-pending, --ws-executing, --ws-approval, etc.
+ *  ✓ Asistencia IA                   → --ai-from, --ai-to (gradiente de degradado)
+ *  ✓ Tiempos SLA                     → --sla-n1 … --sla-n5, --sla-urg, --sla-amb
  *
  *  ✗ No usar --p para estados de éxito       → usar --s-ok
  *  ✗ No usar --s-err para advertencias leves → usar --s-warn
+ *  ✗ No usar --s-warn para traslados         → usar --tr-pend / --tr-urg
  *  ✗ No hardcodear hex fuera de este bloque
  *  ✗ No hardcodear tamaños de ícono          → usar --icon-size-*
- *  ✗ No usar fill en iconos outline          → solo stroke="currentColor"
+ *  ✗ No usar fill en íconos outline          → solo stroke="currentColor"
  *
  * ═══════════════════════════════════════════════════════════════
  */
@@ -57,6 +66,7 @@
 
   /* ─────────────────────────────────────────────────────────────
      1. PRIMARIO — Azul royal
+     Branding Zenoxia. Kairos y Cordis comparten estos valores.
   ───────────────────────────────────────────────────────────── */
   --p-light: #EBF2FF;   /* fills, fondos de badge, card activa       */
   --p-mid:   #A3C0F8;   /* bordes de badge, separadores              */
@@ -77,179 +87,218 @@
 
   /* ─────────────────────────────────────────────────────────────
      3. SEMÁNTICOS — Estados del sistema
+     Uso genérico en toda la plataforma.
+     Para estados específicos de dominio, usar secciones 4–9.
   ───────────────────────────────────────────────────────────── */
 
-  /* Éxito — confirmado, validado, OK */
-  --s-ok:   #0F6E56;
-  --s-ok-l: #E1F5EE;
-  --s-ok-m: #9FE1CB;
+  --s-ok:     #0F6E56;   /* confirmado, validado, completado          */
+  --s-ok-l:   #E1F5EE;   /* fondo badge OK                            */
+  --s-ok-m:   #9FE1CB;   /* borde badge OK                            */
 
-  /* Advertencia — pendiente, alerta leve */
-  --s-warn:   #633806;
-  --s-warn-l: #FAEEDA;
-  --s-warn-m: #EF9F27;
+  --s-warn:   #633806;   /* pendiente, atención leve                  */
+  --s-warn-l: #FAEEDA;   /* fondo badge WARN                          */
+  --s-warn-m: #EF9F27;   /* borde / ícono badge WARN                  */
 
-  /* Error — bloqueante, alergia, crítico */
-  --s-err:   #791F1F;
-  --s-err-l: #FCEBEB;
-  --s-err-m: #E24B4A;
+  --s-err:    #791F1F;   /* bloqueante, alergia, crítico              */
+  --s-err-l:  #FCEBEB;   /* fondo badge ERR                           */
+  --s-err-m:  #E24B4A;   /* borde / ícono badge ERR                   */
 
-  /* Info — informativo neutro, estado secundario */
-  --s-info:   #0C447C;
-  --s-info-l: #E6F1FB;
-  --s-info-m: #B5D4F4;
+  --s-info:   #0C447C;   /* informativo neutro, estado secundario     */
+  --s-info-l: #E6F1FB;   /* fondo badge INFO                          */
+  --s-info-m: #B5D4F4;   /* borde badge INFO                          */
 
   /* ─────────────────────────────────────────────────────────────
-     4. TRIAGE — Colores por nivel de prioridad
-     Uso: siempre con opacidad baja en fondos (nunca saturados).
-     Convención: --tN     = color base para texto e íconos
-                 --tN-l   = fondo claro (10-15% opacidad)
-                 --tN-brd = borde sutil
+     4. TRIAGE — Colores por nivel de prioridad clínica
+     Solo para Cordis (Guardia). Kairos no usa triage.
+     Convención: --tN = texto/ícono · --tN-l = fondo · --tN-brd = borde
   ───────────────────────────────────────────────────────────── */
 
-  /* Nivel 1 — Resucitación (Rojo) */
-  --t1:     #C0392B;
+  --t1:     #C0392B;                    /* N1 Resucitación — Rojo       */
   --t1-l:   rgba(192, 57, 43, 0.10);
   --t1-brd: rgba(192, 57, 43, 0.25);
 
-  /* Nivel 2 — Emergencia (Naranja) */
-  --t2:     #D4680A;
+  --t2:     #D4680A;                    /* N2 Emergencia — Naranja      */
   --t2-l:   rgba(212, 104, 10, 0.10);
   --t2-brd: rgba(212, 104, 10, 0.25);
 
-  /* Nivel 3 — Urgencia (Amarillo oscuro) */
-  --t3:     #A07C00;
+  --t3:     #A07C00;                    /* N3 Urgencia — Amarillo osc.  */
   --t3-l:   rgba(160, 124, 0, 0.10);
   --t3-brd: rgba(160, 124, 0, 0.25);
 
-  /* Nivel 4 — Menor (Verde) */
-  --t4:     #2E7D4F;
+  --t4:     #2E7D4F;                    /* N4 Menor — Verde             */
   --t4-l:   rgba(46, 125, 79, 0.10);
   --t4-brd: rgba(46, 125, 79, 0.25);
 
-  /* Nivel 5 — No urgente (Azul) */
-  --t5:     #1565A8;
+  --t5:     #1565A8;                    /* N5 No urgente — Azul         */
   --t5-l:   rgba(21, 101, 168, 0.10);
   --t5-brd: rgba(21, 101, 168, 0.25);
 
   /* ─────────────────────────────────────────────────────────────
-     5. ESTADOS DE CAMA — Ciclo de vida hotelero
-     Cada estado tiene: base (texto/icono), -l (fondo), -m (borde)
+     5. ESTADOS DE CAMA — Ciclo hotelero
+     Kairos: habitaciones prequirúrgicas y recuperación.
+     Cordis: boxes de guardia.
+     Convención: base (texto/ícono) · -l (fondo) · -m (borde)
   ───────────────────────────────────────────────────────────── */
 
-  /* Libre y limpia — disponible para asignar */
-  --cama-libre:   #0F6E56;
-  --cama-libre-l: #E1F5EE;
-  --cama-libre-m: #9FE1CB;
-
-  /* Ocupada — paciente activo */
-  --cama-ocup:   #1A3FAA;
-  --cama-ocup-l: #EBF2FF;
-  --cama-ocup-m: #A3C0F8;
-
-  /* Alta pendiente — médico firmó, paciente aún en cama */
-  --cama-alta:   #7B3FA0;
-  --cama-alta-l: #F3E8FF;
-  --cama-alta-m: #C9A0E0;
-
-  /* En limpieza — personal trabajando */
-  --cama-limp:   #B45309;
-  --cama-limp-l: #FEF3C7;
-  --cama-limp-m: #FCD34D;
-
-  /* Lista para usar — limpieza hecha, esperando confirmación */
-  --cama-lista:   #0E7490;
-  --cama-lista-l: #E0F7FA;
-  --cama-lista-m: #67E8F9;
-
-  /* Bloqueada — mantenimiento, falla reportada */
-  --cama-bloq:   #4B4B4B;
-  --cama-bloq-l: #F0F0F0;
-  --cama-bloq-m: #AAAAAA;
+  --cama-libre:    #0F6E56;   --cama-libre-l:    #E1F5EE;   --cama-libre-m:    #9FE1CB;
+  --cama-ocup:     #1A3FAA;   --cama-ocup-l:     #EBF2FF;   --cama-ocup-m:     #A3C0F8;
+  --cama-alta:     #7B3FA0;   --cama-alta-l:     #F3E8FF;   --cama-alta-m:     #C9A0E0;
+  --cama-limp:     #B45309;   --cama-limp-l:     #FEF3C7;   --cama-limp-m:     #FCD34D;
+  --cama-lista:    #0E7490;   --cama-lista-l:    #E0F7FA;   --cama-lista-m:    #67E8F9;
+  --cama-bloq:     #4B4B4B;   --cama-bloq-l:     #F0F0F0;   --cama-bloq-m:     #AAAAAA;
 
   /* ─────────────────────────────────────────────────────────────
-     6. TIPOGRAFÍA
+     6. ESTADOS DE EQUIPO — Equipamiento médico
+     Cordis Imágenes: estado de TC, RM, sala de rayos, etc.
+     Convención: base · -l (fondo) · -m (borde)
   ───────────────────────────────────────────────────────────── */
 
-  /* Familias */
-  --font-sans:  system-ui, -apple-system, sans-serif;  /* UI general    */
-  --font-mono:  'Courier New', Courier, monospace;      /* tiempos, DNI  */
-
-  /* Tamaños (escala modular) */
-  --text-2xs: 8px;    /* badges internos, actor labels      */
-  --text-xs:  10px;   /* labels uppercase, metadata         */
-  --text-sm:  11px;   /* body secundario, chips, notas      */
-  --text-md:  13px;   /* body principal                     */
-  --text-lg:  15px;   /* títulos de sección                 */
-  --text-xl:  18px;   /* KPIs, valores destacados           */
-  --text-2xl: 22px;   /* nombres de paciente en detalle     */
-  --text-3xl: 28px;   /* números grandes en dashboards      */
-
-  /* Pesos */
-  --fw-normal:  400;
-  --fw-medium:  500;
-  --fw-semibold:600;
-  --fw-bold:    700;
-  --fw-black:   800;
+  --eq-libre:   #0F6E56;   --eq-libre-l:   #E1F5EE;   --eq-libre-m:   #9FE1CB;
+  --eq-uso:     #2B57D9;   --eq-uso-l:     #EBF2FF;   --eq-uso-m:     #A3C0F8;
+  --eq-limp:    #B45309;   --eq-limp-l:    #FEF3C7;   --eq-limp-m:    #FCD34D;
+  --eq-fuera:   #4B4B4B;   --eq-fuera-l:   #F0F0F0;   --eq-fuera-m:   #AAAAAA;
 
   /* ─────────────────────────────────────────────────────────────
-     7. ICONOGRAFÍA — Sistema de íconos SVG outline
-     Todos los íconos usan stroke="currentColor" y fill="none".
-     El color siempre se hereda del contexto — nunca hardcodeado.
-     Referencia de uso: <svg width="var(--icon-size)" height="var(--icon-size)">
-                          <use href="#ki-nombre"/>
-                        </svg>
+     7. TRASLADOS — Cola dinámica de camilleros
+     Kairos y Cordis Camilleros.
+     Estados del ciclo de vida de un traslado.
+     Convención: base · -l (fondo) · -m (borde)
   ───────────────────────────────────────────────────────────── */
 
-  /* Tamaños */
-  --icon-xs:  12px;   /* inline en texto, badges compactos         */
-  --icon-sm:  14px;   /* chips, filas densas, metadata             */
-  --icon-md:  18px;   /* nav lateral, botones — tamaño estándar    */
-  --icon-lg:  22px;   /* cabeceras de sección, cards               */
-  --icon-xl:  32px;   /* empty states, ilustraciones               */
-
-  /* Grosor de trazo */
-  --icon-stroke-thin:   1.2px;  /* contextos muy densos              */
-  --icon-stroke:        1.4px;  /* estándar — usar siempre este      */
-  --icon-stroke-medium: 1.6px;  /* énfasis, alertas                  */
-  --icon-stroke-thick:  2px;    /* íconos grandes, ilustraciones     */
-
-  /* Regla: stroke-linecap="round" stroke-linejoin="round" siempre */
+  --tr-pend:    #633806;   --tr-pend-l:    #FAEEDA;   --tr-pend-m:    #EF9F27;
+  --tr-asig:    #0C447C;   --tr-asig-l:    #E6F1FB;   --tr-asig-m:    #B5D4F4;
+  --tr-curso:   #2B57D9;   --tr-curso-l:   #EBF2FF;   --tr-curso-m:   #A3C0F8;
+  --tr-done:    #0F6E56;   --tr-done-l:    #E1F5EE;   --tr-done-m:    #9FE1CB;
+  --tr-urg:     #791F1F;   --tr-urg-l:     #FCEBEB;   --tr-urg-m:     #E24B4A;
 
   /* ─────────────────────────────────────────────────────────────
-     8. ESPACIADO Y RADIO
+     8. IDENTIFICACIÓN DE EQUIPAMIENTO — Tipo de camilla / recurso
+     Color por tipo de equipo requerido en un traslado.
+     Solo valor base (sin -l/-m) — uso decorativo, no semántico.
   ───────────────────────────────────────────────────────────── */
 
-  /* Border radius */
-  --r-xs: 4px;    /* badges internos, chips pequeños               */
-  --r:    8px;    /* estándar — inputs, cards, botones             */
-  --r-lg: 12px;   /* panels, modales, shells                       */
-  --r-xl: 16px;   /* cards grandes, app móvil                      */
-  --r-full: 999px;/* pills, avatares                               */
+  --equip-silla:    #7B3FA0;   /* silla de ruedas                     */
+  --equip-camilla:  #0E7490;   /* camilla estándar o con barandas     */
+  --equip-oxigeno:  #B45309;   /* O₂ portátil                         */
+  --equip-tc:       #0C447C;   /* traslado a TC                       */
+  --equip-rm:       #791F1F;   /* traslado a RM                       */
 
-  /* Gap estándar entre elementos */
-  --gap-xs:  4px;
-  --gap-sm:  8px;
-  --gap-md:  12px;
-  --gap-lg:  16px;
-  --gap-xl:  24px;
+  /* ─────────────────────────────────────────────────────────────
+     8B. CARGA LABORAL — Nivel de carga por operador
+     Usado en paneles de coordinación (camilleros, enfermeros).
+     Convención: base · -l (fondo badge)
+  ───────────────────────────────────────────────────────────── */
 
-  /* Padding interno de componentes */
-  --pad-xs:  6px 8px;
-  --pad-sm:  8px 12px;
-  --pad-md:  12px 16px;
-  --pad-lg:  16px 20px;
+  --carga-leve:     #0F6E56;   --carga-leve-l:    #E1F5EE;
+  --carga-mod:      #A07C00;   --carga-mod-l:     #FEF9E0;
+  --carga-alta:     #D4680A;   --carga-alta-l:    #FEF3C7;
+  --carga-limite:   #C0392B;   --carga-limite-l:  #FCEBEB;
+
+  /* ─────────────────────────────────────────────────────────────
+     9. WORKLIST — Estados de estudios de imágenes
+     Cordis Imágenes: ciclo de vida de un estudio (TC, RM, Rx).
+     Convención: base · -l (fondo)
+  ───────────────────────────────────────────────────────────── */
+
+  --ws-pending:     #888780;   --ws-pending-l:    #f0efea;
+  --ws-executing:   #2B57D9;   --ws-executing-l:  #EBF2FF;
+  --ws-approval:    #A07C00;   --ws-approval-l:   #FAEEDA;
+  --ws-approved:    #0F6E56;   --ws-approved-l:   #E1F5EE;
+  --ws-delivered:   #5f5e5a;   --ws-delivered-l:  #f5f4f0;
+
+  /* ─────────────────────────────────────────────────────────────
+     10. IA — Asistencia cognitiva
+     Gradiente de degradado para indicar sugerencia de IA.
+     Usar en bordes, backgrounds sutiles, no en texto.
+     Siempre con indicación visible de que es sugerencia IA,
+     nunca como decisión clínica autónoma (RN-04).
+  ───────────────────────────────────────────────────────────── */
+
+  --ai-from: #1A3FAA;   /* inicio del gradiente — azul profundo      */
+  --ai-to:   #6366F1;   /* fin del gradiente — violeta               */
+
+  /* ─────────────────────────────────────────────────────────────
+     11. SLA — Tiempos de respuesta clínicos (minutos)
+     Valores numéricos usados como thresholds, no como colores.
+     Combinar con tokens de triage para colorear el estado SLA.
+  ───────────────────────────────────────────────────────────── */
+
+  --sla-n1:   0;     /* N1 Resucitación — atención inmediata         */
+  --sla-n2:   15;    /* N2 Emergencia — ≤15 min                      */
+  --sla-n3:   30;    /* N3 Urgencia — ≤30 min                        */
+  --sla-n4:   120;   /* N4 Menor — ≤2 hs                             */
+  --sla-n5:   240;   /* N5 No urgente — ≤4 hs                        */
+
+  --sla-urg:    #791F1F;   --sla-urg-l:    #FCEBEB;   --sla-urg-m:    #E24B4A;
+  --sla-amb:    #0C447C;   --sla-amb-l:    #E6F1FB;   --sla-amb-m:    #B5D4F4;
+
+  /* ─────────────────────────────────────────────────────────────
+     12. TIPOGRAFÍA
+  ───────────────────────────────────────────────────────────── */
+
+  --font-sans:  system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  --text-2xs:  8px;
+  --text-xs:   10px;
+  --text-sm:   11px;
+  --text-md:   13px;
+  --text-lg:   15px;
+  --text-xl:   18px;
+  --text-2xl:  22px;
+  --text-3xl:  28px;
+
+  --fw-normal:   400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    800;
+
+  /* ─────────────────────────────────────────────────────────────
+     13. ICONOGRAFÍA — SVG outline, stroke="currentColor"
+     Referencia: <svg class="ki ki-md"><use href="#ki-nombre"/></svg>
+  ───────────────────────────────────────────────────────────── */
+
+  --icon-xs:  12px;
+  --icon-sm:  14px;
+  --icon-md:  18px;
+  --icon-lg:  22px;
+  --icon-xl:  32px;
+
+  --icon-stroke-thin:   1.2px;
+  --icon-stroke:        1.4px;
+  --icon-stroke-medium: 1.6px;
+  --icon-stroke-thick:  2px;
+
+  /* ─────────────────────────────────────────────────────────────
+     14. ESPACIADO Y RADIO
+  ───────────────────────────────────────────────────────────── */
+
+  --r-xs:   4px;
+  --r:      8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-full: 999px;
+
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 24px;
+
+  --pad-xs: 6px 8px;
+  --pad-sm: 8px 12px;
+  --pad-md: 12px 16px;
+  --pad-lg: 16px 20px;
 
 }
 
 /*
  * ═══════════════════════════════════════════════════════════════
- *  CLASES UTILITARIAS DE ICONOS
- *  Incluir estas clases en el <style> de cada módulo.
+ *  CLASES UTILITARIAS DE ÍCONOS
  * ═══════════════════════════════════════════════════════════════
  */
 
-/* Contenedor base de ícono SVG */
 .ki {
   display: inline-flex;
   align-items: center;
@@ -258,22 +307,19 @@
   color: currentColor;
 }
 
-/* Tamaños */
 .ki-xs { width: var(--icon-xs);  height: var(--icon-xs); }
 .ki-sm { width: var(--icon-sm);  height: var(--icon-sm); }
 .ki-md { width: var(--icon-md);  height: var(--icon-md); }
 .ki-lg { width: var(--icon-lg);  height: var(--icon-lg); }
 .ki-xl { width: var(--icon-xl);  height: var(--icon-xl); }
 
-/* Colores semánticos de ícono */
-.ki-primary  { color: var(--p); }
-.ki-ok       { color: var(--s-ok); }
-.ki-warn     { color: var(--s-warn-m); }
-.ki-err      { color: var(--s-err-m); }
-.ki-info     { color: var(--s-info); }
-.ki-muted    { color: var(--txt3); }
+.ki-primary { color: var(--p); }
+.ki-ok      { color: var(--s-ok); }
+.ki-warn    { color: var(--s-warn-m); }
+.ki-err     { color: var(--s-err-m); }
+.ki-info    { color: var(--s-info); }
+.ki-muted   { color: var(--txt3); }
 
-/* Colores de triage */
 .ki-t1 { color: var(--t1); }
 .ki-t2 { color: var(--t2); }
 .ki-t3 { color: var(--t3); }

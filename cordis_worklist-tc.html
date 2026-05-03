@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Técnico TC · Imágenes · Cordis · Zenoxia</title>
+<style>
+:root {
+
+  /* ─────────────────────────────────────────────────────────────
+     1. PRIMARIO — Azul royal
+     Branding Zenoxia. Kairos y Cordis comparten estos valores.
+  ───────────────────────────────────────────────────────────── */
+  --p-light: #EBF2FF;   /* fills, fondos de badge, card activa       */
+  --p-mid:   #A3C0F8;   /* bordes de badge, separadores              */
+  --p:       #2B57D9;   /* botones, íconos primarios, links activos  */
+  --p-dark:  #1A3FAA;   /* topbar, logo, nav activo, texto activo    */
+
+  /* ─────────────────────────────────────────────────────────────
+     2. NEUTROS — Fondos, texto, bordes
+  ───────────────────────────────────────────────────────────── */
+  --bg:   #ffffff;              /* cards, modales, panels              */
+  --bg2:  #f5f4f0;              /* inputs, fondos de sección, filas    */
+  --bg3:  #f0efea;              /* fondo del body                      */
+  --txt:  #1a1a18;              /* texto principal                     */
+  --txt2: #5f5e5a;              /* texto secundario                    */
+  --txt3: #888780;              /* labels, placeholders, tertiary      */
+  --brd:  rgba(0,0,0,0.10);    /* borde sutil                         */
+  --brd2: rgba(0,0,0,0.18);    /* borde medio — inputs, énfasis       */
+
+  /* ─────────────────────────────────────────────────────────────
+     3. SEMÁNTICOS — Estados del sistema
+     Uso genérico en toda la plataforma.
+     Para estados específicos de dominio, usar secciones 4–9.
+  ───────────────────────────────────────────────────────────── */
+
+  --s-ok:     #0F6E56;   /* confirmado, validado, completado          */
+  --s-ok-l:   #E1F5EE;   /* fondo badge OK                            */
+  --s-ok-m:   #9FE1CB;   /* borde badge OK                            */
+
+  --s-warn:   #633806;   /* pendiente, atención leve                  */
+  --s-warn-l: #FAEEDA;   /* fondo badge WARN                          */
+  --s-warn-m: #EF9F27;   /* borde / ícono badge WARN                  */
+
+  --s-err:    #791F1F;   /* bloqueante, alergia, crítico              */
+  --s-err-l:  #FCEBEB;   /* fondo badge ERR                           */
+  --s-err-m:  #E24B4A;   /* borde / ícono badge ERR                   */
+
+  --s-info:   #0C447C;   /* informativo neutro, estado secundario     */
+  --s-info-l: #E6F1FB;   /* fondo badge INFO                          */
+  --s-info-m: #B5D4F4;   /* borde badge INFO                          */
+
+  /* ─────────────────────────────────────────────────────────────
+     4. TRIAGE — Colores por nivel de prioridad clínica
+     Solo para Cordis (Guardia). Kairos no usa triage.
+     Convención: --tN = texto/ícono · --tN-l = fondo · --tN-brd = borde
+  ───────────────────────────────────────────────────────────── */
+
+  --t1:     #C0392B;                    /* N1 Resucitación — Rojo       */
+  --t1-l:   rgba(192, 57, 43, 0.10);
+  --t1-brd: rgba(192, 57, 43, 0.25);
+
+  --t2:     #D4680A;                    /* N2 Emergencia — Naranja      */
+  --t2-l:   rgba(212, 104, 10, 0.10);
+  --t2-brd: rgba(212, 104, 10, 0.25);
+
+  --t3:     #A07C00;                    /* N3 Urgencia — Amarillo osc.  */
+  --t3-l:   rgba(160, 124, 0, 0.10);
+  --t3-brd: rgba(160, 124, 0, 0.25);
+
+  --t4:     #2E7D4F;                    /* N4 Menor — Verde             */
+  --t4-l:   rgba(46, 125, 79, 0.10);
+  --t4-brd: rgba(46, 125, 79, 0.25);
+
+  --t5:     #1565A8;                    /* N5 No urgente — Azul         */
+  --t5-l:   rgba(21, 101, 168, 0.10);
+  --t5-brd: rgba(21, 101, 168, 0.25);
+
+  /* ─────────────────────────────────────────────────────────────
+     5. ESTADOS DE CAMA — Ciclo hotelero
+     Kairos: habitaciones prequirúrgicas y recuperación.
+     Cordis: boxes de guardia.
+     Convención: base (texto/ícono) · -l (fondo) · -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  --cama-libre:    #0F6E56;   --cama-libre-l:    #E1F5EE;   --cama-libre-m:    #9FE1CB;
+  --cama-ocup:     #1A3FAA;   --cama-ocup-l:     #EBF2FF;   --cama-ocup-m:     #A3C0F8;
+  --cama-alta:     #7B3FA0;   --cama-alta-l:     #F3E8FF;   --cama-alta-m:     #C9A0E0;
+  --cama-limp:     #B45309;   --cama-limp-l:     #FEF3C7;   --cama-limp-m:     #FCD34D;
+  --cama-lista:    #0E7490;   --cama-lista-l:    #E0F7FA;   --cama-lista-m:    #67E8F9;
+  --cama-bloq:     #4B4B4B;   --cama-bloq-l:     #F0F0F0;   --cama-bloq-m:     #AAAAAA;
+
+  /* ─────────────────────────────────────────────────────────────
+     6. ESTADOS DE EQUIPO — Equipamiento médico
+     Cordis Imágenes: estado de TC, RM, sala de rayos, etc.
+     Convención: base · -l (fondo) · -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  --eq-libre:   #0F6E56;   --eq-libre-l:   #E1F5EE;   --eq-libre-m:   #9FE1CB;
+  --eq-uso:     #2B57D9;   --eq-uso-l:     #EBF2FF;   --eq-uso-m:     #A3C0F8;
+  --eq-limp:    #B45309;   --eq-limp-l:    #FEF3C7;   --eq-limp-m:    #FCD34D;
+  --eq-fuera:   #4B4B4B;   --eq-fuera-l:   #F0F0F0;   --eq-fuera-m:   #AAAAAA;
+
+  /* ─────────────────────────────────────────────────────────────
+     7. TRASLADOS — Cola dinámica de camilleros
+     Kairos y Cordis Camilleros.
+     Estados del ciclo de vida de un traslado.
+     Convención: base · -l (fondo) · -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  --tr-pend:    #633806;   --tr-pend-l:    #FAEEDA;   --tr-pend-m:    #EF9F27;
+  --tr-asig:    #0C447C;   --tr-asig-l:    #E6F1FB;   --tr-asig-m:    #B5D4F4;
+  --tr-curso:   #2B57D9;   --tr-curso-l:   #EBF2FF;   --tr-curso-m:   #A3C0F8;
+  --tr-done:    #0F6E56;   --tr-done-l:    #E1F5EE;   --tr-done-m:    #9FE1CB;
+  --tr-urg:     #791F1F;   --tr-urg-l:     #FCEBEB;   --tr-urg-m:     #E24B4A;
+
+  /* ─────────────────────────────────────────────────────────────
+     8. IDENTIFICACIÓN DE EQUIPAMIENTO — Tipo de camilla / recurso
+     Color por tipo de equipo requerido en un traslado.
+     Solo valor base (sin -l/-m) — uso decorativo, no semántico.
+  ───────────────────────────────────────────────────────────── */
+
+  --equip-silla:    #7B3FA0;   /* silla de ruedas                     */
+  --equip-camilla:  #0E7490;   /* camilla estándar o con barandas     */
+  --equip-oxigeno:  #B45309;   /* O₂ portátil                         */
+  --equip-tc:       #0C447C;   /* traslado a TC                       */
+  --equip-rm:       #791F1F;   /* traslado a RM                       */
+
+  /* ─────────────────────────────────────────────────────────────
+     8B. CARGA LABORAL — Nivel de carga por operador
+     Usado en paneles de coordinación (camilleros, enfermeros).
+     Convención: base · -l (fondo badge)
+  ───────────────────────────────────────────────────────────── */
+
+  --carga-leve:     #0F6E56;   --carga-leve-l:    #E1F5EE;
+  --carga-mod:      #A07C00;   --carga-mod-l:     #FEF9E0;
+  --carga-alta:     #D4680A;   --carga-alta-l:    #FEF3C7;
+  --carga-limite:   #C0392B;   --carga-limite-l:  #FCEBEB;
+
+  /* ─────────────────────────────────────────────────────────────
+     9. WORKLIST — Estados de estudios de imágenes
+     Cordis Imágenes: ciclo de vida de un estudio (TC, RM, Rx).
+     Convención: base · -l (fondo)
+  ───────────────────────────────────────────────────────────── */
+
+  --ws-pending:     #888780;   --ws-pending-l:    #f0efea;
+  --ws-executing:   #2B57D9;   --ws-executing-l:  #EBF2FF;
+  --ws-approval:    #A07C00;   --ws-approval-l:   #FAEEDA;
+  --ws-approved:    #0F6E56;   --ws-approved-l:   #E1F5EE;
+  --ws-delivered:   #5f5e5a;   --ws-delivered-l:  #f5f4f0;
+
+  /* ─────────────────────────────────────────────────────────────
+     10. IA — Asistencia cognitiva
+     Gradiente de degradado para indicar sugerencia de IA.
+     Usar en bordes, backgrounds sutiles, no en texto.
+     Siempre con indicación visible de que es sugerencia IA,
+     nunca como decisión clínica autónoma (RN-04).
+  ───────────────────────────────────────────────────────────── */
+
+  --ai-from: #1A3FAA;   /* inicio del gradiente — azul profundo      */
+  --ai-to:   #6366F1;   /* fin del gradiente — violeta               */
+
+  /* ─────────────────────────────────────────────────────────────
+     11. SLA — Tiempos de respuesta clínicos (minutos)
+     Valores numéricos usados como thresholds, no como colores.
+     Combinar con tokens de triage para colorear el estado SLA.
+  ───────────────────────────────────────────────────────────── */
+
+  --sla-n1:   0;     /* N1 Resucitación — atención inmediata         */
+  --sla-n2:   15;    /* N2 Emergencia — ≤15 min                      */
+  --sla-n3:   30;    /* N3 Urgencia — ≤30 min                        */
+  --sla-n4:   120;   /* N4 Menor — ≤2 hs                             */
+  --sla-n5:   240;   /* N5 No urgente — ≤4 hs                        */
+
+  --sla-urg:    #791F1F;   --sla-urg-l:    #FCEBEB;   --sla-urg-m:    #E24B4A;
+  --sla-amb:    #0C447C;   --sla-amb-l:    #E6F1FB;   --sla-amb-m:    #B5D4F4;
+
+  /* ─────────────────────────────────────────────────────────────
+     12. TIPOGRAFÍA
+  ───────────────────────────────────────────────────────────── */
+
+  --font-sans:  system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  --text-2xs:  8px;
+  --text-xs:   10px;
+  --text-sm:   11px;
+  --text-md:   13px;
+  --text-lg:   15px;
+  --text-xl:   18px;
+  --text-2xl:  22px;
+  --text-3xl:  28px;
+
+  --fw-normal:   400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    800;
+
+  /* ─────────────────────────────────────────────────────────────
+     13. ICONOGRAFÍA — SVG outline, stroke="currentColor"
+     Referencia: <svg class="ki ki-md"><use href="#ki-nombre"/></svg>
+  ───────────────────────────────────────────────────────────── */
+
+  --icon-xs:  12px;
+  --icon-sm:  14px;
+  --icon-md:  18px;
+  --icon-lg:  22px;
+  --icon-xl:  32px;
+
+  --icon-stroke-thin:   1.2px;
+  --icon-stroke:        1.4px;
+  --icon-stroke-medium: 1.6px;
+  --icon-stroke-thick:  2px;
+
+  /* ─────────────────────────────────────────────────────────────
+     14. ESPACIADO Y RADIO
+  ───────────────────────────────────────────────────────────── */
+
+  --r-xs:   4px;
+  --r:      8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-full: 999px;
+
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 24px;
+
+  --pad-xs: 6px 8px;
+  --pad-sm: 8px 12px;
+  --pad-md: 12px 16px;
+  --pad-lg: 16px 20px;
+
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg3);
+  margin: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar {
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  padding: 10px 20px;
+  border-radius: var(--r-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+.tb-left { display: flex; align-items: center; gap: 12px; }
+.tb-brand { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--p); }
+.tb-sep { color: var(--brd2); font-size: 18px; }
+.tb-title { font-weight: 600; font-size: 14px; color: var(--txt); }
+.tb-right { display: flex; align-items: center; gap: 16px; font-size: 12px; color: var(--txt2); }
+.tb-equipo { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.dot-green { width: 8px; height: 8px; border-radius: 50%; background: var(--s-ok-m); display: inline-block; animation: pulse-green 2s infinite; }
+@keyframes pulse-green { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--p-light); color: var(--p-dark); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+
+/* ─── LAYOUT 3 COLUMNAS ─── */
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr 280px;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  border-radius: var(--r-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-hdr {
+  padding: 10px 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--brd);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--txt2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.panel-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ─── PANEL 1: LISTA DE TRABAJO ─── */
+
+/* Separadores de grupo */
+.list-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--txt3);
+  padding: 8px 4px 4px;
+  margin-top: 4px;
+}
+
+/* Tarjeta de estudio en la lista */
+.study-card {
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  position: relative;
+}
+.study-card:hover { background: var(--bg2); }
+.study-card.active {
+  background: var(--p-light);
+  border-color: var(--p-mid);
+  border-left: 4px solid var(--p);
+}
+
+/* Banda de color triage (izquierda) */
+.triage-stripe {
+  width: 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.ts-red    { background: var(--t1); }
+.ts-orange { background: var(--t2); }
+.ts-yellow { background: var(--t3); }
+.ts-green  { background: var(--t4); }
+.ts-blue   { background: var(--t5); }
+.ts-grey   { background: var(--txt3); }
+
+.sc-info { flex: 1; min-width: 0; }
+.sc-name { font-weight: 600; font-size: 13px; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sc-study { font-size: 11px; color: var(--txt2); margin: 2px 0; }
+.sc-sla { font-size: 10px; font-weight: 600; }
+.sla-urgent { color: var(--s-err); }
+.sla-warning { color: var(--s-warn-m); }
+.sla-ok { color: var(--s-ok); }
+.sla-sched { color: var(--txt3); }
+
+/* Badge de estado */
+.status-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.sb-pending    { background: var(--ws-pending-l);   color: var(--ws-pending);   border: 1px solid var(--brd2); }
+.sb-executing  { background: var(--ws-executing-l); color: var(--ws-executing); }
+.sb-approval   { background: var(--ws-approval-l);  color: var(--ws-approval);  }
+.sb-approved   { background: var(--ws-approved-l);  color: var(--ws-approved);  }
+.sb-delivered  { background: var(--ws-delivered-l); color: var(--ws-delivered); }
+
+/* Contador SLA vencido animado */
+.sla-overdue-pill {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: var(--s-err);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 8px;
+  animation: blink-sla 1.2s infinite;
+}
+@keyframes blink-sla { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ─── PANEL 2: DETALLE DEL ESTUDIO ─── */
+.detail-panel { padding: 0; }
+.dp-body { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+/* Cabecera del paciente en el detalle */
+.dp-patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--brd);
+}
+.dph-name { font-size: 22px; font-weight: 600; color: var(--txt); margin-bottom: 4px; }
+.dph-meta { font-size: 12px; color: var(--txt2); }
+.dph-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+.badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+.b-triage-orange { background: var(--s-warn-l); color: var(--s-warn); border-color: var(--s-warn-m); }
+.b-urgencia { background: var(--s-err-l); color: var(--s-err); border-color: var(--s-err-m); }
+.b-sched { background: var(--bg2); color: var(--txt2); border-color: var(--brd2); }
+
+/* Workflow de estados — pipeline visual */
+.workflow-pipeline {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg2);
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.wp-step {
+  flex: 1;
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--txt3);
+  position: relative;
+  transition: background 0.2s;
+}
+.wp-step.done { background: var(--ws-approved-l); color: var(--ws-approved); }
+.wp-step.active { background: var(--ws-executing-l); color: var(--ws-executing); }
+.wp-step.pending-appr { background: var(--ws-approval-l); color: var(--ws-approval); }
+.wp-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -6px; top: 50%;
+  transform: translateY(-50%);
+  width: 12px; height: 12px;
+  background: var(--bg);
+  border-right: 1px solid var(--brd);
+  border-top: 1px solid var(--brd);
+  transform: translateY(-50%) rotate(45deg);
+  z-index: 2;
+}
+.wp-icon { display: block; font-size: 14px; margin-bottom: 2px; }
+
+/* Secciones */
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--txt3);
+  margin-bottom: 8px;
+}
+
+/* Cuadro de Indicación Clínica (viene del médico) */
+.clinical-indication {
+  background: var(--p-light);
+  border: 1px solid var(--p-mid);
+  border-left: 4px solid var(--p);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--txt);
+}
+.ci-origin {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--p);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Datos del paciente en grilla */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.data-cell {
+  background: var(--bg2);
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  padding: 10px;
+}
+.dc-label { font-size: 10px; color: var(--txt3); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; }
+.dc-value { font-size: 13px; font-weight: 600; color: var(--txt); }
+.dc-value.alert { color: var(--s-err); }
+
+/* Alertas clínicas (heredadas del triage) */
+.alert-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--r);
+  font-size: 12px;
+  font-weight: 500;
+}
+.ab-error { background: var(--s-err-l); color: var(--s-err); border: 1px solid var(--s-err-m); }
+.ab-warn  { background: var(--s-warn-l); color: var(--s-warn); border: 1px solid var(--s-warn-m); }
+
+/* Botones */
+.btn-primary {
+  background: var(--p); color: #fff;
+  padding: 13px 20px;
+  border: none;
+  border-radius: var(--r);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--p-dark); }
+.btn-primary.btn-executing { background: var(--ws-executing); }
+.btn-primary.btn-executing:hover { background: #0b6fbd; }
+.btn-primary.btn-done { background: var(--ws-approval); color: #fff; }
+.btn-primary.btn-done:hover { background: #cc8520; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--txt2);
+  border: 1px solid var(--brd2);
+  padding: 10px 16px;
+  border-radius: var(--r);
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+}
+.btn-ghost:hover { background: var(--bg2); }
+
+/* ─── PANEL 3: FICHA TÉCNICA Y ACCIONES ─── */
+.protocol-box {
+  background: var(--bg2);
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--txt);
+}
+.protocol-box ul {
+  margin: 6px 0 0 0;
+  padding-left: 16px;
+  color: var(--txt2);
+}
+.protocol-box li { margin-bottom: 4px; }
+
+.param-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--brd);
+  font-size: 12px;
+}
+.param-row:last-child { border-bottom: none; }
+.pr-label { color: var(--txt2); }
+.pr-value { font-weight: 600; color: var(--txt); }
+.pr-value.v-red { color: var(--s-err); }
+.pr-value.v-ok { color: var(--s-ok); }
+
+/* Notas del técnico */
+.notes-area {
+  width: 100%;
+  border: 1px solid var(--brd2);
+  border-radius: var(--r);
+  padding: 10px;
+  font-family: inherit;
+  font-size: 12px;
+  resize: none;
+  min-height: 80px;
+  background: var(--bg);
+  color: var(--txt);
+}
+.notes-area:focus { outline: none; border-color: var(--p); }
+
+/* Historial SLA mini */
+.sla-timeline { display: flex; flex-direction: column; gap: 6px; }
+.sla-event { display: flex; gap: 8px; align-items: flex-start; font-size: 11px; }
+.sla-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.sla-dot.green { background: var(--s-ok); }
+.sla-dot.orange { background: var(--s-warn-m); }
+.sla-dot.grey { background: var(--txt3); border: 2px solid var(--brd2); background: transparent; }
+.sla-text { color: var(--txt2); line-height: 1.4; }
+.sla-time { color: var(--txt3); font-size: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<div class="topbar">
+  <div class="tb-left">
+    <span class="tb-brand">Cordis · Imágenes</span>
+    <span class="tb-sep">/</span>
+    <span class="tb-title">Lista de Trabajo · Tomografía</span>
+  </div>
+  <div class="tb-right">
+    <div class="tb-equipo">
+      <span class="dot-green"></span>
+      Tomógrafo TC · Operativo
+    </div>
+    <span style="color: var(--brd2);">|</span>
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <div class="avatar">PR</div>
+      <div>Pérez, Rodrigo<br><span style="font-size: 10px; color: var(--txt3);">Técnico Radiólogo</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 1: LISTA DE TRABAJO (WORKLIST)
+  ════════════════════════════════════════════ -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <span>Worklist · Hoy</span>
+      <span style="background: var(--s-err-l); color: var(--s-err); padding: 2px 7px; border-radius: 10px; font-size: 10px;">2 Urgentes</span>
+    </div>
+    <div class="panel-body">
+
+      <!-- Grupo: URGENCIAS (SLA Inmediato) -->
+      <div class="list-group-label">⚡ Urgencias · SLA Inmediato</div>
+
+      <!-- Tarjeta Activa: Vega Carlos (viene del box de urgencias) -->
+      <div class="study-card active" onclick="seleccionarEstudio(this)">
+        <div class="sla-overdue-pill">SLA !</div>
+        <div class="triage-stripe ts-orange"></div>
+        <div class="sc-info">
+          <div class="sc-name">Vega, Carlos</div>
+          <div class="sc-study">TC Cerebro sin contraste · Protocolo Stroke</div>
+          <div class="sc-sla sla-urgent">Solicitado hace 8 min · SLA vencido</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+          <span class="status-badge sb-pending">Pendiente</span>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Gómez Sergio (otra urgencia) -->
+      <div class="study-card" onclick="seleccionarEstudio(this)">
+        <div class="triage-stripe ts-red"></div>
+        <div class="sc-info">
+          <div class="sc-name">Gómez, Sergio</div>
+          <div class="sc-study">TC Tórax-Abdomen · Trauma múltiple</div>
+          <div class="sc-sla sla-warning">En curso · Iniciado hace 12 min</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+          <span class="status-badge sb-executing">En Ejecución</span>
+        </div>
+      </div>
+
+      <!-- Grupo: PENDIENTE APROBACIÓN -->
+      <div class="list-group-label">🕐 Pendiente Aprobación Médica</div>
+
+      <div class="study-card" onclick="seleccionarEstudio(this)">
+        <div class="triage-stripe ts-yellow"></div>
+        <div class="sc-info">
+          <div class="sc-name">López, Ana</div>
+          <div class="sc-study">TC Abdomen con contraste · Dolor FID</div>
+          <div class="sc-sla sla-warning">Imágenes listas · Esperando firma médica</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+          <span class="status-badge sb-approval">Pend. Aprobación</span>
+        </div>
+      </div>
+
+      <!-- Grupo: PROGRAMADOS (SLA 6-48hs) -->
+      <div class="list-group-label">📅 Ambulatorio · SLA 6-48hs</div>
+
+      <div class="study-card" onclick="seleccionarEstudio(this)">
+        <div class="triage-stripe ts-grey"></div>
+        <div class="sc-info">
+          <div class="sc-name">Ramírez, Laura</div>
+          <div class="sc-study">TC Columna Lumbar s/c · Consulta Traumato</div>
+          <div class="sc-sla sla-ok">Turno: 11:30 hs · Dentro del SLA</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+          <span class="status-badge sb-pending">Pendiente</span>
+        </div>
+      </div>
+
+      <div class="study-card" onclick="seleccionarEstudio(this)">
+        <div class="triage-stripe ts-grey"></div>
+        <div class="sc-info">
+          <div class="sc-name">Torres, Miguel</div>
+          <div class="sc-study">TC Tórax sin contraste · Control oncológico</div>
+          <div class="sc-sla sla-ok">Turno: 12:00 hs · Dentro del SLA</div>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+          <span class="status-badge sb-pending">Pendiente</span>
+        </div>
+      </div>
+
+      <!-- ENTREGADOS (al final) -->
+      <div class="list-group-label">✓ Entregados · Hoy</div>
+
+      <div class="study-card" style="opacity: 0.6;">
+        <div class="triage-stripe ts-grey"></div>
+        <div class="sc-info">
+          <div class="sc-name">Díaz, Marta</div>
+          <div class="sc-study">TC Cerebro s/c · Cefalea</div>
+          <div class="sc-sla sla-sched">Completado a las 09:14 hs</div>
+        </div>
+        <span class="status-badge sb-delivered">Entregado</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 2: DETALLE DEL ESTUDIO SELECCIONADO
+  ════════════════════════════════════════════ -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <span>Detalle del Estudio</span>
+      <span id="estudio-estado-badge" style="font-size:10px; font-weight:500; color: var(--s-warn); background: var(--s-warn-l); padding: 2px 8px; border-radius: 8px;">⚡ URGENCIA · SLA Vencido</span>
+    </div>
+    <div class="dp-body">
+
+      <!-- Cabecera Paciente -->
+      <div class="dp-patient-header">
+        <div>
+          <div class="dph-name">Vega, Carlos</div>
+          <div class="dph-meta">HC: 12.345.678 · Masculino · 62 años · OSDE 310</div>
+        </div>
+        <div class="dph-badges">
+          <span class="badge b-triage-orange">Triage Nivel 2 (Naranja)</span>
+          <span class="badge b-urgencia">⚡ Urgencia</span>
+        </div>
+      </div>
+
+      <!-- Pipeline de Estado del Estudio -->
+      <div>
+        <div class="section-label">Estado del Workflow</div>
+        <div class="workflow-pipeline">
+          <div class="wp-step done"><span class="wp-icon">✓</span>Solicitado</div>
+          <div class="wp-step active"><span class="wp-icon">▶</span>Ejecución</div>
+          <div class="wp-step"><span class="wp-icon">👨‍⚕️</span>Aprobación</div>
+          <div class="wp-step"><span class="wp-icon">📄</span>Entregado</div>
+        </div>
+      </div>
+
+      <!-- Indicación Clínica (viene del médico del box) -->
+      <div>
+        <div class="section-label">Indicación Clínica · Enviada desde Box 4</div>
+        <div class="clinical-indication">
+          <div class="ci-origin">📋 Dr. Méndez, Carlos · Urgencias Box 4 · Hoy 10:52 hs</div>
+          <strong>Estudio solicitado:</strong> TC de Cerebro sin contraste, protocolo Stroke urgente.<br>
+          <strong>Motivo:</strong> Paciente de 62 años con HTA conocida. Presenta cefalea occipital de inicio brusco (trueno), visión borrosa y parestesias en hemicuerpo derecho de 40 minutos de evolución. TA: 180/100. <strong>Descartar hemorragia subaracnoidea / ACV hemorrágico.</strong>
+        </div>
+      </div>
+
+      <!-- Alertas críticas heredadas del Triage -->
+      <div>
+        <div class="section-label">Alertas del Paciente</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="alert-bar ab-warn">
+            <span>⚠️</span>
+            <span><strong>Alergia:</strong> Penicilina — verificada en HC. No aplica para este protocolo.</span>
+          </div>
+          <div class="alert-bar ab-error">
+            <span>🩺</span>
+            <span><strong>Antecedentes críticos:</strong> HTA severa, Diabetes Tipo II, Crisis hipertensiva previa (UTI, hace 14 meses).</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signos Vitales de referencia -->
+      <div>
+        <div class="section-label">Signos Vitales al Ingreso (Enfermería Triage)</div>
+        <div class="data-grid">
+          <div class="data-cell"><div class="dc-label">TA</div><div class="dc-value alert">180/100</div></div>
+          <div class="data-cell"><div class="dc-label">FC</div><div class="dc-value">92 lpm</div></div>
+          <div class="data-cell"><div class="dc-label">SatO₂</div><div class="dc-value">97%</div></div>
+        </div>
+      </div>
+
+      <!-- Botón de acción principal -->
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+        <div id="retorno-notif" style="display:none; background:var(--s-ok-l); border:1px solid var(--s-ok-m); border-radius:var(--r); padding:10px 12px; font-size:11px; color:var(--s-ok); line-height:1.5;">
+          <strong>✓ Retorno generado automáticamente</strong><br>
+          Cordis Engine notificó al camillero disponible para trasladar al paciente de vuelta al box de origen. · <span style="font-family:'Courier New',monospace;">Cordis Engine</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn-ghost">Escalar / Derivar</button>
+          <button class="btn-primary btn-executing" id="btn-accion" onclick="avanzarEstado()">
+            ▶ Iniciar Tomografía
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       PANEL 3: FICHA TÉCNICA Y PROTOCOLO
+  ════════════════════════════════════════════ -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <span>Ficha Técnica</span>
+    </div>
+    <div class="panel-body">
+
+      <!-- Protocolo a aplicar -->
+      <div>
+        <div class="section-label">Protocolo de Adquisición</div>
+        <div class="protocol-box">
+          <strong style="font-size: 13px;">TC Cerebro — Protocolo STROKE</strong>
+          <ul>
+            <li>Sin contraste EV</li>
+            <li>Colimación: 0.5 mm · Reconstrucción: 5 mm axial</li>
+            <li>Ventana cerebral + ventana ósea</li>
+            <li>Tiempo máximo de adquisición: 4 min</li>
+            <li>Enviar DICOM al PACS y notificar al médico de guardia inmediatamente al finalizar</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Parámetros del equipo -->
+      <div>
+        <div class="section-label">Parámetros del Equipo</div>
+        <div style="background: var(--bg2); border: 1px solid var(--brd); border-radius: var(--r); padding: 12px;">
+          <div class="param-row"><span class="pr-label">Equipo</span><span class="pr-value">Tomógrafo · Sala TC 1</span></div>
+          <div class="param-row"><span class="pr-label">Estado</span><span class="pr-value v-ok">● Operativo</span></div>
+          <div class="param-row"><span class="pr-label">Contraste</span><span class="pr-value v-ok">No requerido</span></div>
+          <div class="param-row"><span class="pr-label">Sala</span><span class="pr-value">TC 1 · Planta Baja</span></div>
+          <div class="param-row"><span class="pr-label">kV / mAs</span><span class="pr-value">120 kV / Auto mAs</span></div>
+        </div>
+      </div>
+
+      <!-- Notas del técnico -->
+      <div>
+        <div class="section-label">Notas del Técnico</div>
+        <textarea class="notes-area" placeholder="Registre observaciones del estudio, colaboración del paciente, incidentes técnicos..."></textarea>
+      </div>
+
+      <!-- Timeline SLA -->
+      <div>
+        <div class="section-label">Historial de Estado</div>
+        <div class="sla-timeline">
+          <div class="sla-event">
+            <div class="sla-dot green"></div>
+            <div>
+              <div class="sla-text">Orden creada por Dr. Méndez (Box 4)</div>
+              <div class="sla-time">10:52 hs</div>
+            </div>
+          </div>
+          <div class="sla-event">
+            <div class="sla-dot orange"></div>
+            <div>
+              <div class="sla-text">Recibida en Worklist TC · SLA inmediato iniciado</div>
+              <div class="sla-time">10:52 hs</div>
+            </div>
+          </div>
+          <div class="sla-event">
+            <div class="sla-dot grey"></div>
+            <div>
+              <div class="sla-text">Inicio de adquisición (pendiente)</div>
+              <div class="sla-time">—</div>
+            </div>
+          </div>
+          <div class="sla-event">
+            <div class="sla-dot grey"></div>
+            <div>
+              <div class="sla-text">Aprobación médica (pendiente)</div>
+              <div class="sla-time">—</div>
+            </div>
+          </div>
+          <div class="sla-event">
+            <div class="sla-dot grey"></div>
+            <div>
+              <div class="sla-text">Entrega a médico solicitante (pendiente)</div>
+              <div class="sla-time">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let estado = 0;
+  const estados = [
+    { label: '▶ Iniciar Tomografía',                clase: 'btn-executing', pipelineActive: 1, badgeText: '▶ EN EJECUCIÓN',             badgeBg: 'var(--ws-executing-l)', badgeColor: 'var(--ws-executing)' },
+    { label: '✓ Marcar Estudio Completado',          clase: 'btn-done',      pipelineActive: 2, badgeText: '⏳ PEND. APROBACIÓN MÉDICA',  badgeBg: 'var(--ws-approval-l)',  badgeColor: 'var(--ws-approval)' },
+    { label: '📬 Notificar al Médico para Aprobación', clase: '',             pipelineActive: 3, badgeText: '✓ APROBACIÓN NOTIFICADA',     badgeBg: 'var(--s-ok-l)',         badgeColor: 'var(--s-ok)' },
+  ];
+
+  function avanzarEstado() {
+    estado++;
+    if (estado >= estados.length) return;
+    const btn  = document.getElementById('btn-accion');
+    const e    = estados[estado];
+
+    btn.textContent = e.label;
+    btn.className   = `btn-primary ${e.clase}`;
+
+    // Fix 4: deshabilitar en estado final
+    if (estado === estados.length - 1) {
+      btn.onclick = null;
+      btn.style.opacity = '.6';
+      btn.style.cursor  = 'not-allowed';
+    }
+
+    // Fix 3: usar ID explícito en lugar de selector posicional
+    const badge = document.getElementById('estudio-estado-badge');
+    if (badge) {
+      badge.textContent        = e.badgeText;
+      badge.style.background   = e.badgeBg;
+      badge.style.color        = e.badgeColor;
+    }
+
+    // Actualizar pipeline visual
+    const steps = document.querySelectorAll('.wp-step');
+    steps.forEach((s, i) => {
+      s.classList.remove('done', 'active', 'pending-appr');
+      if (i < e.pipelineActive) s.classList.add('done');
+      else if (i === e.pipelineActive) s.classList.add('active');
+    });
+
+    // Fix 5: mostrar notificación de retorno automático al completar
+    if (estado === 1) {
+      const notif = document.getElementById('retorno-notif');
+      if (notif) notif.style.display = 'block';
+    }
+  }
+
+  function seleccionarEstudio(card) {
+    document.querySelectorAll('.study-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Command Center · Imágenes · Cordis · Zenoxia</title>
+<style>
+:root {
+
+  /* ─────────────────────────────────────────────────────────────
+     1. PRIMARIO — Azul royal
+     Branding Zenoxia. Kairos y Cordis comparten estos valores.
+  ───────────────────────────────────────────────────────────── */
+  --p-light: #EBF2FF;   /* fills, fondos de badge, card activa       */
+  --p-mid:   #A3C0F8;   /* bordes de badge, separadores              */
+  --p:       #2B57D9;   /* botones, íconos primarios, links activos  */
+  --p-dark:  #1A3FAA;   /* topbar, logo, nav activo, texto activo    */
+
+  /* ─────────────────────────────────────────────────────────────
+     2. NEUTROS — Fondos, texto, bordes
+  ───────────────────────────────────────────────────────────── */
+  --bg:   #ffffff;              /* cards, modales, panels              */
+  --bg2:  #f5f4f0;              /* inputs, fondos de sección, filas    */
+  --bg3:  #f0efea;              /* fondo del body                      */
+  --txt:  #1a1a18;              /* texto principal                     */
+  --txt2: #5f5e5a;              /* texto secundario                    */
+  --txt3: #888780;              /* labels, placeholders, tertiary      */
+  --brd:  rgba(0,0,0,0.10);    /* borde sutil                         */
+  --brd2: rgba(0,0,0,0.18);    /* borde medio — inputs, énfasis       */
+
+  /* ─────────────────────────────────────────────────────────────
+     3. SEMÁNTICOS — Estados del sistema
+     Uso genérico en toda la plataforma.
+     Para estados específicos de dominio, usar secciones 4–9.
+  ───────────────────────────────────────────────────────────── */
+
+  --s-ok:     #0F6E56;   /* confirmado, validado, completado          */
+  --s-ok-l:   #E1F5EE;   /* fondo badge OK                            */
+  --s-ok-m:   #9FE1CB;   /* borde badge OK                            */
+
+  --s-warn:   #633806;   /* pendiente, atención leve                  */
+  --s-warn-l: #FAEEDA;   /* fondo badge WARN                          */
+  --s-warn-m: #EF9F27;   /* borde / ícono badge WARN                  */
+
+  --s-err:    #791F1F;   /* bloqueante, alergia, crítico              */
+  --s-err-l:  #FCEBEB;   /* fondo badge ERR                           */
+  --s-err-m:  #E24B4A;   /* borde / ícono badge ERR                   */
+
+  --s-info:   #0C447C;   /* informativo neutro, estado secundario     */
+  --s-info-l: #E6F1FB;   /* fondo badge INFO                          */
+  --s-info-m: #B5D4F4;   /* borde badge INFO                          */
+
+  /* ─────────────────────────────────────────────────────────────
+     4. TRIAGE — Colores por nivel de prioridad clínica
+     Solo para Cordis (Guardia). Kairos no usa triage.
+     Convención: --tN = texto/ícono · --tN-l = fondo · --tN-brd = borde
+  ───────────────────────────────────────────────────────────── */
+
+  --t1:     #C0392B;                    /* N1 Resucitación — Rojo       */
+  --t1-l:   rgba(192, 57, 43, 0.10);
+  --t1-brd: rgba(192, 57, 43, 0.25);
+
+  --t2:     #D4680A;                    /* N2 Emergencia — Naranja      */
+  --t2-l:   rgba(212, 104, 10, 0.10);
+  --t2-brd: rgba(212, 104, 10, 0.25);
+
+  --t3:     #A07C00;                    /* N3 Urgencia — Amarillo osc.  */
+  --t3-l:   rgba(160, 124, 0, 0.10);
+  --t3-brd: rgba(160, 124, 0, 0.25);
+
+  --t4:     #2E7D4F;                    /* N4 Menor — Verde             */
+  --t4-l:   rgba(46, 125, 79, 0.10);
+  --t4-brd: rgba(46, 125, 79, 0.25);
+
+  --t5:     #1565A8;                    /* N5 No urgente — Azul         */
+  --t5-l:   rgba(21, 101, 168, 0.10);
+  --t5-brd: rgba(21, 101, 168, 0.25);
+
+  /* ─────────────────────────────────────────────────────────────
+     5. ESTADOS DE CAMA — Ciclo hotelero
+     Kairos: habitaciones prequirúrgicas y recuperación.
+     Cordis: boxes de guardia.
+     Convención: base (texto/ícono) · -l (fondo) · -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  --cama-libre:    #0F6E56;   --cama-libre-l:    #E1F5EE;   --cama-libre-m:    #9FE1CB;
+  --cama-ocup:     #1A3FAA;   --cama-ocup-l:     #EBF2FF;   --cama-ocup-m:     #A3C0F8;
+  --cama-alta:     #7B3FA0;   --cama-alta-l:     #F3E8FF;   --cama-alta-m:     #C9A0E0;
+  --cama-limp:     #B45309;   --cama-limp-l:     #FEF3C7;   --cama-limp-m:     #FCD34D;
+  --cama-lista:    #0E7490;   --cama-lista-l:    #E0F7FA;   --cama-lista-m:    #67E8F9;
+  --cama-bloq:     #4B4B4B;   --cama-bloq-l:     #F0F0F0;   --cama-bloq-m:     #AAAAAA;
+
+  /* ─────────────────────────────────────────────────────────────
+     6. ESTADOS DE EQUIPO — Equipamiento médico
+     Cordis Imágenes: estado de TC, RM, sala de rayos, etc.
+     Convención: base · -l (fondo) · -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  --eq-libre:   #0F6E56;   --eq-libre-l:   #E1F5EE;   --eq-libre-m:   #9FE1CB;
+  --eq-uso:     #2B57D9;   --eq-uso-l:     #EBF2FF;   --eq-uso-m:     #A3C0F8;
+  --eq-limp:    #B45309;   --eq-limp-l:    #FEF3C7;   --eq-limp-m:    #FCD34D;
+  --eq-fuera:   #4B4B4B;   --eq-fuera-l:   #F0F0F0;   --eq-fuera-m:   #AAAAAA;
+
+  /* ─────────────────────────────────────────────────────────────
+     7. TRASLADOS — Cola dinámica de camilleros
+     Kairos y Cordis Camilleros.
+     Estados del ciclo de vida de un traslado.
+     Convención: base · -l (fondo) · -m (borde)
+  ───────────────────────────────────────────────────────────── */
+
+  --tr-pend:    #633806;   --tr-pend-l:    #FAEEDA;   --tr-pend-m:    #EF9F27;
+  --tr-asig:    #0C447C;   --tr-asig-l:    #E6F1FB;   --tr-asig-m:    #B5D4F4;
+  --tr-curso:   #2B57D9;   --tr-curso-l:   #EBF2FF;   --tr-curso-m:   #A3C0F8;
+  --tr-done:    #0F6E56;   --tr-done-l:    #E1F5EE;   --tr-done-m:    #9FE1CB;
+  --tr-urg:     #791F1F;   --tr-urg-l:     #FCEBEB;   --tr-urg-m:     #E24B4A;
+
+  /* ─────────────────────────────────────────────────────────────
+     8. IDENTIFICACIÓN DE EQUIPAMIENTO — Tipo de camilla / recurso
+     Color por tipo de equipo requerido en un traslado.
+     Solo valor base (sin -l/-m) — uso decorativo, no semántico.
+  ───────────────────────────────────────────────────────────── */
+
+  --equip-silla:    #7B3FA0;   /* silla de ruedas                     */
+  --equip-camilla:  #0E7490;   /* camilla estándar o con barandas     */
+  --equip-oxigeno:  #B45309;   /* O₂ portátil                         */
+  --equip-tc:       #0C447C;   /* traslado a TC                       */
+  --equip-rm:       #791F1F;   /* traslado a RM                       */
+
+  /* ─────────────────────────────────────────────────────────────
+     8B. CARGA LABORAL — Nivel de carga por operador
+     Usado en paneles de coordinación (camilleros, enfermeros).
+     Convención: base · -l (fondo badge)
+  ───────────────────────────────────────────────────────────── */
+
+  --carga-leve:     #0F6E56;   --carga-leve-l:    #E1F5EE;
+  --carga-mod:      #A07C00;   --carga-mod-l:     #FEF9E0;
+  --carga-alta:     #D4680A;   --carga-alta-l:    #FEF3C7;
+  --carga-limite:   #C0392B;   --carga-limite-l:  #FCEBEB;
+
+  /* ─────────────────────────────────────────────────────────────
+     9. WORKLIST — Estados de estudios de imágenes
+     Cordis Imágenes: ciclo de vida de un estudio (TC, RM, Rx).
+     Convención: base · -l (fondo)
+  ───────────────────────────────────────────────────────────── */
+
+  --ws-pending:     #888780;   --ws-pending-l:    #f0efea;
+  --ws-executing:   #2B57D9;   --ws-executing-l:  #EBF2FF;
+  --ws-approval:    #A07C00;   --ws-approval-l:   #FAEEDA;
+  --ws-approved:    #0F6E56;   --ws-approved-l:   #E1F5EE;
+  --ws-delivered:   #5f5e5a;   --ws-delivered-l:  #f5f4f0;
+
+  /* ─────────────────────────────────────────────────────────────
+     10. IA — Asistencia cognitiva
+     Gradiente de degradado para indicar sugerencia de IA.
+     Usar en bordes, backgrounds sutiles, no en texto.
+     Siempre con indicación visible de que es sugerencia IA,
+     nunca como decisión clínica autónoma (RN-04).
+  ───────────────────────────────────────────────────────────── */
+
+  --ai-from: #1A3FAA;   /* inicio del gradiente — azul profundo      */
+  --ai-to:   #6366F1;   /* fin del gradiente — violeta               */
+
+  /* ─────────────────────────────────────────────────────────────
+     11. SLA — Tiempos de respuesta clínicos (minutos)
+     Valores numéricos usados como thresholds, no como colores.
+     Combinar con tokens de triage para colorear el estado SLA.
+  ───────────────────────────────────────────────────────────── */
+
+  --sla-n1:   0;     /* N1 Resucitación — atención inmediata         */
+  --sla-n2:   15;    /* N2 Emergencia — ≤15 min                      */
+  --sla-n3:   30;    /* N3 Urgencia — ≤30 min                        */
+  --sla-n4:   120;   /* N4 Menor — ≤2 hs                             */
+  --sla-n5:   240;   /* N5 No urgente — ≤4 hs                        */
+
+  --sla-urg:    #791F1F;   --sla-urg-l:    #FCEBEB;   --sla-urg-m:    #E24B4A;
+  --sla-amb:    #0C447C;   --sla-amb-l:    #E6F1FB;   --sla-amb-m:    #B5D4F4;
+
+  /* ─────────────────────────────────────────────────────────────
+     12. TIPOGRAFÍA
+  ───────────────────────────────────────────────────────────── */
+
+  --font-sans:  system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  --text-2xs:  8px;
+  --text-xs:   10px;
+  --text-sm:   11px;
+  --text-md:   13px;
+  --text-lg:   15px;
+  --text-xl:   18px;
+  --text-2xl:  22px;
+  --text-3xl:  28px;
+
+  --fw-normal:   400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    800;
+
+  /* ─────────────────────────────────────────────────────────────
+     13. ICONOGRAFÍA — SVG outline, stroke="currentColor"
+     Referencia: <svg class="ki ki-md"><use href="#ki-nombre"/></svg>
+  ───────────────────────────────────────────────────────────── */
+
+  --icon-xs:  12px;
+  --icon-sm:  14px;
+  --icon-md:  18px;
+  --icon-lg:  22px;
+  --icon-xl:  32px;
+
+  --icon-stroke-thin:   1.2px;
+  --icon-stroke:        1.4px;
+  --icon-stroke-medium: 1.6px;
+  --icon-stroke-thick:  2px;
+
+  /* ─────────────────────────────────────────────────────────────
+     14. ESPACIADO Y RADIO
+  ───────────────────────────────────────────────────────────── */
+
+  --r-xs:   4px;
+  --r:      8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-full: 999px;
+
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 24px;
+
+  --pad-xs: 6px 8px;
+  --pad-sm: 8px 12px;
+  --pad-md: 12px 16px;
+  --pad-lg: 16px 20px;
+
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  font-family: system-ui,-apple-system,sans-serif;
+  background: var(--bg3);
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 44px 1fr;
+  grid-template-columns: var(--nav-w) 1fr;
+  grid-template-areas: "tb tb" "nav main";
+  overflow: hidden;
+  transition: grid-template-columns .22s ease;
+}
+body.nav-abierto { grid-template-columns: var(--nav-open) 1fr; }
+
+/* ── TOPBAR ─────────────────────────────── */
+.topbar{
+  grid-area:tb;background:var(--p-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;z-index:50;
+}
+.tb-l{display:flex;align-items:center;gap:14px;}
+.tb-brand{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;}
+.tb-div{width:1px;height:18px;background:rgba(255,255,255,.2);}
+.tb-title{font-size:12px;font-weight:500;color:rgba(255,255,255,.7);}
+.tb-r{display:flex;align-items:center;gap:16px;}
+.tb-sync{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--s-ok-m);animation:blink 2.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.tb-clock{font-size:13px;font-weight:700;color:rgba(255,255,255,.85);font-family:'Courier New',monospace;}
+.av-sm{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;}
+.tb-user{display:flex;align-items:center;gap:8px;font-size:11px;color:rgba(255,255,255,.7);}
+
+/* ── NAV LATERAL ─────────────────────────── */
+.nav {
+  grid-area: nav;
+  background: var(--bg);
+  border-right: 1px solid var(--brd);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 40;
+  transition: width .22s ease;
+}
+
+.nav-toggle {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-bottom: 1px solid var(--brd);
+  color: var(--txt2);
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: background .15s;
+  height: 44px;
+}
+.nav-toggle:hover { background: var(--bg2); }
+
+/* Items del nav */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  height: 46px;
+  cursor: pointer;
+  transition: background .15s;
+  white-space: nowrap;
+  overflow: hidden;
+  border-left: 3px solid transparent;
+  flex-shrink: 0;
+}
+.nav-item:hover { background: var(--bg2); }
+.nav-item.activo {
+  background: var(--p-light);
+  border-left-color: var(--p);
+}
+
+.nav-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+
+.nav-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--txt2);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.nav-item.activo .nav-label { color: var(--p-dark); font-weight: 700; }
+body.nav-abierto .nav-label { opacity: 1; }
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--s-err-l);
+  color: var(--s-err);
+  border: 1px solid var(--s-err-m);
+  opacity: 0;
+  transition: opacity .15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+body.nav-abierto .nav-badge { opacity: 1; }
+
+/* ── ÁREA PRINCIPAL ──────────────────────── */
+.main {
+  grid-area: main;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Vistas */
+.vista {
+  display: none;
+  flex: 1;
+  overflow: hidden;
+  flex-direction: row;
+}
+.vista.activa { display: flex; }
+
+/* ═══════════════════════════════════════
+   VISTA: URGENCIAS
+═══════════════════════════════════════ */
+.urg-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr 260px;
+  gap: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Columna genérica */
+.col {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--brd);
+  background: var(--bg);
+}
+.col:last-child { border-right: none; background: var(--bg); }
+
+.col-hdr {
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--brd);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--txt2); }
+
+/* KPIs */
+.kpis-bar {
+  display: flex; gap: 6px; padding: 8px 10px;
+  background: var(--bg); border-bottom: 1px solid var(--brd); flex-shrink: 0;
+}
+.kmi{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:5px 8px;text-align:center;flex:1;}
+.kmv{font-size:14px;font-weight:800;color:var(--txt);line-height:1;}
+.kmv.err{color:var(--s-err-m);} .kmv.warn{color:var(--s-warn-m);}
+.kmv.ok{color:var(--s-ok);} .kmv.info{color:var(--p);}
+.kml{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);margin-top:2px;}
+
+/* Filtros */
+.filtros-bar{padding:7px 10px;background:var(--bg);border-bottom:1px solid var(--brd);display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0;}
+.fb{padding:3px 8px;border-radius:12px;font-size:9px;font-weight:700;color:var(--txt2);background:var(--bg2);border:1px solid var(--brd2);cursor:pointer;transition:.15s;white-space:nowrap;}
+.fb:hover{border-color:var(--p-mid);color:var(--p-dark);}
+.fb.on{background:var(--p-light);border-color:var(--p-mid);color:var(--p-dark);}
+.fb.uon{background:var(--sla-urg-l);border-color:var(--sla-urg-m);color:var(--sla-urg);}
+
+.col-scroll{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;}
+
+/* Pedido card */
+.ped{border:1px solid var(--brd);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:box-shadow .15s,border-color .15s;background:var(--bg);}
+.ped:hover{box-shadow:0 3px 12px rgba(0,0,0,.08);border-color:var(--brd2);}
+.ped.sel{border-color:var(--p);box-shadow:0 0 0 2px var(--p-light);}
+.ped.urg{border-color:var(--sla-urg-m);}
+.ped.urg .ped-bar{animation:blinkbar .9s infinite;}
+@keyframes blinkbar{0%,100%{opacity:1;}50%{opacity:.35;}}
+.ped-bar{height:3px;width:100%;}
+.ped-body{padding:9px 11px;}
+.ped-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:3px;}
+.ped-nombre{font-size:12px;font-weight:700;color:var(--txt);}
+.tbadge{font-size:8px;font-weight:800;padding:2px 6px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.tb-u{background:var(--sla-urg-l);color:var(--sla-urg);border:1px solid var(--sla-urg-m);animation:blink 1s infinite;}
+.tb-a{background:var(--sla-amb-l);color:var(--sla-amb);border:1px solid var(--sla-amb-m);}
+.ped-estudio{font-size:11px;font-weight:600;color:var(--p-dark);margin-bottom:2px;}
+.ped-meta{font-size:9px;color:var(--txt3);}
+.ped-foot{display:flex;align-items:center;justify-content:space-between;padding:5px 11px;background:var(--bg2);border-top:1px solid var(--brd);}
+.ped-sol{font-size:9px;color:var(--txt3);}
+.ped-t{font-size:9px;font-weight:700;font-family:'Courier New',monospace;color:var(--txt3);}
+.ped-t.err{color:var(--s-err-m);} .ped-t.warn{color:var(--s-warn-m);}
+.est-b{font-size:8px;font-weight:700;padding:2px 6px;border-radius:6px;text-transform:uppercase;}
+
+/* Derivación */
+.deriv-panel{background:var(--bg);border-top:1px solid var(--brd);padding:10px;flex-shrink:0;display:none;}
+.deriv-panel.vis{display:block;}
+.deriv-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:7px;}
+.deriv-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:7px;}
+.dbtn{padding:7px 8px;border-radius:var(--r);border:1.5px solid var(--brd2);background:var(--bg2);font-size:10px;font-weight:700;color:var(--txt2);cursor:pointer;transition:.15s;text-align:center;}
+.dbtn:hover{border-color:var(--p-mid);color:var(--p-dark);background:var(--p-light);}
+.dbtn.sug{border-color:var(--eq-libre-m);color:var(--eq-libre);background:var(--eq-libre-l);}
+.dbtn.ocup{opacity:.5;cursor:not-allowed;}
+.btn-der{width:100%;padding:9px;background:var(--p);color:#fff;border:none;border-radius:var(--r);font-size:11px;font-weight:700;cursor:pointer;}
+.btn-der:hover{background:var(--p-dark);}
+.btn-der:disabled{background:var(--txt3);cursor:not-allowed;}
+
+/* Equipos grid (columna central) */
+.eq-grid-2{flex:1;overflow-y:auto;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start;background:var(--bg3);}
+.eq-card{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);overflow:hidden;}
+.eq-bar{height:4px;width:100%;}
+.eq-body{padding:10px;}
+.eq-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:6px;}
+.eq-nom{font-size:12px;font-weight:700;color:var(--txt);}
+.eq-sala{font-size:9px;color:var(--txt3);margin-top:1px;}
+.eq-ebadge{font-size:8px;font-weight:800;padding:2px 7px;border-radius:8px;text-transform:uppercase;flex-shrink:0;}
+.eq-t{font-size:16px;font-weight:800;font-family:'Courier New',monospace;color:var(--txt);line-height:1;margin-bottom:6px;}
+.eq-tl{font-size:9px;color:var(--txt3);}
+.eq-pac{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:7px 9px;margin-bottom:5px;}
+.ep-l{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);margin-bottom:2px;}
+.ep-n{font-size:11px;font-weight:700;color:var(--txt);}
+.ep-e{font-size:9px;color:var(--p-dark);font-weight:600;margin-top:1px;}
+.ep-prog{margin-top:5px;height:3px;background:var(--brd2);border-radius:2px;overflow:hidden;}
+.ep-fill{height:100%;border-radius:2px;}
+.eq-prox{border:1px dashed var(--brd2);border-radius:var(--r);padding:6px 9px;}
+.epr-l{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);margin-bottom:2px;}
+.epr-n{font-size:10px;font-weight:600;color:var(--txt2);}
+.eq-lib{display:flex;flex-direction:column;align-items:center;padding:12px;text-align:center;gap:3px;}
+.eq-foot{padding:6px 10px;background:var(--bg2);border-top:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;}
+.rtt-l{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);}
+.rtt-v{font-size:10px;font-weight:800;font-family:'Courier New',monospace;color:var(--txt2);}
+
+/* Métricas col */
+.met-scroll{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;}
+.sl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.sl::after{content:'';flex:1;height:1px;background:var(--brd);}
+.met-kpi-g{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.mk{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:8px 6px;text-align:center;}
+.mkv{font-size:20px;font-weight:800;color:var(--txt);line-height:1;}
+.mkv.ok{color:var(--s-ok);} .mkv.warn{color:var(--s-warn-m);}
+.mkv.err{color:var(--s-err-m);} .mkv.info{color:var(--p);}
+.mkl{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);margin-top:2px;}
+.rtt-hero{background:var(--p-light);border:1px solid var(--p-mid);border-radius:var(--r-lg);padding:12px;text-align:center;}
+.rtt-hv{font-size:26px;font-weight:800;font-family:'Courier New',monospace;color:var(--p-dark);}
+.rtt-hl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--p-dark);opacity:.7;margin-top:2px;}
+.rtt-hs{font-size:9px;color:var(--p-dark);opacity:.6;margin-top:4px;}
+.sla-g{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r-lg);padding:10px;}
+.sla-row{display:flex;align-items:center;gap:7px;margin-bottom:5px;}
+.sla-row:last-child{margin-bottom:0;}
+.sla-lbl{font-size:9px;font-weight:600;color:var(--txt2);flex:1;}
+.sla-track{width:70px;height:4px;background:var(--brd2);border-radius:2px;overflow:hidden;flex-shrink:0;}
+.sf-ok{height:100%;border-radius:2px;background:var(--s-ok);}
+.sf-warn{height:100%;border-radius:2px;background:var(--s-warn-m);}
+.sf-err{height:100%;border-radius:2px;background:var(--s-err-m);}
+.sla-pct{font-size:9px;font-weight:700;width:26px;text-align:right;flex-shrink:0;}
+.nosh-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--brd);}
+.nosh-row:last-child{border-bottom:none;}
+.nosh-n{font-size:10px;font-weight:700;color:var(--txt);}
+.nosh-m{font-size:8px;color:var(--txt3);margin-top:1px;}
+.nosh-btn{font-size:8px;font-weight:700;padding:3px 7px;border-radius:6px;border:1px solid var(--s-warn-m);background:var(--s-warn-l);color:var(--s-warn);cursor:pointer;white-space:nowrap;}
+.nosh-btn:hover{background:var(--s-warn-m);color:#fff;}
+.reg-ns{width:100%;padding:8px;border:1.5px dashed var(--s-warn-m);border-radius:var(--r);background:transparent;color:var(--s-warn);font-size:10px;font-weight:700;cursor:pointer;}
+
+/* ═══════════════════════════════════════
+   VISTA: TURNOS HOY
+═══════════════════════════════════════ */
+.turnos-layout{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.turnos-scroll{flex:1;overflow-y:auto;padding:16px;}
+.turno-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid var(--brd);border-radius:var(--r-lg);margin-bottom:6px;background:var(--bg);transition:box-shadow .15s;}
+.turno-row:hover{box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.turno-hora{font-size:14px;font-weight:800;font-family:'Courier New',monospace;color:var(--txt);width:44px;flex-shrink:0;}
+.turno-eq{width:6px;align-self:stretch;border-radius:3px;flex-shrink:0;}
+.turno-info{flex:1;min-width:0;}
+.turno-nombre{font-size:13px;font-weight:700;color:var(--txt);}
+.turno-estudio{font-size:11px;color:var(--p-dark);font-weight:600;margin-top:1px;}
+.turno-meta{font-size:9px;color:var(--txt3);margin-top:1px;}
+.turno-estado{flex-shrink:0;}
+.t-badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:8px;text-transform:uppercase;}
+.t-pend{background:var(--bg2);color:var(--txt3);border:1px solid var(--brd2);}
+.t-conf{background:var(--s-ok-l);color:var(--s-ok);border:1px solid var(--s-ok-m);}
+.t-curso{background:var(--p-light);color:var(--p-dark);border:1px solid var(--p-mid);}
+.t-done{background:var(--s-ok-l);color:var(--s-ok);border:1px solid var(--s-ok-m);}
+.t-ns{background:var(--s-err-l);color:var(--s-err);border:1px solid var(--s-err-m);}
+
+/* ═══════════════════════════════════════
+   VISTA: PACIENTES
+═══════════════════════════════════════ */
+.pac-layout{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.buscador-wrap{padding:16px;border-bottom:1px solid var(--brd);flex-shrink:0;}
+.buscador{display:flex;gap:8px;}
+.buscador input{flex:1;padding:11px 14px;border:1.5px solid var(--brd2);border-radius:var(--r-lg);font-size:14px;color:var(--txt);background:var(--bg);font-family:inherit;}
+.buscador input:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px var(--p-light);}
+.buscador button{padding:0 18px;background:var(--p);color:#fff;border:none;border-radius:var(--r-lg);font-size:13px;font-weight:700;cursor:pointer;}
+.pac-result{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.pac-ficha{border:1px solid var(--brd);border-radius:var(--r-lg);overflow:hidden;background:var(--bg);}
+.pf-hdr{padding:14px 16px;background:var(--bg2);display:flex;align-items:center;justify-content:space-between;}
+.pf-nombre{font-size:16px;font-weight:800;color:var(--txt);}
+.pf-meta{font-size:11px;color:var(--txt3);margin-top:2px;}
+.pf-body{padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pf-item{background:var(--bg2);border:1px solid var(--brd);border-radius:var(--r);padding:8px 10px;}
+.pf-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--txt3);}
+.pf-val{font-size:12px;font-weight:600;color:var(--txt);margin-top:3px;}
+.pf-estudios{padding:0 16px 14px;}
+.pf-est-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:8px;}
+.pf-est-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--brd);font-size:11px;}
+.pf-est-row:last-child{border-bottom:none;}
+
+/* ═══════════════════════════════════════
+   VISTA: ARANCELES
+═══════════════════════════════════════ */
+.aran-layout{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.aran-buscador{padding:16px;border-bottom:1px solid var(--brd);flex-shrink:0;display:flex;gap:8px;}
+.aran-buscador input{flex:1;padding:11px 14px;border:1.5px solid var(--brd2);border-radius:var(--r-lg);font-size:14px;color:var(--txt);background:var(--bg);font-family:inherit;}
+.aran-buscador input:focus{outline:none;border-color:var(--p);}
+.aran-buscador select{padding:11px 14px;border:1.5px solid var(--brd2);border-radius:var(--r-lg);font-size:13px;color:var(--txt);background:var(--bg);cursor:pointer;font-family:inherit;}
+.aran-scroll{flex:1;overflow-y:auto;padding:12px;}
+.aran-row{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--brd);border-radius:var(--r-lg);margin-bottom:6px;background:var(--bg);}
+.aran-codigo{font-size:11px;font-weight:700;font-family:'Courier New',monospace;color:var(--txt3);width:60px;flex-shrink:0;}
+.aran-nombre{flex:1;font-size:13px;font-weight:600;color:var(--txt);}
+.aran-precio{font-size:16px;font-weight:800;color:var(--s-ok);white-space:nowrap;}
+.aran-cob{font-size:9px;color:var(--txt3);margin-top:1px;text-align:right;}
+
+/* ═══════════════════════════════════════
+   VISTA: CONSTANCIAS
+═══════════════════════════════════════ */
+.const-layout{flex:1;display:flex;gap:0;overflow:hidden;background:var(--bg3);}
+.const-tipos{width:260px;background:var(--bg);border-right:1px solid var(--brd);display:flex;flex-direction:column;padding:12px;gap:8px;overflow-y:auto;flex-shrink:0;}
+.const-tipo-btn{padding:12px 14px;border:1.5px solid var(--brd2);border-radius:var(--r-lg);background:var(--bg);font-size:12px;font-weight:600;color:var(--txt);cursor:pointer;text-align:left;transition:.15s;display:flex;align-items:center;gap:10px;}
+.const-tipo-btn:hover{border-color:var(--p-mid);}
+.const-tipo-btn.activo{border-color:var(--p);background:var(--p-light);color:var(--p-dark);}
+.const-form{flex:1;padding:20px;overflow-y:auto;}
+.const-form-title{font-size:16px;font-weight:800;color:var(--txt);margin-bottom:4px;}
+.const-form-sub{font-size:12px;color:var(--txt2);margin-bottom:20px;}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.form-group label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);}
+.form-group input,.form-group select,.form-group textarea{padding:11px 14px;border:1.5px solid var(--brd2);border-radius:var(--r-lg);font-size:14px;color:var(--txt);background:var(--bg);font-family:inherit;transition:.15s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--p);}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.const-actions{display:flex;gap:10px;margin-top:8px;}
+.btn-imprimir{flex:1;padding:13px;background:var(--p);color:#fff;border:none;border-radius:var(--r-lg);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-imprimir:hover{background:var(--p-dark);}
+.btn-mail{flex:1;padding:13px;background:transparent;color:var(--p);border:1.5px solid var(--p-mid);border-radius:var(--r-lg);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-mail:hover{background:var(--p-light);}
+
+/* ═══════════════════════════════════════
+   VISTA: PROTOCOLOS
+═══════════════════════════════════════ */
+.prot-layout{flex:1;display:flex;gap:0;overflow:hidden;background:var(--bg3);}
+.prot-lista{width:280px;background:var(--bg);border-right:1px solid var(--brd);display:flex;flex-direction:column;overflow:hidden;}
+.prot-search{padding:10px;border-bottom:1px solid var(--brd);flex-shrink:0;}
+.prot-search input{width:100%;padding:9px 12px;border:1.5px solid var(--brd2);border-radius:var(--r-lg);font-size:13px;color:var(--txt);background:var(--bg);font-family:inherit;}
+.prot-search input:focus{outline:none;border-color:var(--p);}
+.prot-scroll{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:4px;}
+.prot-item{padding:10px 12px;border:1px solid var(--brd);border-radius:var(--r-lg);cursor:pointer;transition:.15s;background:var(--bg);}
+.prot-item:hover{border-color:var(--brd2);background:var(--bg2);}
+.prot-item.activo{border-color:var(--p);background:var(--p-light);}
+.prot-item-nombre{font-size:12px;font-weight:700;color:var(--txt);}
+.prot-item-tipo{font-size:9px;color:var(--txt3);margin-top:2px;}
+.prot-detalle{flex:1;padding:20px;overflow-y:auto;background:var(--bg);}
+.prot-det-titulo{font-size:18px;font-weight:800;color:var(--txt);margin-bottom:6px;}
+.prot-det-tipo{font-size:11px;color:var(--p-dark);font-weight:600;margin-bottom:16px;}
+.prot-seccion{margin-bottom:16px;}
+.prot-sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt3);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.prot-sec-title::after{content:'';flex:1;height:1px;background:var(--brd);}
+.prot-item-lista{display:flex;flex-direction:column;gap:5px;}
+.prot-li{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--txt2);line-height:1.5;padding:6px 10px;background:var(--bg2);border-radius:var(--r);}
+.prot-li::before{content:'·';color:var(--p);font-weight:800;flex-shrink:0;margin-top:1px;}
+.prot-alerta{background:var(--s-err-l);border:1px solid var(--s-err-m);border-radius:var(--r);padding:10px 12px;font-size:12px;color:var(--s-err);margin-bottom:16px;display:flex;gap:8px;align-items:flex-start;line-height:1.5;}
+.prot-ok{background:var(--s-ok-l);border:1px solid var(--s-ok-m);border-radius:var(--r);padding:10px 12px;font-size:12px;color:var(--s-ok);margin-bottom:16px;display:flex;gap:8px;align-items:flex-start;line-height:1.5;}
+.prot-actions{display:flex;gap:10px;margin-top:8px;}
+
+/* ── Source tag ──────────────────────────── */
+.stag{display:inline-flex;align-items:center;gap:3px;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--s-info-l);color:var(--s-info);border:1px solid var(--s-info-m);}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-l">
+    <span class="tb-brand">Cordis</span>
+    <div class="tb-div"></div>
+    <span class="tb-title">Command Center · Imágenes</span>
+  </div>
+  <div class="tb-r">
+    <div class="tb-sync"><div class="sync-dot"></div>HIS sync</div>
+    <div class="tb-clock" id="reloj">--:--:--</div>
+    <div class="tb-user"><div class="av-sm">MR</div>Recepción · Imágenes</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     NAV LATERAL PLEGABLE
+═══════════════════════════════════════ -->
+<nav class="nav">
+
+  <div class="nav-toggle" onclick="toggleNav()" title="Expandir menú">☰</div>
+
+  <div class="nav-item activo" onclick="setVista('urgencias',this)" title="Urgencias">
+    <span class="nav-icon">🔴</span>
+    <span class="nav-label">Urgencias</span>
+    <span class="nav-badge">4</span>
+  </div>
+
+  <div class="nav-item" onclick="setVista('turnos',this)" title="Turnos del día">
+    <span class="nav-icon">📅</span>
+    <span class="nav-label">Turnos del día</span>
+  </div>
+
+  <div class="nav-item" onclick="setVista('pacientes',this)" title="Buscar paciente">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-label">Buscar paciente</span>
+  </div>
+
+  <div class="nav-item" onclick="setVista('aranceles',this)" title="Aranceles">
+    <span class="nav-icon">💰</span>
+    <span class="nav-label">Aranceles</span>
+  </div>
+
+  <div class="nav-item" onclick="setVista('constancias',this)" title="Constancias">
+    <span class="nav-icon">📄</span>
+    <span class="nav-label">Constancias</span>
+  </div>
+
+  <div class="nav-item" onclick="setVista('protocolos',this)" title="Protocolos">
+    <span class="nav-icon">📋</span>
+    <span class="nav-label">Protocolos</span>
+  </div>
+
+</nav>
+
+<!-- ═══════════════════════════════════════
+     ÁREA PRINCIPAL
+═══════════════════════════════════════ -->
+<div class="main">
+
+  <!-- ════ VISTA URGENCIAS ════ -->
+  <div class="vista activa" id="v-urgencias">
+    <div class="urg-layout">
+
+      <!-- Cola -->
+      <div class="col">
+        <div class="col-hdr">
+          <span class="col-title">Cola de Pedidos</span>
+          <span class="stag">· HIS sync</span>
+        </div>
+        <div class="kpis-bar">
+          <div class="kmi"><div class="kmv err">4</div><div class="kml">Urgentes</div></div>
+          <div class="kmi"><div class="kmv warn">11</div><div class="kml">Pend.</div></div>
+          <div class="kmi"><div class="kmv info">3</div><div class="kml">En curso</div></div>
+          <div class="kmi"><div class="kmv ok">18</div><div class="kml">Listos</div></div>
+        </div>
+        <div class="filtros-bar">
+          <button class="fb on" onclick="filtrar(this)">Todos</button>
+          <button class="fb uon" onclick="filtrar(this)">⚡ Urgentes</button>
+          <button class="fb" onclick="filtrar(this)">Amb.</button>
+          <button class="fb" onclick="filtrar(this)">TC</button>
+          <button class="fb" onclick="filtrar(this)">RX</button>
+          <button class="fb" onclick="filtrar(this)">Eco</button>
+          <button class="fb" onclick="filtrar(this)">RM</button>
+        </div>
+        <div class="col-scroll">
+          <div class="ped urg" onclick="selPed('p1',this)">
+            <div class="ped-bar" style="background:var(--sla-urg-m);"></div>
+            <div class="ped-body">
+              <div class="ped-top"><div class="ped-nombre">Gómez, Sergio</div><span class="tbadge tb-u">⚡ Guardia</span></div>
+              <div class="ped-estudio">TC Cerebro · Protocolo Stroke</div>
+              <div class="ped-meta">71 años · N1 · Dr. Torres · SH·1</div>
+            </div>
+            <div class="ped-foot"><span class="ped-sol">Hace 8 min</span><span class="ped-t err">SLA vencido</span><span class="est-b" style="background:var(--sla-urg-l);color:var(--sla-urg);border:1px solid var(--sla-urg-m);">Pendiente</span></div>
+          </div>
+          <div class="ped urg" onclick="selPed('p2',this)">
+            <div class="ped-bar" style="background:var(--sla-urg-m);"></div>
+            <div class="ped-body">
+              <div class="ped-top"><div class="ped-nombre">Vega, Carlos A.</div><span class="tbadge tb-u">⚡ Guardia</span></div>
+              <div class="ped-estudio">TC Cerebro + Angio-TC</div>
+              <div class="ped-meta">62 años · N2 · Dr. Méndez · Box 01</div>
+            </div>
+            <div class="ped-foot"><span class="ped-sol">Hace 5 min</span><span class="ped-t warn">5 min</span><span class="est-b" style="background:var(--sla-urg-l);color:var(--sla-urg);border:1px solid var(--sla-urg-m);">Pendiente</span></div>
+          </div>
+          <div class="ped" onclick="selPed('p3',this)">
+            <div class="ped-bar" style="background:var(--p);"></div>
+            <div class="ped-body">
+              <div class="ped-top"><div class="ped-nombre">Suárez, Diego</div><span class="tbadge tb-u">⚡ Guardia</span></div>
+              <div class="ped-estudio">TC Tórax-Abdomen</div>
+              <div class="ped-meta">28 años · N2 · TC 1 · Téc. Romero</div>
+            </div>
+            <div class="ped-foot"><span class="ped-sol">En ejecución</span><span class="ped-t">8 min</span><span class="est-b" style="background:var(--eq-uso-l);color:var(--eq-uso);border:1px solid var(--eq-uso-m);">En curso</span></div>
+          </div>
+          <div class="ped urg" onclick="selPed('p4',this)">
+            <div class="ped-bar" style="background:var(--sla-urg-m);"></div>
+            <div class="ped-body">
+              <div class="ped-top"><div class="ped-nombre">Rodríguez, Ana</div><span class="tbadge tb-u">⚡ Guardia</span></div>
+              <div class="ped-estudio">Rx Tórax AP + Lateral</div>
+              <div class="ped-meta">58 años · N3 · Dra. Soria · Box INF·1</div>
+            </div>
+            <div class="ped-foot"><span class="ped-sol">Hace 22 min</span><span class="ped-t err">SLA vencido</span><span class="est-b" style="background:var(--sla-urg-l);color:var(--sla-urg);border:1px solid var(--sla-urg-m);">Pendiente</span></div>
+          </div>
+          <div class="ped" onclick="selPed('p5',this)">
+            <div class="ped-bar" style="background:var(--sla-amb-m);"></div>
+            <div class="ped-body">
+              <div class="ped-top"><div class="ped-nombre">Fernández, Marta</div><span class="tbadge tb-a">Ambulatorio</span></div>
+              <div class="ped-estudio">Ecografía Abdominal</div>
+              <div class="ped-meta">52 años · Turno 11:30 · Dr. Garín</div>
+            </div>
+            <div class="ped-foot"><span class="ped-sol">Turno en 24 min</span><span class="ped-t ok">SLA OK</span><span class="est-b" style="background:var(--sla-amb-l);color:var(--sla-amb);border:1px solid var(--sla-amb-m);">Programado</span></div>
+          </div>
+          <div class="ped" onclick="selPed('p6',this)">
+            <div class="ped-bar" style="background:var(--p);"></div>
+            <div class="ped-body">
+              <div class="ped-top"><div class="ped-nombre">López, Jorge</div><span class="tbadge tb-a">Ambulatorio</span></div>
+              <div class="ped-estudio">Ecografía Renal Bilateral</div>
+              <div class="ped-meta">67 años · Eco 1 · Téc. Suárez</div>
+            </div>
+            <div class="ped-foot"><span class="ped-sol">Eco 1 · en ejecución</span><span class="ped-t">12 min</span><span class="est-b" style="background:var(--eq-uso-l);color:var(--eq-uso);border:1px solid var(--eq-uso-m);">En curso</span></div>
+          </div>
+        </div>
+        <div class="deriv-panel" id="deriv-panel">
+          <div class="deriv-title">Derivar · Cordis Engine sugiere</div>
+          <div class="deriv-grid" id="deriv-grid"></div>
+          <button class="btn-der" id="btn-der" onclick="confirmarDer()" disabled>Seleccioná un equipo</button>
+        </div>
+      </div>
+
+      <!-- Equipos -->
+      <div style="display:flex;flex-direction:column;overflow:hidden;background:var(--bg3);border-right:1px solid var(--brd);">
+        <div class="col-hdr" style="background:var(--bg);">
+          <span class="col-title">Estado de Equipos</span>
+          <span style="font-size:9px;color:var(--txt3);font-weight:600;">Room Turnover Time activo</span>
+        </div>
+        <div class="eq-grid-2" id="eq-grid"></div>
+      </div>
+
+      <!-- Métricas -->
+      <div class="col">
+        <div class="col-hdr"><span class="col-title">Métricas · Turno</span></div>
+        <div class="met-scroll">
+          <div>
+            <div class="sl">Resumen</div>
+            <div class="met-kpi-g">
+              <div class="mk"><div class="mkv ok">18</div><div class="mkl">Completados</div></div>
+              <div class="mk"><div class="mkv info">3</div><div class="mkl">En curso</div></div>
+              <div class="mk"><div class="mkv warn">11</div><div class="mkl">Pendientes</div></div>
+              <div class="mk"><div class="mkv err">4</div><div class="mkl">Urgentes</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="sl">Room Turnover Time</div>
+            <div class="rtt-hero">
+              <div class="rtt-hv">8 min</div>
+              <div class="rtt-hl">Promedio del turno</div>
+              <div class="rtt-hs">Tiempo entre fin e inicio de estudio · Cordis Engine</div>
+            </div>
+          </div>
+          <div>
+            <div class="sl">Cumplimiento SLA</div>
+            <div class="sla-g">
+              <div class="sla-row"><span class="sla-lbl">Urgentes (inmediato)</span><div class="sla-track"><div class="sf-err" style="width:45%;"></div></div><span class="sla-pct" style="color:var(--s-err-m);">45%</span></div>
+              <div class="sla-row"><span class="sla-lbl">Ambulatorios (6-48hs)</span><div class="sla-track"><div class="sf-ok" style="width:92%;"></div></div><span class="sla-pct" style="color:var(--s-ok);">92%</span></div>
+              <div class="sla-row"><span class="sla-lbl">Aprobación médica</span><div class="sla-track"><div class="sf-warn" style="width:70%;"></div></div><span class="sla-pct" style="color:var(--s-warn-m);">70%</span></div>
+            </div>
+          </div>
+          <div>
+            <div class="sl">No-shows · Hoy</div>
+            <div id="nosh-lista">
+              <div class="nosh-row"><div><div class="nosh-n">García, María</div><div class="nosh-m">Eco · 09:00 · No se presentó</div></div><button class="nosh-btn" onclick="this.textContent='✓';this.style.background='var(--s-ok-l)';this.style.color='var(--s-ok)';">Conf.</button></div>
+              <div class="nosh-row"><div><div class="nosh-n">Pérez, Rubén</div><div class="nosh-m">RX · 10:15 · No se presentó</div></div><button class="nosh-btn" onclick="this.textContent='✓';this.style.background='var(--s-ok-l)';this.style.color='var(--s-ok)';">Conf.</button></div>
+            </div>
+            <button class="reg-ns" onclick="registrarNoShow()" style="margin-top:8px;">+ Registrar no-show</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════ VISTA TURNOS ════ -->
+  <div class="vista" id="v-turnos">
+    <div class="turnos-layout">
+      <div class="col-hdr" style="background:var(--bg);">
+        <span class="col-title">Turnos del día · <span id="fecha-hoy"></span></span>
+        <span class="stag">· HIS sync</span>
+      </div>
+      <div class="turnos-scroll">
+        <div class="turno-row"><div class="turno-hora">09:00</div><div class="turno-eq" style="background:var(--s-err-m);"></div><div class="turno-info"><div class="turno-nombre">García, María</div><div class="turno-estudio">Ecografía Abdominal</div><div class="turno-meta">52 años · Eco 1 · Dr. Garín</div></div><div class="turno-estado"><span class="t-badge t-ns">No-show</span></div></div>
+        <div class="turno-row"><div class="turno-hora">09:30</div><div class="turno-eq" style="background:var(--s-ok);"></div><div class="turno-info"><div class="turno-nombre">López, Jorge</div><div class="turno-estudio">Ecografía Renal Bilateral</div><div class="turno-meta">67 años · Eco 1 · Dr. Paz</div></div><div class="turno-estado"><span class="t-badge t-curso">En curso</span></div></div>
+        <div class="turno-row"><div class="turno-hora">10:00</div><div class="turno-eq" style="background:var(--p);"></div><div class="turno-info"><div class="turno-nombre">Suárez, Diego</div><div class="turno-estudio">TC Tórax-Abdomen</div><div class="turno-meta">28 años · TC 1 · Dr. Méndez</div></div><div class="turno-estado"><span class="t-badge t-curso">En curso</span></div></div>
+        <div class="turno-row"><div class="turno-hora">10:15</div><div class="turno-eq" style="background:var(--s-err-m);"></div><div class="turno-info"><div class="turno-nombre">Pérez, Rubén</div><div class="turno-estudio">Radiografía Tórax AP</div><div class="turno-meta">61 años · RX 1 · Dr. Soria</div></div><div class="turno-estado"><span class="t-badge t-ns">No-show</span></div></div>
+        <div class="turno-row"><div class="turno-hora">10:48</div><div class="turno-eq" style="background:var(--s-ok);"></div><div class="turno-info"><div class="turno-nombre">Martínez, Roberto</div><div class="turno-estudio">Ecografía Abdominal</div><div class="turno-meta">45 años · Eco 1 · Dr. Méndez</div></div><div class="turno-estado"><span class="t-badge t-done">✓ Listo</span></div></div>
+        <div class="turno-row"><div class="turno-hora">11:30</div><div class="turno-eq" style="background:var(--s-ok-m);"></div><div class="turno-info"><div class="turno-nombre">Fernández, Marta</div><div class="turno-estudio">Ecografía Abdominal</div><div class="turno-meta">52 años · Eco 1 · Dr. Garín</div></div><div class="turno-estado"><span class="t-badge t-conf">Confirmado</span></div></div>
+        <div class="turno-row"><div class="turno-hora">12:00</div><div class="turno-eq" style="background:var(--equip-rm);"></div><div class="turno-info"><div class="turno-nombre">Torres, Carlos</div><div class="turno-estudio">RM Columna Lumbar</div><div class="turno-meta">44 años · RM 1 · Dr. Paz</div></div><div class="turno-estado"><span class="t-badge t-pend">Pendiente</span></div></div>
+        <div class="turno-row"><div class="turno-hora">12:30</div><div class="turno-eq" style="background:var(--p);"></div><div class="turno-info"><div class="turno-nombre">Ibáñez, Sofía</div><div class="turno-estudio">TC Abdomen con contraste</div><div class="turno-meta">38 años · TC 1 · Dr. Garín</div></div><div class="turno-estado"><span class="t-badge t-pend">Pendiente</span></div></div>
+        <div class="turno-row"><div class="turno-hora">13:00</div><div class="turno-eq" style="background:var(--s-ok-m);"></div><div class="turno-info"><div class="turno-nombre">Herrera, Pablo</div><div class="turno-estudio">Ecografía Tiroidea</div><div class="turno-meta">55 años · Eco 1 · Dra. Vidal</div></div><div class="turno-estado"><span class="t-badge t-pend">Pendiente</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ VISTA PACIENTES ════ -->
+  <div class="vista" id="v-pacientes">
+    <div class="pac-layout">
+      <div class="buscador-wrap">
+        <div class="buscador">
+          <input type="text" id="pac-input" placeholder="Buscar por DNI o apellido..." oninput="buscarPac()">
+          <button onclick="buscarPac()">Buscar</button>
+        </div>
+      </div>
+      <div class="pac-result" id="pac-result">
+        <div style="text-align:center;padding:40px;color:var(--txt3);font-size:13px;">
+          Ingresá un DNI o apellido para buscar
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ VISTA ARANCELES ════ -->
+  <div class="vista" id="v-aranceles">
+    <div class="aran-layout">
+      <div class="aran-buscador">
+        <input type="text" id="aran-input" placeholder="Buscar estudio..." oninput="buscarAran()">
+        <select id="aran-cob" onchange="buscarAran()">
+          <option>Particular</option>
+          <option>OSDE</option>
+          <option>Swiss Medical</option>
+          <option>PAMI</option>
+          <option>IOMA</option>
+          <option>Galeno</option>
+        </select>
+      </div>
+      <div class="aran-scroll" id="aran-scroll"></div>
+    </div>
+  </div>
+
+  <!-- ════ VISTA CONSTANCIAS ════ -->
+  <div class="vista" id="v-constancias">
+    <div class="const-layout">
+      <div class="const-tipos">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:4px;padding:4px 2px;">Tipo de constancia</div>
+        <button class="const-tipo-btn activo" onclick="selConst(this,'orden')">📋 Orden de estudio</button>
+        <button class="const-tipo-btn" onclick="selConst(this,'indicacion')">🩺 Indicación médica</button>
+        <button class="const-tipo-btn" onclick="selConst(this,'resultado')">📊 Entrega de resultado</button>
+        <button class="const-tipo-btn" onclick="selConst(this,'presup')">💰 Presupuesto</button>
+      </div>
+      <div class="const-form" id="const-form"></div>
+    </div>
+  </div>
+
+  <!-- ════ VISTA PROTOCOLOS ════ -->
+  <div class="vista" id="v-protocolos">
+    <div class="prot-layout">
+      <div class="prot-lista">
+        <div class="prot-search">
+          <input type="text" placeholder="Buscar protocolo..." oninput="filtrarProt(this.value)">
+        </div>
+        <div class="prot-scroll" id="prot-scroll"></div>
+      </div>
+      <div class="prot-detalle" id="prot-detalle">
+        <div style="text-align:center;padding:60px 20px;color:var(--txt3);">
+          <div style="font-size:32px;margin-bottom:12px;opacity:.3;">📋</div>
+          <div style="font-size:14px;font-weight:600;">Seleccioná un protocolo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── RELOJ ───────────────────────────────── */
+function tick(){
+  document.getElementById('reloj').textContent=
+    [new Date().getHours(),new Date().getMinutes(),new Date().getSeconds()]
+      .map(v=>String(v).padStart(2,'0')).join(':');
+}
+tick();setInterval(tick,1000);
+
+/* ── FECHA ───────────────────────────────── */
+const el = document.getElementById('fecha-hoy');
+if(el){
+  const d = new Date();
+  el.textContent = d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'});
+}
+
+/* ── NAV ─────────────────────────────────── */
+let navOpen = false;
+function toggleNav(){
+  navOpen = !navOpen;
+  document.body.classList.toggle('nav-abierto', navOpen);
+}
+
+const VISTAS = {
+  urgencias:'v-urgencias', turnos:'v-turnos', pacientes:'v-pacientes',
+  aranceles:'v-aranceles', constancias:'v-constancias', protocolos:'v-protocolos'
+};
+
+function setVista(id, navEl) {
+  document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('activo'));
+  document.getElementById(VISTAS[id]).classList.add('activa');
+  navEl.classList.add('activo');
+
+  // Init vistas al abrir
+  if (id === 'aranceles') renderAranceles('');
+  if (id === 'protocolos') renderProtLista('');
+  if (id === 'constancias') renderConst('orden');
+}
+
+/* ── EQUIPOS ─────────────────────────────── */
+const EQUIPOS = [
+  { nombre:'Tomógrafo TC', sala:'Sala TC 1 · PB', estado:'uso', estadoLabel:'En uso',
+    barColor:'var(--eq-uso)', estadoBg:'var(--eq-uso-l)', estadoColor:'var(--eq-uso)',
+    tiempo:'8 min', tiempoLabel:'En uso', rtt:'7 min',
+    curso:{nombre:'Suárez, Diego', estudio:'TC Tórax-Abdomen', progreso:55},
+    proximo:{nombre:'Gómez, Sergio', estudio:'TC Cerebro · Stroke'} },
+  { nombre:'Rayos X', sala:'Sala RX 1 · PB', estado:'libre', estadoLabel:'Libre',
+    barColor:'var(--eq-libre)', estadoBg:'var(--eq-libre-l)', estadoColor:'var(--eq-libre)',
+    tiempo:'12 min', tiempoLabel:'Libre hace', rtt:'5 min',
+    curso:null, proximo:{nombre:'Rodríguez, Ana', estudio:'Rx Tórax AP + Lateral'} },
+  { nombre:'Ecógrafo', sala:'Sala Eco 1 · PB', estado:'uso', estadoLabel:'En uso',
+    barColor:'var(--eq-uso)', estadoBg:'var(--eq-uso-l)', estadoColor:'var(--eq-uso)',
+    tiempo:'12 min', tiempoLabel:'En uso', rtt:'6 min',
+    curso:{nombre:'López, Jorge', estudio:'Eco Renal Bilateral', progreso:70},
+    proximo:{nombre:'Fernández, Marta', estudio:'Eco Abdominal'} },
+  { nombre:'Resonador RM', sala:'Sala RM 1 · 1er piso', estado:'limp', estadoLabel:'En limpieza',
+    barColor:'var(--eq-limp)', estadoBg:'var(--eq-limp-l)', estadoColor:'var(--eq-limp)',
+    tiempo:'4 min', tiempoLabel:'Limpieza hace', rtt:'18 min',
+    curso:null, proximo:{nombre:'Torres, Carlos', estudio:'RM Columna Lumbar · 12:00'} },
+];
+
+function renderEquipos(){
+  const grid = document.getElementById('eq-grid');
+  if(!grid) return;
+  grid.innerHTML = EQUIPOS.map(e => {
+    const cursoHTML = e.curso ? `
+      <div class="eq-pac">
+        <div class="ep-l">En curso</div>
+        <div class="ep-n">${e.curso.nombre}</div>
+        <div class="ep-e">${e.curso.estudio}</div>
+        <div class="ep-prog"><div class="ep-fill" style="width:${e.curso.progreso}%;background:${e.barColor};"></div></div>
+      </div>` : `<div class="eq-lib"><div style="font-size:22px;opacity:.3;">${e.estado==='limp'?'🧹':'✓'}</div><div style="font-size:11px;color:var(--txt3);">${e.estadoLabel}</div></div>`;
+    const proxHTML = e.proximo ? `
+      <div class="eq-prox">
+        <div class="epr-l">Próximo</div>
+        <div class="epr-n">${e.proximo.nombre} · ${e.proximo.estudio}</div>
+      </div>` : '';
+    return `
+      <div class="eq-card">
+        <div class="eq-bar" style="background:${e.barColor};"></div>
+        <div class="eq-body">
+          <div class="eq-top">
+            <div><div class="eq-nom">${e.nombre}</div><div class="eq-sala">${e.sala}</div></div>
+            <span class="eq-ebadge" style="background:${e.estadoBg};color:${e.estadoColor};border:1px solid ${e.barColor}40;">${e.estadoLabel}</span>
+          </div>
+          <div><span class="eq-t">${e.tiempo}</span> <span class="eq-tl">${e.tiempoLabel}</span></div>
+          ${cursoHTML}${proxHTML}
+        </div>
+        <div class="eq-foot">
+          <span class="rtt-l">RTT promedio</span>
+          <span class="rtt-v">${e.rtt}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+renderEquipos();
+
+/* ── DERIVACIÓN ─────────────────────────── */
+const SUGS = {
+  p1:[{eq:'TC 1',disp:true,sug:true},{eq:'TC 2',disp:false,sug:false}],
+  p2:[{eq:'TC 1',disp:true,sug:true},{eq:'TC 2',disp:false,sug:false}],
+  p3:[{eq:'TC 1',disp:false,sug:false}],
+  p4:[{eq:'RX 1',disp:true,sug:true},{eq:'RX 2',disp:true,sug:false}],
+  p5:[{eq:'Eco 1',disp:false,sug:false},{eq:'Eco 2',disp:true,sug:true}],
+  p6:[{eq:'Eco 1',disp:false,sug:false}],
+};
+
+let pedSel=null, eqSel=null;
+
+function selPed(id,card){
+  document.querySelectorAll('.ped').forEach(c=>c.classList.remove('sel'));
+  card.classList.add('sel');
+  pedSel=id;
+  const opts=SUGS[id]||[];
+  const panel=document.getElementById('deriv-panel');
+  const grid=document.getElementById('deriv-grid');
+  const btn=document.getElementById('btn-der');
+  if(!opts.length){panel.classList.remove('vis');return;}
+  panel.classList.add('vis');
+  grid.innerHTML=opts.map(o=>`
+    <button class="dbtn ${o.disp?(o.sug?'sug':''):'ocup'}"
+      onclick="${o.disp?`selEq(this,'${o.eq}')`:''}"
+      ${!o.disp?'disabled':''}>
+      ${o.sug?'⚡ ':''}${o.eq}${o.sug?' · Sugerido':o.disp?' · Libre':' · Ocupado'}
+    </button>`).join('');
+  btn.disabled=true;
+  btn.textContent='Seleccioná un equipo';
+}
+
+function selEq(btn,eq){
+  document.querySelectorAll('.dbtn:not(.ocup)').forEach(b=>b.classList.remove('sug'));
+  btn.classList.add('sug');
+  eqSel=eq;
+  const btn2=document.getElementById('btn-der');
+  btn2.disabled=false;
+  btn2.textContent=`Derivar a ${eq}`;
+}
+
+function confirmarDer(){
+  if(!eqSel)return;
+  const btn=document.getElementById('btn-der');
+  btn.textContent=`✓ Derivado a ${eqSel}`;
+  btn.style.background='var(--s-ok)';
+  btn.disabled=true;
+  setTimeout(()=>{btn.style.background='';btn.disabled=false;btn.textContent=`Derivar a ${eqSel}`;},2500);
+}
+
+function filtrar(btn){
+  document.querySelectorAll('.filtros-bar .fb').forEach(b=>b.classList.remove('on','uon'));
+  btn.classList.add(btn.textContent.includes('Urgente')?'uon':'on');
+}
+
+function registrarNoShow(){
+  const nombre=prompt('Nombre del paciente:');
+  const estudio=prompt('Estudio / Turno:');
+  if(!nombre||!estudio)return;
+  const lista=document.getElementById('nosh-lista');
+  lista.insertAdjacentHTML('beforeend',`
+    <div class="nosh-row">
+      <div><div class="nosh-n">${nombre}</div><div class="nosh-m">${estudio} · No se presentó</div></div>
+      <button class="nosh-btn" onclick="this.textContent='✓';this.style.background='var(--s-ok-l)';this.style.color='var(--s-ok)';">Conf.</button>
+    </div>`);
+}
+
+/* ── PACIENTES ───────────────────────────── */
+const PACIENTES_DB = [
+  { nombre:'Vega, Carlos Alberto', dni:'12.345.678', edad:'62 años', sexo:'Masculino', cob:'OSDE 310', tel:'011 4567-8901', mail:'cvega@mail.com',
+    estudios:['TC Cerebro · 02/05/2026 · Dr. Méndez · Pendiente','Eco Abdominal · 15/03/2026 · Dr. Garín · Entregado'] },
+  { nombre:'Gómez, Sergio', dni:'18.445.001', edad:'71 años', sexo:'Masculino', cob:'PAMI', tel:'011 3344-5566', mail:'',
+    estudios:['TC Cerebro · 02/05/2026 · Dr. Torres · En curso'] },
+  { nombre:'Fernández, Marta', dni:'29.112.334', edad:'52 años', sexo:'Femenino', cob:'Galeno', tel:'011 2233-4455', mail:'mfernandez@mail.com',
+    estudios:['Eco Abdominal · 02/05/2026 · Dr. Garín · Programado 11:30'] },
+];
+
+function buscarPac(){
+  const val = document.getElementById('pac-input').value.trim().toLowerCase();
+  const res = document.getElementById('pac-result');
+  if(val.length < 2){ res.innerHTML='<div style="text-align:center;padding:40px;color:var(--txt3);font-size:13px;">Ingresá al menos 2 caracteres</div>'; return; }
+  const found = PACIENTES_DB.filter(p =>
+    p.nombre.toLowerCase().includes(val) || p.dni.replace(/\./g,'').includes(val.replace(/\./g,''))
+  );
+  if(!found.length){ res.innerHTML='<div style="text-align:center;padding:40px;color:var(--txt3);">Sin resultados</div>'; return; }
+  res.innerHTML = found.map(p => `
+    <div class="pac-ficha">
+      <div class="pf-hdr">
+        <div><div class="pf-nombre">${p.nombre}</div><div class="pf-meta">DNI ${p.dni} · ${p.edad} · ${p.sexo}</div></div>
+        <span class="stag">· HIS sync</span>
+      </div>
+      <div class="pf-body">
+        <div class="pf-item"><div class="pf-lbl">Cobertura</div><div class="pf-val">${p.cob}</div></div>
+        <div class="pf-item"><div class="pf-lbl">Teléfono</div><div class="pf-val">${p.tel||'—'}</div></div>
+        <div class="pf-item"><div class="pf-lbl">Email</div><div class="pf-val" style="font-size:11px;">${p.mail||'—'}</div></div>
+        <div class="pf-item"><div class="pf-lbl">Estudios previos</div><div class="pf-val">${p.estudios.length}</div></div>
+      </div>
+      <div class="pf-estudios">
+        <div class="pf-est-title">Historial de estudios</div>
+        ${p.estudios.map(e=>`<div class="pf-est-row">· ${e}</div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+/* ── ARANCELES ───────────────────────────── */
+const ARANCELES = [
+  {cod:'TC-001', nombre:'TC Cerebro sin contraste',     precios:{Particular:18500, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'TC-002', nombre:'TC Cerebro con contraste EV',  precios:{Particular:26000, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'TC-003', nombre:'TC Tórax simple',              precios:{Particular:19000, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'TC-004', nombre:'TC Abdomen con contraste',     precios:{Particular:28000, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'RX-001', nombre:'Radiografía Tórax AP',         precios:{Particular:4500,  OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'RX-002', nombre:'Radiografía Tórax AP + Lat.',  precios:{Particular:6200,  OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'RX-003', nombre:'Radiografía Columna Lumbar',   precios:{Particular:7800,  OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'ECO-001',nombre:'Ecografía Abdominal',          precios:{Particular:14000, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'ECO-002',nombre:'Ecografía Renal',              precios:{Particular:14500, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'ECO-003',nombre:'Ecografía Tiroidea',           precios:{Particular:13500, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'RM-001', nombre:'RM Columna Lumbar s/contraste',precios:{Particular:52000, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+  {cod:'RM-002', nombre:'RM Cerebro c/contraste',       precios:{Particular:68000, OSDE:0, 'Swiss Medical':0, PAMI:0, IOMA:0, Galeno:0}},
+];
+
+function buscarAran(){
+  const val = document.getElementById('aran-input').value.toLowerCase();
+  const cob = document.getElementById('aran-cob').value;
+  renderAranceles(val, cob);
+}
+
+function renderAranceles(val='', cob='Particular'){
+  const scroll = document.getElementById('aran-scroll');
+  const filtered = ARANCELES.filter(a => a.nombre.toLowerCase().includes(val)||a.cod.toLowerCase().includes(val));
+  scroll.innerHTML = filtered.map(a => {
+    const precio = a.precios[cob];
+    const precioLabel = precio ? `$${precio.toLocaleString('es-AR')}` : 'Consultar';
+    const cobertura = cob === 'Particular' ? 'Precio particular' : `Con ${cob} · verificar cobertura`;
+    return `
+      <div class="aran-row">
+        <span class="aran-codigo">${a.cod}</span>
+        <span class="aran-nombre">${a.nombre}</span>
+        <div style="text-align:right;">
+          <div class="aran-precio">${precioLabel}</div>
+          <div class="aran-cob">${cobertura}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ── CONSTANCIAS ─────────────────────────── */
+function selConst(btn, tipo){
+  document.querySelectorAll('.const-tipo-btn').forEach(b=>b.classList.remove('activo'));
+  btn.classList.add('activo');
+  renderConst(tipo);
+}
+
+function renderConst(tipo){
+  const form = document.getElementById('const-form');
+  const forms = {
+    orden: `
+      <div class="const-form-title">📋 Orden de estudio</div>
+      <div class="const-form-sub">Completá los datos para generar la orden imprimible o por mail.</div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Apellido y nombre *</label><input type="text" placeholder="Paciente"></div>
+        <div class="form-group"><label>DNI *</label><input type="text" placeholder="Sin puntos"></div>
+      </div>
+      <div class="form-group"><label>Estudio solicitado *</label><input type="text" placeholder="Ej: TC Cerebro sin contraste"></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Médico solicitante</label><input type="text" placeholder="Dr/Dra."></div>
+        <div class="form-group"><label>Fecha del turno</label><input type="date"></div>
+      </div>
+      <div class="form-group"><label>Observaciones</label><textarea placeholder="Indicaciones especiales..." style="min-height:60px;resize:none;"></textarea></div>
+      <div class="form-group"><label>Email del paciente (para envío)</label><input type="email" placeholder="paciente@mail.com"></div>
+      <div class="const-actions">
+        <button class="btn-imprimir" onclick="alert('🖨️ Enviando a impresión...')">🖨️ Imprimir</button>
+        <button class="btn-mail" onclick="alert('📧 Constancia enviada por mail')">📧 Enviar por mail</button>
+      </div>`,
+    indicacion: `
+      <div class="const-form-title">🩺 Indicación médica</div>
+      <div class="const-form-sub">Copia de la indicación del médico para el paciente.</div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Paciente *</label><input type="text" placeholder="Apellido y nombre"></div>
+        <div class="form-group"><label>DNI *</label><input type="text" placeholder="Sin puntos"></div>
+      </div>
+      <div class="form-group"><label>Diagnóstico / Motivo de estudio</label><textarea placeholder="Motivo clínico..." style="min-height:70px;resize:none;"></textarea></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Médico *</label><input type="text" placeholder="Nombre y matrícula"></div>
+        <div class="form-group"><label>Fecha</label><input type="date"></div>
+      </div>
+      <div class="form-group"><label>Email del paciente</label><input type="email" placeholder="paciente@mail.com"></div>
+      <div class="const-actions">
+        <button class="btn-imprimir" onclick="alert('🖨️ Enviando a impresión...')">🖨️ Imprimir</button>
+        <button class="btn-mail" onclick="alert('📧 Constancia enviada por mail')">📧 Enviar por mail</button>
+      </div>`,
+    resultado: `
+      <div class="const-form-title">📊 Entrega de resultado</div>
+      <div class="const-form-sub">Comprobante de entrega de resultado al paciente.</div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Paciente *</label><input type="text" placeholder="Apellido y nombre"></div>
+        <div class="form-group"><label>DNI *</label><input type="text" placeholder="Sin puntos"></div>
+      </div>
+      <div class="form-group"><label>Estudio entregado *</label><input type="text" placeholder="Ej: TC Cerebro"></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Fecha del estudio</label><input type="date"></div>
+        <div class="form-group"><label>Recibido por</label><input type="text" placeholder="Nombre del receptor"></div>
+      </div>
+      <div class="form-group"><label>Vínculo (si no es el paciente)</label><input type="text" placeholder="Ej: Cónyuge, hijo/a..."></div>
+      <div class="form-group"><label>Email del paciente</label><input type="email" placeholder="paciente@mail.com"></div>
+      <div class="const-actions">
+        <button class="btn-imprimir" onclick="alert('🖨️ Enviando a impresión...')">🖨️ Imprimir</button>
+        <button class="btn-mail" onclick="alert('📧 Constancia enviada por mail')">📧 Enviar por mail</button>
+      </div>`,
+    presup: `
+      <div class="const-form-title">💰 Presupuesto</div>
+      <div class="const-form-sub">Presupuesto imprimible para el paciente particular.</div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Paciente</label><input type="text" placeholder="Apellido y nombre"></div>
+        <div class="form-group"><label>DNI</label><input type="text" placeholder="Sin puntos"></div>
+      </div>
+      <div class="form-group"><label>Estudios a presupuestar *</label><textarea placeholder="Listá los estudios, uno por línea..." style="min-height:80px;resize:none;"></textarea></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>Cobertura</label><select><option>Particular</option><option>OSDE</option><option>Swiss Medical</option><option>PAMI</option><option>IOMA</option></select></div>
+        <div class="form-group"><label>Validez del presupuesto</label><input type="text" placeholder="Ej: 30 días" value="30 días"></div>
+      </div>
+      <div class="form-group"><label>Email del paciente</label><input type="email" placeholder="paciente@mail.com"></div>
+      <div class="const-actions">
+        <button class="btn-imprimir" onclick="alert('🖨️ Enviando a impresión...')">🖨️ Imprimir</button>
+        <button class="btn-mail" onclick="alert('📧 Presupuesto enviado por mail')">📧 Enviar por mail</button>
+      </div>`,
+  };
+  form.innerHTML = forms[tipo] || '';
+}
+
+/* ── PROTOCOLOS ─────────────────────────── */
+const PROTOCOLOS = [
+  { nombre:'TC Cerebro sin contraste', tipo:'Tomografía',
+    alertas:[], ok:['No requiere preparación especial','El paciente puede venir acompañado','Informar si tiene marcapasos o implantes metálicos'],
+    preparacion:['Sin preparación necesaria para este estudio','Puede tomar medicación habitual con agua','Retirar accesorios metálicos (aros, cadenas, piercing)'],
+    duracion:'10-15 minutos',
+    entrega:'30-60 minutos post-estudio',
+    instrucciones_post:['El informe lo firma el médico radiólogo y lo entrega recepción','Llevar el resultado al médico solicitante'] },
+  { nombre:'TC Abdomen con contraste', tipo:'Tomografía',
+    alertas:['AYUNO MÍNIMO 4 HORAS previas al estudio','Si toma Metformina (diabetes) consultar con el médico — suspender 48hs antes','Informar si tiene antecedentes de alergia a contrastes yodados','Traer resultado de función renal reciente (creatinina)'],
+    ok:['Puede tomar medicación habitual salvo las indicadas'],
+    preparacion:['Ayuno de 4 horas mínimo (sólidos y lácteos)','Puede tomar líquidos claros hasta 2hs antes','Tomar 500ml de agua 1 hora antes del estudio','Bata se coloca al llegar'],
+    duracion:'20-30 minutos',
+    entrega:'60-120 minutos post-estudio',
+    instrucciones_post:['Hidratarse bien luego del estudio (para eliminar el contraste)','El informe lo firma el médico radiólogo'] },
+  { nombre:'RM Columna Lumbar', tipo:'Resonancia Magnética',
+    alertas:['CONTRAINDICADO en pacientes con marcapasos o neuroestimuladores','Informar prótesis metálicas, clips vasculares, o implantes cocleares','Pacientes claustrofóbicos: consultar al médico por medicación'],
+    ok:['No utiliza radiación ionizante','Puede tomar medicación habitual'],
+    preparacion:['No requiere ayuno','Retirar todos los elementos metálicos (aros, piercing, cinturón)','No usar desodorante ni cremas el día del estudio','Ropa cómoda sin partes metálicas'],
+    duracion:'30-45 minutos',
+    entrega:'2-4 horas post-estudio (el informe requiere lectura radiológica)',
+    instrucciones_post:['Sin restricciones post-estudio','Retirar el resultado en recepción o solicitar envío por mail'] },
+  { nombre:'Ecografía Abdominal', tipo:'Ecografía',
+    alertas:['AYUNO MÍNIMO 6 HORAS (incluye chicles y cigarrillos)'],
+    ok:['Puede tomar medicación habitual con un sorbo de agua','No utiliza radiación'],
+    preparacion:['Ayuno de 6 horas mínimas (sólidos y líquidos)','Puede tomar medicación con mínima cantidad de agua','Llegar con vejiga vacía para abdomen superior'],
+    duracion:'15-20 minutos',
+    entrega:'En el momento o dentro de las 2hs',
+    instrucciones_post:['Sin restricciones','Puede comer y beber normalmente al terminar'] },
+  { nombre:'Ecografía Renal', tipo:'Ecografía',
+    alertas:[],
+    ok:['No requiere ayuno','No utiliza radiación','Indoloro y sin efectos secundarios'],
+    preparacion:['Llegar con VEJIGA LLENA (tomar 1 litro de agua 1 hora antes y no orinar)','No es necesario ayuno'],
+    duracion:'15-20 minutos',
+    entrega:'En el momento o dentro de las 2hs',
+    instrucciones_post:['Puede orinar al terminar el estudio'] },
+  { nombre:'Radiografía Tórax', tipo:'Radiografía',
+    alertas:['EMBARAZADAS: informar al personal antes del estudio'],
+    ok:['No requiere preparación','Rápido e indoloro'],
+    preparacion:['No requiere ayuno ni preparación especial','Retirar joyas y accesorios metálicos del tórax','Se provee bata si es necesario'],
+    duracion:'5 minutos',
+    entrega:'Inmediata o en 30 minutos',
+    instrucciones_post:['Sin restricciones'] },
+];
+
+let protSel = null;
+
+function renderProtLista(filtro=''){
+  const scroll = document.getElementById('prot-scroll');
+  const filtered = PROTOCOLOS.filter(p =>
+    p.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+    p.tipo.toLowerCase().includes(filtro.toLowerCase())
+  );
+  scroll.innerHTML = filtered.map((p,i) => `
+    <div class="prot-item ${protSel===i?'activo':''}" onclick="selProt(${i},this)">
+      <div class="prot-item-nombre">${p.nombre}</div>
+      <div class="prot-item-tipo">${p.tipo}</div>
+    </div>`).join('');
+}
+
+function selProt(idx, el){
+  document.querySelectorAll('.prot-item').forEach(i=>i.classList.remove('activo'));
+  el.classList.add('activo');
+  protSel = idx;
+  const p = PROTOCOLOS[idx];
+  const det = document.getElementById('prot-detalle');
+  const alertasHTML = p.alertas.map(a=>`<div class="prot-alerta">⚠ <span>${a}</span></div>`).join('');
+  const okHTML = p.ok.map(o=>`<div class="prot-ok">✓ <span>${o}</span></div>`).join('');
+  const prepHTML = p.preparacion.map(i=>`<div class="prot-li">${i}</div>`).join('');
+  const postHTML = p.instrucciones_post.map(i=>`<div class="prot-li">${i}</div>`).join('');
+  det.innerHTML = `
+    <div class="prot-det-titulo">${p.nombre}</div>
+    <div class="prot-det-tipo">${p.tipo}</div>
+    ${alertasHTML}${okHTML}
+    <div class="prot-seccion">
+      <div class="prot-sec-title">Preparación del paciente</div>
+      <div class="prot-item-lista">${prepHTML}</div>
+    </div>
+    <div class="prot-seccion">
+      <div class="prot-sec-title">Duración estimada</div>
+      <div class="prot-item-lista"><div class="prot-li">${p.duracion}</div></div>
+    </div>
+    <div class="prot-seccion">
+      <div class="prot-sec-title">Entrega de resultados</div>
+      <div class="prot-item-lista"><div class="prot-li">${p.entrega}</div></div>
+    </div>
+    <div class="prot-seccion">
+      <div class="prot-sec-title">Instrucciones post-estudio</div>
+      <div class="prot-item-lista">${postHTML}</div>
+    </div>
+    <div class="prot-actions">
+      <button class="btn-imprimir" onclick="alert('🖨️ Imprimiendo instrucciones...')">🖨️ Imprimir para el paciente</button>
+      <button class="btn-mail" onclick="alert('📧 Instrucciones enviadas por mail')">📧 Enviar por mail</button>
+    </div>`;
+}
+
+function filtrarProt(val){
+  renderProtLista(val);
+}
+
+/* ── CONSTANCIAS INIT ────────────────────── */
+renderConst('orden');
+</script>
+
+</body>
+</html>
