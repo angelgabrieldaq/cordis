@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cordis · Command Center · Guardia · Cordis</title>
+<title>Command Center · Guardia · Cordis</title>
 <style>
 /* ═══════════════════════════════════════════
-   KAIROS · Design Tokens v1.0
+   CORDIS · Design Tokens v2.0
 ═══════════════════════════════════════════ */
 :root {
   --p-light:#EBF2FF; --p-mid:#A3C0F8; --p:#2B57D9; --p-dark:#1A3FAA;
@@ -24,6 +24,10 @@
   --libre:#0F6E56;    --libre-l:#E1F5EE;   --libre-m:#9FE1CB;
   --ocupada:#1A3FAA;  --ocupada-l:#EBF2FF; --ocupada-m:#A3C0F8;
   --alta:#7B3FA0;     --alta-l:#F3E8FF;    --alta-m:#C9A0E0;
+  /* pendiente internación — nuevo estado específico */
+  --pend-int:#7B3FA0;   --pend-int-l:#F3E8FF;  --pend-int-m:#C9A0E0;
+  /* SLA por nivel MTS — umbrales internacionales */
+  --sla-n1:0; --sla-n2:15; --sla-n3:30; --sla-n4:120; --sla-n5:240;
   --limpia-e:#B45309; --limpia-l:#FEF3C7;  --limpia-m:#FCD34D;
   --lista:#0E7490;    --lista-l:#E0F7FA;   --lista-m:#67E8F9;
   --bloq:#4B4B4B;     --bloq-l:#F0F0F0;    --bloq-m:#AAAAAA;
@@ -151,7 +155,7 @@ body.nav-open .nav-label{opacity:1;}
 .tp-n{font-size:13px;font-weight:800;line-height:1;}
 .tp-l{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;opacity:.7;line-height:1;}
 
-.t1 .t-band,.t1 .tp-n,.t1 .tp-l{background:var(--t1);} .t1 .t-band{background:var(--t1);} .t1 .tp-n,.t1 .tp-l{background:none;color:var(--t1);}
+.t1 .t-band{background:var(--t1);} .t1 .tp-n,.t1 .tp-l{color:var(--t1);}
 .t2 .t-band{background:var(--t2);} .t2 .tp-n,.t2 .tp-l{color:var(--t2);}
 .t3 .t-band{background:var(--t3);} .t3 .tp-n,.t3 .tp-l{color:var(--t3);}
 .t4 .t-band{background:var(--t4);} .t4 .tp-n,.t4 .tp-l{color:var(--t4);}
@@ -215,7 +219,7 @@ body.nav-open .nav-label{opacity:1;}
 
 /* ── PANEL DE MÉTRICAS ───────────────────── */
 .metrics{border-left:1px solid var(--brd);background:var(--bg);display:flex;flex-direction:column;overflow:hidden;transition:width .22s;}
-.main.metrics-off .metrics{border-left:none;}
+.main.metrics-off .metrics{border-left:none;overflow:hidden;}
 .metrics-hdr{padding:10px 14px;border-bottom:1px solid var(--brd);background:var(--bg2);flex-shrink:0;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);}
 .metrics-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:14px;}
 
@@ -343,7 +347,7 @@ body.nav-open .nav-label{opacity:1;}
 .mb-med{background:var(--s-info-l);color:var(--s-info);}
 .mb-enf{background:var(--s-ok-l);color:var(--s-ok);}
 .mb-rec{background:var(--p-light);color:var(--p-dark);}
-.mb-lim{background:#FEF3C7;color:#B45309;}
+.mb-lim{background:var(--cama-limp-l);color:var(--cama-limp);}
 .md-tl-desc{font-size:9px;color:var(--txt2);margin-top:1px;line-height:1.4;}
 .md-tl-time{font-size:8px;color:var(--txt3);font-family:'Courier New',monospace;flex-shrink:0;margin-top:2px;}
 
@@ -365,7 +369,80 @@ body.nav-open .nav-label{opacity:1;}
 .mb-ghost:hover{background:var(--bg2);}
 .mb-actor{margin-left:auto;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;white-space:nowrap;background:var(--p-light);color:var(--p-dark);}
 
-/* ── PLACEHOLDER VIEWS ───────────────────── */
+/* ── SLA INDICATOR ───────────────────────── */
+.sla-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  flex-shrink: 0;
+  min-width: 90px;
+}
+.sla-track {
+  flex: 1;
+  height: 3px;
+  background: var(--brd2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.sla-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .3s;
+}
+.sla-label {
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--txt3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sla-label.ok   { color: var(--s-ok); }
+.sla-label.warn { color: var(--s-warn-m); }
+.sla-label.err  { color: var(--s-err-m); }
+
+/* ── PENDIENTE INTERNACIÓN ───────────────── */
+.pend-int-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: var(--pend-int-l);
+  color: var(--pend-int);
+  border: 1px solid var(--pend-int-m);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  animation: blink 2s infinite;
+}
+
+.sec-pend-int .sec-count {
+  background: var(--pend-int-l);
+  color: var(--pend-int);
+  border-color: var(--pend-int-m);
+  animation: blink 2s infinite;
+}
+
+.destino-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.dt-uti    { background: var(--s-err-l);  color: var(--s-err);  border-color: var(--s-err-m); }
+.dt-uci    { background: var(--s-err-l);  color: var(--s-err);  border-color: var(--s-err-m); }
+.dt-ig     { background: var(--s-info-l); color: var(--s-info); border-color: var(--s-info-m); }
+.dt-uco    { background: var(--s-warn-l); color: var(--s-warn); border-color: var(--s-warn-m); }
+.dt-terapia{ background: var(--s-err-l);  color: var(--s-err);  border-color: var(--s-err-m); }
+.dt-pedia  { background: var(--s-ok-l);   color: var(--s-ok);   border-color: var(--s-ok-m); }
 .ph{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--txt3);text-align:center;padding:40px;}
 .ph-ico{font-size:36px;}
 .ph-t{font-size:15px;font-weight:600;color:var(--txt2);}
@@ -373,6 +450,100 @@ body.nav-open .nav-label{opacity:1;}
 
 /* sec-label utility */
 .sl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:6px;}
+
+/* ── SERVICIOS EXPANDIBLES ───────────────── */
+.srv-item {
+  border: 1px solid var(--brd);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.srv-item:hover { border-color: var(--brd2); }
+.srv-item.open { border-color: var(--p-mid); }
+
+.srv-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  background: var(--bg2);
+  user-select: none;
+}
+
+.srv-hdr-l { flex: 1; }
+.srv-name  { font-size: 11px; font-weight: 600; color: var(--txt); }
+.occ-track { height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-top: 3px; width: 100%; }
+.occ-fill  { height: 100%; border-radius: 2px; }
+
+.srv-hdr-r { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.srv-s { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; text-transform: uppercase; white-space: nowrap; }
+.srv-ok   { background: var(--s-ok-l);   color: var(--s-ok);   border: 1px solid var(--s-ok-m); }
+.srv-warn { background: var(--s-warn-l); color: var(--s-warn); border: 1px solid var(--s-warn-m); }
+.srv-err  { background: var(--s-err-l);  color: var(--s-err);  border: 1px solid var(--s-err-m); }
+
+.srv-arrow { font-size: 8px; color: var(--txt3); transition: transform .2s; flex-shrink: 0; }
+.srv-item.open .srv-arrow { transform: rotate(180deg); }
+
+/* Cola del servicio */
+.srv-cola {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--brd);
+}
+.srv-item.open .srv-cola { display: flex; }
+
+.srv-cola-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--brd);
+  font-size: 10px;
+}
+.srv-cola-item:last-child { border-bottom: none; }
+
+.sci-tipo {
+  font-size: 8px; font-weight: 800;
+  padding: 2px 6px; border-radius: 5px;
+  text-transform: uppercase; letter-spacing: .04em;
+  flex-shrink: 0; white-space: nowrap;
+}
+.sci-en-curso { background: var(--p-light);  color: var(--p-dark); border: 1px solid var(--p-mid); }
+.sci-proximo  { background: var(--s-warn-l); color: var(--s-warn); border: 1px solid var(--s-warn-m); }
+.sci-pendiente{ background: var(--bg2);      color: var(--txt3);   border: 1px solid var(--brd2); }
+
+.sci-nombre { flex: 1; font-weight: 700; color: var(--txt); }
+.sci-triage { font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 4px; flex-shrink: 0; }
+.sci-tiempo {
+  font-size: 9px; font-weight: 700;
+  color: var(--p-dark); text-align: right;
+  flex-shrink: 0; white-space: nowrap;
+  font-family: 'Courier New', monospace;
+}
+.sci-tiempo.ok   { color: var(--s-ok); }
+.sci-tiempo.warn { color: var(--s-warn-m); }
+
+.srv-cola-vacio {
+  padding: 10px;
+  font-size: 10px;
+  color: var(--txt3);
+  text-align: center;
+}
+
+.srv-cola-source {
+  padding: 5px 10px;
+  font-size: 8px;
+  color: var(--txt3);
+  background: var(--bg2);
+  border-top: 1px solid var(--brd);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 </style>
 </head>
 <body>
@@ -387,7 +558,7 @@ body.nav-open .nav-label{opacity:1;}
         <rect y="12" width="18" height="2" rx="1" fill="rgba(255,255,255,.7)"/>
       </svg>
     </div>
-    <span class="tb-brand">Kairos</span>
+    <span class="tb-brand">Cordis</span>
     <div class="tb-divider"></div>
     <span class="tb-title">Cordis · Guardia General</span>
   </div>
@@ -514,6 +685,7 @@ body.nav-open .nav-label{opacity:1;}
           <button class="fbtn">Nivel 1-2</button>
           <button class="fbtn">Con estudios</button>
           <button class="fbtn">SLA vencido</button>
+          <button class="fbtn" style="background:var(--pend-int-l);border-color:var(--pend-int-m);color:var(--pend-int);">Pend. internación</button>
         </div>
         <button class="metrics-toggle" onclick="toggleMetrics()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="6" width="3" height="7" rx="1" fill="#5f5e5a"/><rect x="6" y="3" width="3" height="10" rx="1" fill="#5f5e5a"/><rect x="11" y="1" width="3" height="12" rx="1" fill="#5f5e5a"/></svg>
@@ -536,7 +708,11 @@ body.nav-open .nav-label{opacity:1;}
             <div class="pac-id"><div class="pac-name">Vega, Carlos A.</div><div class="pac-meta">DNI 12.345.678 · 62 años · M</div></div>
             <div class="pac-motivo">Cefalea occipital brusca · HTA 180/100</div>
             <div class="pac-chips"><span class="chip chip-e">TC</span><span class="chip chip-p">Lab</span></div>
-            <div class="pac-tiempo"><div class="t-val err">32 min</div><div class="t-lbl">En espera</div></div>
+            <div class="sla-bar">
+              <div class="sla-track"><div class="sla-fill" style="width:100%;background:var(--s-err-m);"></div></div>
+              <span class="sla-label err">32m / 15m</span>
+            </div>
+            <div class="pac-tiempo"><div class="t-val err">32 min</div><div class="t-lbl">SLA vencido</div></div>
             <div class="pac-llamador"><div class="llamador-on"><div class="ll-dot"></div>Dr. Méndez → Box 4</div><div class="ll-time">Llamado hace 3 min</div></div>
             <div class="pac-arr">▼</div>
           </div>
@@ -578,7 +754,11 @@ body.nav-open .nav-label{opacity:1;}
             <div class="pac-id"><div class="pac-name">Martínez, Roberto</div><div class="pac-meta">DNI 28.901.234 · 45 años · M</div></div>
             <div class="pac-motivo">Dolor abdominal fosa ilíaca derecha</div>
             <div class="pac-chips"><span class="chip chip-p">Eco</span></div>
-            <div class="pac-tiempo"><div class="t-val warn">48 min</div><div class="t-lbl">En espera</div></div>
+            <div class="sla-bar">
+              <div class="sla-track"><div class="sla-fill" style="width:100%;background:var(--s-err-m);"></div></div>
+              <span class="sla-label err">48m / 30m</span>
+            </div>
+            <div class="pac-tiempo"><div class="t-val err">48 min</div><div class="t-lbl">SLA vencido</div></div>
             <div class="pac-llamador" style="font-size:10px;color:var(--txt3);">Sin llamado aún</div>
             <div class="pac-arr">▼</div>
           </div>
@@ -617,6 +797,10 @@ body.nav-open .nav-label{opacity:1;}
             <div class="pac-id"><div class="pac-name">Fernández, Silvia</div><div class="pac-meta">DNI 35.221.887 · 34 años · F</div></div>
             <div class="pac-motivo">Traumatismo tobillo · sin deformidad aparente</div>
             <div class="pac-chips"><span class="chip chip-d">RX</span></div>
+            <div class="sla-bar">
+              <div class="sla-track"><div class="sla-fill" style="width:61%;background:var(--s-warn-m);"></div></div>
+              <span class="sla-label warn">1h 12m / 2h</span>
+            </div>
             <div class="pac-tiempo"><div class="t-val ok">1h 12m</div><div class="t-lbl">En espera</div></div>
             <div class="pac-llamador" style="font-size:10px;color:var(--txt3);">Sin llamado aún</div>
             <div class="pac-arr">▼</div>
@@ -764,6 +948,107 @@ body.nav-open .nav-label{opacity:1;}
         </div>
       </div>
 
+      <!-- ── PENDIENTE DE INTERNACIÓN ── -->
+      <div class="sec sec-pend-int" id="s-pend-int">
+        <div class="sec-hdr" onclick="toggleSec('s-pend-int')">
+          <div class="sec-hdr-l">
+            <span class="sec-title">Pendiente de Internación</span>
+            <span class="sec-count" style="background:var(--pend-int-l);color:var(--pend-int);border-color:var(--pend-int-m);animation:blink 2s infinite;">2</span>
+          </div>
+          <span class="sec-arrow">▼</span>
+        </div>
+        <div class="sec-body">
+
+          <!-- Paciente 1: esperando UTI -->
+          <div class="pac-row t1" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">1</span><span class="tp-l">Resucit.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Gómez, Sergio</div><div class="pac-meta">DNI 18.445.001 · 71 años · M</div></div>
+            <div class="pac-motivo">Trauma múltiple · Internación indicada</div>
+            <div class="pac-chips">
+              <span class="destino-tag dt-uti">→ UTI</span>
+            </div>
+            <div class="pac-tiempo"><div class="t-val err">2h 18m</div><div class="t-lbl">Esperando cama</div></div>
+            <div class="pac-llamador">
+              <div class="pend-int-badge">⏳ Sin cama disponible</div>
+            </div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div><div class="tl-desc">PAMI validada</div></div><div class="tl-t">10:08</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage · Nivel 1 · Enf. Gómez</div></div><div class="tl-t">10:10</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Atención médica · Dr. Torres</div><div class="tl-desc">Shockroom 1</div></div><div class="tl-t">10:12</div></div>
+                <div class="tl-ev"><div class="tl-dot warn"></div><div style="flex:1;"><div class="tl-actor">Internación indicada → UTI</div><div class="tl-desc">Box bloqueado esperando disponibilidad</div></div><div class="tl-t">11:22</div></div>
+                <div class="tl-ev"><div class="tl-dot emp"></div><div style="flex:1;"><div class="tl-actor">Aguardando confirmación de cama UTI</div><div class="tl-desc">Coordinación de Internación notificada</div></div><div class="tl-t">—</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Destino de internación</div>
+              <div style="background:var(--s-err-l);border:1px solid var(--s-err-m);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;">
+                <div style="font-size:12px;font-weight:700;color:var(--s-err);">UTI — Sin cama disponible</div>
+                <div style="font-size:10px;color:var(--s-err);margin-top:3px;opacity:.8;">Shockroom 1 bloqueado · 2h 18 min esperando</div>
+              </div>
+              <div class="d-title">Estudios</div>
+              <div class="est-row"><div class="est-tipo">TC Tórax-Abdomen</div><span class="chip chip-d">Resultado disponible</span></div>
+              <div class="est-row"><div class="est-tipo">Lab · Perfil trauma</div><span class="chip chip-d">Resultado disponible</span></div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh">Llamar a Internación · UTI</button>
+              <button class="d-btn gh">Solicitar traslado preventivo</button>
+              <button class="d-btn wa" style="margin-top:auto;">Escalar a Jefatura</button>
+            </div>
+          </div>
+
+          <!-- Paciente 2: esperando Clínica -->
+          <div class="pac-row t3" onclick="togglePac(this)">
+            <div class="t-band"></div>
+            <div class="t-pill"><span class="tp-n">3</span><span class="tp-l">Urgenc.</span></div>
+            <div class="row-sep"></div>
+            <div class="pac-id"><div class="pac-name">Rodríguez, Ana</div><div class="pac-meta">DNI 22.778.990 · 58 años · F</div></div>
+            <div class="pac-motivo">Crisis asmática · Internación indicada</div>
+            <div class="pac-chips">
+              <span class="destino-tag dt-ig">→ Clínica</span>
+            </div>
+            <div class="pac-tiempo"><div class="t-val warn">1h 05m</div><div class="t-lbl">Esperando cama</div></div>
+            <div class="pac-llamador">
+              <div class="pend-int-badge">⏳ Cama confirmada · Camillero pendiente</div>
+            </div>
+            <div class="pac-arr">▼</div>
+          </div>
+          <div class="pac-detail">
+            <div>
+              <div class="d-title">Trazabilidad</div>
+              <div class="tl">
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Ingreso · Recepción</div></div><div class="tl-t">08:59</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Triage N3 · Enf. López</div></div><div class="tl-t">09:05</div></div>
+                <div class="tl-ev"><div class="tl-dot ok"></div><div style="flex:1;"><div class="tl-actor">Observación · Dra. Soria</div></div><div class="tl-t">09:59</div></div>
+                <div class="tl-ev"><div class="tl-dot on"></div><div style="flex:1;"><div class="tl-actor">Internación indicada → Clínica</div><div class="tl-desc">Cama 214 confirmada · Esperando camillero</div></div><div class="tl-t">11:18</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="d-title">Destino de internación</div>
+              <div style="background:var(--s-info-l);border:1px solid var(--s-info-m);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;">
+                <div style="font-size:12px;font-weight:700;color:var(--s-info);">Clínica · Cama 214 · Piso 2</div>
+                <div style="font-size:10px;color:var(--s-info);margin-top:3px;opacity:.8;">Cama confirmada · Esperando traslado</div>
+              </div>
+            </div>
+            <div class="d-actions">
+              <div class="d-title">Acciones</div>
+              <button class="d-btn pri">Ver episodio completo</button>
+              <button class="d-btn gh" style="background:var(--p);color:#fff;">Solicitar camillero ahora</button>
+              <button class="d-btn gh">Generar constancia de internación</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -779,7 +1064,7 @@ body.nav-open .nav-label{opacity:1;}
           <span style="font-size:10px;font-weight:700;color:var(--txt3);margin-right:3px;">ESTADOS:</span>
           <span class="ley-pill" style="background:var(--libre-l);border:1px solid var(--libre-m);color:var(--libre);"><span class="ley-dot" style="background:var(--libre);"></span>Libre y limpia</span>
           <span class="ley-pill" style="background:var(--ocupada-l);border:1px solid var(--ocupada-m);color:var(--ocupada);"><span class="ley-dot" style="background:var(--ocupada);"></span>Ocupada</span>
-          <span class="ley-pill" style="background:var(--alta-l);border:1px solid var(--alta-m);color:var(--alta);"><span class="ley-dot" style="background:var(--alta);"></span>Alta pendiente</span>
+          <span class="ley-pill" style="background:var(--pend-int-l);border:1px solid var(--pend-int-m);color:var(--pend-int);"><span class="ley-dot" style="background:var(--pend-int);"></span>Pendiente internación</span>
           <span class="ley-pill" style="background:var(--limpia-l);border:1px solid var(--limpia-m);color:var(--limpia-e);"><span class="ley-dot" style="background:var(--limpia-e);"></span>En limpieza</span>
           <span class="ley-pill" style="background:var(--lista-l);border:1px solid var(--lista-m);color:var(--lista);"><span class="ley-dot" style="background:var(--lista);"></span>Lista para usar</span>
           <span class="ley-pill" style="background:var(--bloq-l);border:1px solid var(--bloq-m);color:var(--bloq);"><span class="ley-dot" style="background:var(--bloq);"></span>Bloqueada</span>
@@ -787,7 +1072,7 @@ body.nav-open .nav-label{opacity:1;}
         <div class="mapa-resumen">
           <div class="mr-item"><div class="mr-v" style="color:var(--ocupada);">9</div><div class="mr-l">Ocupadas</div></div>
           <div class="mr-item"><div class="mr-v" style="color:var(--libre);">2</div><div class="mr-l">Libres</div></div>
-          <div class="mr-item"><div class="mr-v" style="color:var(--alta);">1</div><div class="mr-l">Alta pend.</div></div>
+          <div class="mr-item"><div class="mr-v" style="color:var(--pend-int);">1</div><div class="mr-l">Pend. intern.</div></div>
           <div class="mr-item"><div class="mr-v" style="color:var(--limpia-e);">2</div><div class="mr-l">Limpieza</div></div>
           <div class="mr-item"><div class="mr-v" style="color:var(--lista);">1</div><div class="mr-l">Lista</div></div>
         </div>
@@ -869,12 +1154,8 @@ body.nav-open .nav-label{opacity:1;}
         </div>
       </div>
       <div>
-        <div class="sl" style="margin-bottom:6px;">Estado de servicios</div>
-        <div class="srv-row"><div><div class="srv-name">Tomografía</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:40%;background:var(--s-ok);"></div></div></div><span class="srv-s srv-ok">Libre</span></div>
-        <div class="srv-row"><div><div class="srv-name">Laboratorio</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:75%;background:var(--s-warn-m);"></div></div></div><span class="srv-s srv-warn">3 pendientes</span></div>
-        <div class="srv-row"><div><div class="srv-name">Rayos X</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:30%;background:var(--s-ok);"></div></div></div><span class="srv-s srv-ok">Libre</span></div>
-        <div class="srv-row"><div><div class="srv-name">Ecografía</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:100%;background:var(--s-err-m);"></div></div></div><span class="srv-s srv-err">Ocupada</span></div>
-        <div class="srv-row"><div><div class="srv-name">Camas obs.</div><div class="occ-track" style="width:140px;"><div class="occ-fill" style="width:60%;background:var(--s-warn-m);"></div></div></div><span class="srv-s srv-warn">3/5</span></div>
+        <div class="sl" style="margin-bottom:6px;">Estado de servicios · Imágenes</div>
+        <div id="servicios-imagenes"></div>
       </div>
     </div>
   </div>
@@ -937,17 +1218,17 @@ const CAMAS = [
           {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
 
   { id:'inf2', zona:'inf', num:'INF·2', tipo:'Infusión', tipoClass:'ct-inf',
-    estado:'alta', estadoLabel:'Alta pendiente', barColor:'var(--alta)',
-    barAnim:'palp-a', estadoColor:'var(--alta)', estadoBg:'var(--alta-l)', estadoBorder:'var(--alta-m)',
+    estado:'alta', estadoLabel:'Pendiente internación · Clínica', barColor:'var(--pend-int)',
+    barAnim:'palp-a', estadoColor:'var(--pend-int)', estadoBg:'var(--pend-int-l)', estadoBorder:'var(--pend-int-m)',
     pac:{ nombre:'Torres, Carlos', meta:'DNI 31.002.887 · 44 años · M', cob:'Swiss Medical', t:'N4 · Menor', tc:'var(--t4)', med:'Dr. Vidal · Alta firmada' },
     tl:[ {d:'ok',a:'Recepción',b:'mb-rec',desc:'Episodio creado',t:'09:51'},
          {d:'ok',a:'Enfermería',b:'mb-enf',desc:'Triage · Nivel 4',t:'09:56'},
          {d:'on',a:'Dr. Vidal',b:'mb-med',desc:'Llamador → Infusión 2',t:'10:10'},
          {d:'pur',a:'Dr. Vidal',b:'mb-med',desc:'Alta médica firmada',t:'11:01'} ],
     acc:[ {sep:'Acciones',l:'Ver episodio completo',c:'mb-pri',ac:null},
-          {l:'Confirmar egreso físico',c:'mb-pur',ac:'Recepción / Enf.'},
-          {l:'Generar constancia de alta',c:'mb-ghost',ac:'Recepción'},
-          {sep:'Gestión hotelera',l:'Iniciar limpieza',c:'mb-warn',ac:'Enf. / Recepción'},
+          {l:'Solicitar camillero para traslado',c:'mb-pur',ac:'Recepción / Enf.'},
+          {l:'Generar constancia de internación',c:'mb-ghost',ac:'Recepción'},
+          {sep:'Gestión hotelera',l:'Iniciar limpieza al alta',c:'mb-warn',ac:'Enf. / Recepción'},
           {l:'Reportar falla',c:'mb-danger',ac:'Enf. / Recepción'} ] },
 
   // OBSERVACIÓN
@@ -1097,7 +1378,12 @@ function setView(nombre, item) {
   const main = document.getElementById('main');
   if (nombre === 'mapa') {
     main.classList.add('metrics-off');
-    document.getElementById('metrics-toggle-lbl') && (document.getElementById('metrics-toggle-lbl').textContent = 'Ver métricas');
+    const lbl = document.getElementById('m-toggle-lbl');
+    if (lbl) lbl.textContent = 'Ver métricas';
+  } else {
+    main.classList.remove('metrics-off');
+    const lbl = document.getElementById('m-toggle-lbl');
+    if (lbl && metricsOn) lbl.textContent = 'Ocultar métricas';
   }
 }
 
@@ -1135,8 +1421,107 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
+/* ══════════════════════════════════════════════════
+   DATOS Y RENDER DE SERVICIOS DE IMÁGENES
+══════════════════════════════════════════════════ */
+const SERVICIOS = [
+  {
+    id: 'tac', nombre: 'Tomografía (TC)', ocup: 40,
+    estadoLabel: 'Próximo libre', estadoClase: 'srv-ok',
+    cola: [
+      { tipo: 'en-curso', tipoLabel: 'En curso',  nombre: 'Gómez, Sergio',   triage: 'N1', triageColor: 'var(--t1)', tiempo: 'En ejecución', tiempoClase: '' },
+      { tipo: 'proximo',  tipoLabel: 'Próximo',   nombre: 'Vega, Carlos A.', triage: 'N2', triageColor: 'var(--t2)', tiempo: '~15 min',      tiempoClase: 'warn' },
+      { tipo: 'pendiente',tipoLabel: 'Pendiente', nombre: 'Ramírez, Laura',  triage: 'N4', triageColor: 'var(--t4)', tiempo: '~45 min',      tiempoClase: '' },
+    ]
+  },
+  {
+    id: 'lab', nombre: 'Laboratorio', ocup: 75,
+    estadoLabel: '3 pendientes', estadoClase: 'srv-warn',
+    cola: [
+      { tipo: 'en-curso', tipoLabel: 'En curso',  nombre: 'Suárez, Diego',    triage: 'N2', triageColor: 'var(--t2)', tiempo: 'En proceso',  tiempoClase: '' },
+      { tipo: 'proximo',  tipoLabel: 'Próximo',   nombre: 'Vega, Carlos A.',  triage: 'N2', triageColor: 'var(--t2)', tiempo: '~20 min',     tiempoClase: 'warn' },
+      { tipo: 'pendiente',tipoLabel: 'Pendiente', nombre: 'Martínez, Roberto',triage: 'N3', triageColor: 'var(--t3)', tiempo: '~40 min',     tiempoClase: '' },
+      { tipo: 'pendiente',tipoLabel: 'Pendiente', nombre: 'Torres, Ana L.',   triage: 'N5', triageColor: 'var(--t5)', tiempo: '~1h 10m',     tiempoClase: '' },
+    ]
+  },
+  {
+    id: 'rx', nombre: 'Rayos X', ocup: 30,
+    estadoLabel: 'Libre', estadoClase: 'srv-ok',
+    cola: [
+      { tipo: 'proximo',  tipoLabel: 'Próximo',   nombre: 'Fernández, Silvia',triage: 'N4', triageColor: 'var(--t4)', tiempo: '~5 min',  tiempoClase: 'ok' },
+    ]
+  },
+  {
+    id: 'eco', nombre: 'Ecografía', ocup: 100,
+    estadoLabel: 'Ocupada', estadoClase: 'srv-err',
+    cola: [
+      { tipo: 'en-curso', tipoLabel: 'En curso',  nombre: 'Rodríguez, Ana',   triage: 'N3', triageColor: 'var(--t3)', tiempo: 'En curso',   tiempoClase: '' },
+      { tipo: 'proximo',  tipoLabel: 'Próximo',   nombre: 'Martínez, Roberto',triage: 'N3', triageColor: 'var(--t3)', tiempo: '~25 min',    tiempoClase: 'warn' },
+    ]
+  },
+  {
+    id: 'rm', nombre: 'Resonancia (RM)', ocup: 0,
+    estadoLabel: 'Libre', estadoClase: 'srv-ok',
+    cola: []
+  },
+];
+
+function renderServicios() {
+  const cont = document.getElementById('servicios-imagenes');
+  if (!cont) return;
+
+  cont.innerHTML = SERVICIOS.map(s => {
+    const fillColor = s.ocup >= 90 ? 'var(--s-err-m)'
+                    : s.ocup >= 60 ? 'var(--s-warn-m)'
+                    : 'var(--s-ok)';
+
+    const itemsHTML = s.cola.length === 0
+      ? `<div class="srv-cola-vacio">Sin pacientes en cola</div>`
+      : s.cola.map(p => `
+          <div class="srv-cola-item">
+            <span class="sci-tipo sci-${p.tipo}">${p.tipoLabel}</span>
+            <span class="sci-nombre">${p.nombre}</span>
+            <span class="sci-triage" style="background:${p.triageColor}1A;color:${p.triageColor};">${p.triage}</span>
+            <span class="sci-tiempo ${p.tiempoClase}">${p.tiempo}</span>
+          </div>`).join('');
+
+    return `
+      <div class="srv-item" id="srv-${s.id}" onclick="toggleServicio('${s.id}')">
+        <div class="srv-hdr">
+          <div class="srv-hdr-l">
+            <div class="srv-name">${s.nombre}</div>
+            <div class="occ-track">
+              <div class="occ-fill" style="width:${s.ocup}%;background:${fillColor};"></div>
+            </div>
+          </div>
+          <div class="srv-hdr-r">
+            <span class="srv-s ${s.estadoClase}">${s.estadoLabel}</span>
+            <span class="srv-arrow">▼</span>
+          </div>
+        </div>
+        <div class="srv-cola">
+          ${itemsHTML}
+          <div class="srv-cola-source">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="3" stroke="currentColor" stroke-width="1"/></svg>
+            Cordis Engine · actualizado hace 12 seg
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleServicio(id) {
+  const el = document.getElementById('srv-' + id);
+  if (!el) return;
+  const isOpen = el.classList.contains('open');
+  // cerrar todos
+  document.querySelectorAll('.srv-item').forEach(s => s.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
+}
+
 /* Init */
 renderMapa();
+renderServicios();
 </script>
 </body>
 </html>

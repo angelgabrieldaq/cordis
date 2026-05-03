@@ -3,31 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Técnico TC · Imágenes · Kairos · Zenoxia</title>
+<title>Técnico TC · Imágenes · Cordis · Zenoxia</title>
 <style>
 :root {
-  /* Design Tokens Kairos (heredados) */
-  --p-light: #EBF2FF; --p-mid: #A3C0F8; --p: #2B57D9; --p-dark: #1A3FAA;
-  --bg: #ffffff; --bg2: #f5f4f0; --bg3: #f0efea;
-  --txt: #1a1a18; --txt2: #5f5e5a; --txt3: #888780;
-  --brd: rgba(0, 0, 0, 0.10); --brd2: rgba(0, 0, 0, 0.18);
-  --s-ok: #0F6E56; --s-ok-l: #E1F5EE; --s-ok-m: #17A87D;
-  --s-warn: #633806; --s-warn-l: #FAEEDA; --s-warn-m: #EF9F27;
-  --s-err: #791F1F; --s-err-l: #FCEBEB; --s-err-m: #E24B4A;
-  --t-red: #E24B4A; --t-orange: #EF9F27; --t-yellow: #FADB14; --t-green: #52C41A; --t-blue: #1890FF;
-  --r: 8px; --r-lg: 12px;
+  /* CORDIS · Design Tokens v2.0 */
+  --p-light:#EBF2FF; --p-mid:#A3C0F8; --p:#2B57D9; --p-dark:#1A3FAA;
+  --bg:#ffffff; --bg2:#f5f4f0; --bg3:#f0efea;
+  --txt:#1a1a18; --txt2:#5f5e5a; --txt3:#888780;
+  --brd:rgba(0,0,0,.10); --brd2:rgba(0,0,0,.18);
+  --s-ok:#0F6E56; --s-ok-l:#E1F5EE; --s-ok-m:#9FE1CB;
+  --s-warn:#633806; --s-warn-l:#FAEEDA; --s-warn-m:#EF9F27;
+  --s-err:#791F1F; --s-err-l:#FCEBEB; --s-err-m:#E24B4A;
+  --s-info:#0C447C; --s-info-l:#E6F1FB; --s-info-m:#B5D4F4;
+  /* Niveles de triage MTS — estándar internacional */
+  --t1:#C0392B; --t2:#D4680A; --t3:#A07C00; --t4:#2E7D4F; --t5:#1565A8;
+  --r:8px; --r-lg:12px;
 
   /* Estados del Workflow de Estudio */
-  --ws-pending: #888780;      /* Pendiente */
-  --ws-pending-l: #f0efea;
-  --ws-executing: #1890FF;    /* En Ejecución */
-  --ws-executing-l: #E6F4FF;
-  --ws-approval: #EF9F27;     /* Pendiente Aprobación Médica */
-  --ws-approval-l: #FAEEDA;
-  --ws-approved: #0F6E56;     /* Aprobado */
-  --ws-approved-l: #E1F5EE;
-  --ws-delivered: #5f5e5a;    /* Entregado */
-  --ws-delivered-l: #f5f4f0;
+  --ws-pending:#888780;   --ws-pending-l:#f0efea;
+  --ws-executing:#2B57D9; --ws-executing-l:#EBF2FF;
+  --ws-approval:#A07C00;  --ws-approval-l:#FAEEDA;
+  --ws-approved:#0F6E56;  --ws-approved-l:#E1F5EE;
+  --ws-delivered:#5f5e5a; --ws-delivered-l:#f5f4f0;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -145,11 +142,11 @@ body {
   flex-shrink: 0;
   align-self: stretch;
 }
-.ts-red    { background: var(--t-red); }
-.ts-orange { background: var(--t-orange); }
-.ts-yellow { background: var(--t-yellow); }
-.ts-green  { background: var(--t-green); }
-.ts-blue   { background: var(--t-blue); }
+.ts-red    { background: var(--t1); }
+.ts-orange { background: var(--t2); }
+.ts-yellow { background: var(--t3); }
+.ts-green  { background: var(--t4); }
+.ts-blue   { background: var(--t5); }
 .ts-grey   { background: var(--txt3); }
 
 .sc-info { flex: 1; min-width: 0; }
@@ -407,14 +404,14 @@ body {
 <!-- ─── TOPBAR ─── -->
 <div class="topbar">
   <div class="tb-left">
-    <span class="tb-brand">Kairos · Imágenes</span>
+    <span class="tb-brand">Cordis · Imágenes</span>
     <span class="tb-sep">/</span>
     <span class="tb-title">Lista de Trabajo · Tomografía</span>
   </div>
   <div class="tb-right">
     <div class="tb-equipo">
       <span class="dot-green"></span>
-      Tomógrafo Siemens Somatom · Operativo
+      Tomógrafo TC · Operativo
     </div>
     <span style="color: var(--brd2);">|</span>
     <div style="display: flex; align-items: center; gap: 6px;">
@@ -530,7 +527,7 @@ body {
   <div class="panel">
     <div class="panel-hdr">
       <span>Detalle del Estudio</span>
-      <span style="font-size:10px; font-weight:500; color: var(--s-warn); background: var(--s-warn-l); padding: 2px 8px; border-radius: 8px;">⚡ URGENCIA · SLA Vencido</span>
+      <span id="estudio-estado-badge" style="font-size:10px; font-weight:500; color: var(--s-warn); background: var(--s-warn-l); padding: 2px 8px; border-radius: 8px;">⚡ URGENCIA · SLA Vencido</span>
     </div>
     <div class="dp-body">
 
@@ -593,11 +590,17 @@ body {
       </div>
 
       <!-- Botón de acción principal -->
-      <div style="margin-top: auto; display: flex; gap: 10px; align-items: center;">
-        <button class="btn-ghost">Escalar / Derivar</button>
-        <button class="btn-primary btn-executing" id="btn-accion" onclick="avanzarEstado()">
-          ▶ Iniciar Tomografía
-        </button>
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px;">
+        <div id="retorno-notif" style="display:none; background:var(--s-ok-l); border:1px solid var(--s-ok-m); border-radius:var(--r); padding:10px 12px; font-size:11px; color:var(--s-ok); line-height:1.5;">
+          <strong>✓ Retorno generado automáticamente</strong><br>
+          Cordis Engine notificó al camillero disponible para trasladar al paciente de vuelta al box de origen. · <span style="font-family:'Courier New',monospace;">Cordis Engine</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn-ghost">Escalar / Derivar</button>
+          <button class="btn-primary btn-executing" id="btn-accion" onclick="avanzarEstado()">
+            ▶ Iniciar Tomografía
+          </button>
+        </div>
       </div>
 
     </div>
@@ -631,7 +634,7 @@ body {
       <div>
         <div class="section-label">Parámetros del Equipo</div>
         <div style="background: var(--bg2); border: 1px solid var(--brd); border-radius: var(--r); padding: 12px;">
-          <div class="param-row"><span class="pr-label">Equipo</span><span class="pr-value">Siemens Somatom Definition</span></div>
+          <div class="param-row"><span class="pr-label">Equipo</span><span class="pr-value">Tomógrafo · Sala TC 1</span></div>
           <div class="param-row"><span class="pr-label">Estado</span><span class="pr-value v-ok">● Operativo</span></div>
           <div class="param-row"><span class="pr-label">Contraste</span><span class="pr-value v-ok">No requerido</span></div>
           <div class="param-row"><span class="pr-label">Sala</span><span class="pr-value">TC 1 · Planta Baja</span></div>
@@ -695,18 +698,34 @@ body {
 <script>
   let estado = 0;
   const estados = [
-    { label: '▶ Iniciar Tomografía', clase: 'btn-executing', pipelineActive: 1 },
-    { label: '✓ Marcar Estudio Completado', clase: 'btn-done', pipelineActive: 2 },
-    { label: '📬 Notificar al Médico para Aprobación', clase: '', pipelineActive: 3 },
+    { label: '▶ Iniciar Tomografía',                clase: 'btn-executing', pipelineActive: 1, badgeText: '▶ EN EJECUCIÓN',             badgeBg: 'var(--ws-executing-l)', badgeColor: 'var(--ws-executing)' },
+    { label: '✓ Marcar Estudio Completado',          clase: 'btn-done',      pipelineActive: 2, badgeText: '⏳ PEND. APROBACIÓN MÉDICA',  badgeBg: 'var(--ws-approval-l)',  badgeColor: 'var(--ws-approval)' },
+    { label: '📬 Notificar al Médico para Aprobación', clase: '',             pipelineActive: 3, badgeText: '✓ APROBACIÓN NOTIFICADA',     badgeBg: 'var(--s-ok-l)',         badgeColor: 'var(--s-ok)' },
   ];
 
   function avanzarEstado() {
     estado++;
     if (estado >= estados.length) return;
-    const btn = document.getElementById('btn-accion');
-    const e = estados[estado];
+    const btn  = document.getElementById('btn-accion');
+    const e    = estados[estado];
+
     btn.textContent = e.label;
-    btn.className = `btn-primary ${e.clase}`;
+    btn.className   = `btn-primary ${e.clase}`;
+
+    // Fix 4: deshabilitar en estado final
+    if (estado === estados.length - 1) {
+      btn.onclick = null;
+      btn.style.opacity = '.6';
+      btn.style.cursor  = 'not-allowed';
+    }
+
+    // Fix 3: usar ID explícito en lugar de selector posicional
+    const badge = document.getElementById('estudio-estado-badge');
+    if (badge) {
+      badge.textContent        = e.badgeText;
+      badge.style.background   = e.badgeBg;
+      badge.style.color        = e.badgeColor;
+    }
 
     // Actualizar pipeline visual
     const steps = document.querySelectorAll('.wp-step');
@@ -716,16 +735,10 @@ body {
       else if (i === e.pipelineActive) s.classList.add('active');
     });
 
-    // Actualizar badge del panel superior
-    const urgBadge = document.querySelector('.panel-hdr span:last-child');
+    // Fix 5: mostrar notificación de retorno automático al completar
     if (estado === 1) {
-      urgBadge.textContent = '▶ EN EJECUCIÓN';
-      urgBadge.style.background = 'var(--ws-executing-l)';
-      urgBadge.style.color = 'var(--ws-executing)';
-    } else if (estado === 2) {
-      urgBadge.textContent = '⏳ PENDIENTE APROBACIÓN MÉDICA';
-      urgBadge.style.background = 'var(--ws-approval-l)';
-      urgBadge.style.color = 'var(--ws-approval)';
+      const notif = document.getElementById('retorno-notif');
+      if (notif) notif.style.display = 'block';
     }
   }
 
