@@ -42,22 +42,23 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
 .sb-footer{padding:12px;border-top:1px solid var(--brd);flex-shrink:0;text-align:center;font-size:9px;color:var(--txt3);line-height:1.8;}
 .main{grid-area:main;overflow:hidden;display:flex;flex-direction:column;}
 /* WELCOME */
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;background:var(--bg3);}
-.wl-logo{width:80px;height:80px;border-radius:24px;background:var(--p-dark);display:flex;align-items:center;justify-content:center;margin-bottom:24px;box-shadow:0 12px 40px rgba(26,63,170,.3);}
-.wl-title{font-size:32px;font-weight:800;color:var(--txt);margin-bottom:8px;}
+.welcome{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 40px 40px;text-align:center;background:var(--bg3);}
+.welcome-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:760px;margin:0 auto;}
+.wl-logo{width:64px;height:64px;border-radius:20px;background:var(--p-dark);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 12px 40px rgba(26,63,170,.3);}
+.wl-title{font-size:28px;font-weight:800;color:var(--txt);margin-bottom:6px;}
 .wl-title span{color:var(--p);}
-.wl-sub{font-size:14px;color:var(--txt2);line-height:1.7;max-width:480px;margin-bottom:32px;}
-.wl-stats{display:flex;gap:12px;margin-bottom:40px;}
-.wls{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:14px 20px;text-align:center;}
-.wls-v{font-size:24px;font-weight:800;color:var(--p-dark);line-height:1;}
-.wls-l{font-size:10px;font-weight:600;color:var(--txt3);margin-top:4px;text-transform:uppercase;letter-spacing:.06em;}
-.wl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:720px;width:100%;}
-.wc{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:16px;text-align:left;cursor:pointer;transition:.15s;}
+.wl-sub{font-size:13px;color:var(--txt2);line-height:1.6;max-width:480px;margin-bottom:20px;}
+.wl-stats{display:flex;gap:10px;margin-bottom:24px;}
+.wls{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:10px 18px;text-align:center;}
+.wls-v{font-size:22px;font-weight:800;color:var(--p-dark);line-height:1;}
+.wls-l{font-size:10px;font-weight:600;color:var(--txt3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em;}
+.wl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;}
+.wc{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:14px;text-align:left;cursor:pointer;transition:.15s;}
 .wc:hover{border-color:var(--p-mid);box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px);}
-.wc-icon{width:40px;height:40px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px;}
-.wc-t{font-size:13px;font-weight:800;color:var(--txt);margin-bottom:3px;}
-.wc-s{font-size:11px;color:var(--txt2);line-height:1.4;}
-.wc-c{font-size:10px;font-weight:700;color:var(--txt3);margin-top:8px;}
+.wc-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px;}
+.wc-t{font-size:12px;font-weight:800;color:var(--txt);margin-bottom:3px;}
+.wc-s{font-size:10px;color:var(--txt2);line-height:1.4;}
+.wc-c{font-size:9px;font-weight:700;color:var(--txt3);margin-top:6px;}
 /* FRAME */
 .frame-wrap{flex:1;display:none;flex-direction:column;overflow:hidden;}
 .frame-wrap.vis{display:flex;}
@@ -158,6 +159,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
 
   <!-- BIENVENIDA -->
   <div class="welcome" id="welcome">
+    <div class="welcome-inner">
     <div class="wl-logo">
       <svg width="40" height="40" viewBox="0 0 18 18" fill="none">
         <path d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9S4.86 16.5 9 16.5 16.5 13.14 16.5 9" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
@@ -211,6 +213,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
         <div class="wc-c">Coordinador · Desktop</div>
       </div>
     </div>
+    </div><!-- /welcome-inner -->
   </div>
 
   <!-- FRAME -->
