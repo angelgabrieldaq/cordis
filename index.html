@@ -15,6 +15,8 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height:100vh;display:grid;grid-template-rows:52px 1fr;grid-template-columns:240px 1fr;grid-template-areas:"tb tb" "sidebar main";overflow:hidden;}
+
+/* TOPBAR */
 .topbar{grid-area:tb;background:var(--p-dark);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
 .tb-l{display:flex;align-items:center;gap:12px;}
 .tb-logo{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;}
@@ -25,8 +27,10 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
 .tb-clock{font-size:13px;font-weight:700;font-family:'Courier New',monospace;color:rgba(255,255,255,.7);}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:#9FE1CB;display:inline-block;animation:blink 2.5s infinite;margin-right:4px;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* SIDEBAR */
 .sidebar{grid-area:sidebar;background:var(--bg);border-right:1px solid var(--brd);display:flex;flex-direction:column;overflow:hidden;}
-.sb-scroll{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:4px;}
+.sb-scroll{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:3px;}
 .grp-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);padding:10px 8px 4px;display:flex;align-items:center;gap:8px;}
 .grp-lbl::after{content:'';flex:1;height:1px;background:var(--brd);}
 .ni{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--r-lg);cursor:pointer;transition:background .12s;border:1px solid transparent;}
@@ -38,43 +42,65 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
 .ni.on .ni-t{color:var(--p-dark);}
 .ni-r{font-size:9px;color:var(--txt3);margin-top:1px;}
 .ni-dev{flex-shrink:0;font-size:8px;font-weight:700;padding:2px 6px;border-radius:5px;color:var(--txt3);background:var(--bg2);border:1px solid var(--brd2);text-transform:uppercase;letter-spacing:.04em;}
-.ni-dev.mob{color:var(--s-info,#0C447C);background:#E6F1FB;border-color:#B5D4F4;}
+.ni-dev.mob{color:#0C447C;background:#E6F1FB;border-color:#B5D4F4;}
 .sb-footer{padding:12px;border-top:1px solid var(--brd);flex-shrink:0;text-align:center;font-size:9px;color:var(--txt3);line-height:1.8;}
-.main{grid-area:main;overflow:hidden;display:flex;flex-direction:column;}
+
+/* MAIN */
+.main{grid-area:main;overflow-y:auto;display:flex;flex-direction:column;align-items:center;background:var(--bg3);}
+
 /* WELCOME */
-.welcome{flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 40px 40px;text-align:center;background:var(--bg3);}
-.welcome-inner{display:flex;flex-direction:column;align-items:center;width:100%;max-width:760px;margin:0 auto;}
+.welcome{width:100%;max-width:800px;padding:32px 24px 48px;display:flex;flex-direction:column;align-items:center;text-align:center;}
 .wl-logo{width:64px;height:64px;border-radius:20px;background:var(--p-dark);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 12px 40px rgba(26,63,170,.3);}
 .wl-title{font-size:28px;font-weight:800;color:var(--txt);margin-bottom:6px;}
 .wl-title span{color:var(--p);}
-.wl-sub{font-size:13px;color:var(--txt2);line-height:1.6;max-width:480px;margin-bottom:20px;}
-.wl-stats{display:flex;gap:10px;margin-bottom:24px;}
+.wl-sub{font-size:13px;color:var(--txt2);line-height:1.6;max-width:460px;margin-bottom:20px;}
+.wl-stats{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;justify-content:center;}
 .wls{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:10px 18px;text-align:center;}
 .wls-v{font-size:22px;font-weight:800;color:var(--p-dark);line-height:1;}
-.wls-l{font-size:10px;font-weight:600;color:var(--txt3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em;}
-.wl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;}
-.wc{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:14px;text-align:left;cursor:pointer;transition:.15s;}
-.wc:hover{border-color:var(--p-mid);box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px);}
-.wc-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:8px;}
-.wc-t{font-size:12px;font-weight:800;color:var(--txt);margin-bottom:3px;}
-.wc-s{font-size:10px;color:var(--txt2);line-height:1.4;}
-.wc-c{font-size:9px;font-weight:700;color:var(--txt3);margin-top:6px;}
-/* FRAME */
-.frame-wrap{flex:1;display:none;flex-direction:column;overflow:hidden;}
-.frame-wrap.vis{display:flex;}
-.frame-tb{padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.fbc{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt3);}
-.fbc-cur{font-weight:700;color:var(--txt);}
-.fba{display:flex;gap:8px;}
-.bxs{padding:4px 12px;border-radius:var(--r);font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--brd2);background:transparent;color:var(--txt2);transition:.15s;}
-.bxs:hover{background:var(--bg2);}
-.bxs.pri{background:var(--p);color:#fff;border-color:var(--p-dark);}
-.role-tag{font-size:10px;color:var(--txt3);padding:4px 10px;background:var(--bg2);border-radius:var(--r);border:1px solid var(--brd2);font-weight:600;}
-.desk-frame{flex:1;display:flex;overflow:hidden;}
-.desk-frame iframe{width:100%;height:100%;border:none;display:block;}
-.mob-wrap{flex:1;display:none;align-items:center;justify-content:center;background:#1a1a1a;}
-.mob-shell{width:375px;height:calc(100vh - 52px - 37px);max-height:812px;background:#f0efea;border-radius:40px;border:6px solid #2a2a2a;box-shadow:0 24px 60px rgba(0,0,0,.6);overflow:hidden;}
-.mob-shell iframe{width:100%;height:100%;border:none;display:block;}
+.wls-l{font-size:9px;font-weight:600;color:var(--txt3);margin-top:3px;text-transform:uppercase;letter-spacing:.06em;}
+
+/* SECTION TITLE */
+.sec-title{width:100%;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);margin-bottom:10px;display:flex;align-items:center;gap:10px;text-align:left;}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--brd2);}
+
+/* MODULE CARDS GRID */
+.cards-grid{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+
+/* CARD */
+.mc{background:var(--bg);border:1px solid var(--brd);border-radius:var(--r-lg);padding:16px;text-align:left;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+.mc:hover{border-color:var(--p-mid);box-shadow:0 6px 20px rgba(43,87,217,.12);transform:translateY(-2px);}
+.mc:active{transform:translateY(0);}
+
+.mc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.mc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.mc-dev{font-size:8px;font-weight:700;padding:3px 7px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.mc-dev.desk{color:var(--txt3);background:var(--bg2);border:1px solid var(--brd2);}
+.mc-dev.mob{color:#0C447C;background:#E6F1FB;border:1px solid #B5D4F4;}
+
+.mc-t{font-size:13px;font-weight:800;color:var(--txt);margin-bottom:4px;line-height:1.3;}
+.mc-s{font-size:11px;color:var(--txt2);line-height:1.5;}
+.mc-rol{font-size:9px;font-weight:700;color:var(--txt3);margin-top:8px;}
+
+/* Flecha indicadora */
+.mc-arrow{
+  position:absolute;bottom:14px;right:14px;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--p-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--p);
+  opacity:0;transition:opacity .15s;
+}
+.mc:hover .mc-arrow{opacity:1;}
+
+/* AVISO */
+.aviso{
+  width:100%;
+  background:var(--s-ok-l);border:1px solid var(--s-ok-m);
+  border-radius:var(--r-lg);padding:12px 16px;
+  font-size:11px;color:var(--s-ok);line-height:1.6;
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:24px;
+}
 </style>
 </head>
 <body>
@@ -97,51 +123,52 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
   </div>
 </div>
 
+<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sb-scroll">
 
     <div class="grp-lbl">Inicio</div>
-    <div class="ni on" onclick="ir(this,'welcome')">
+    <div class="ni on">
       <div class="ni-icon" style="background:#EBF2FF;">🏠</div>
       <div class="ni-info"><div class="ni-t">Ecosistema</div><div class="ni-r">Vista general</div></div>
     </div>
 
     <div class="grp-lbl">Guardia</div>
-    <div class="ni" onclick="ir(this,'guardia/command-center.html','desktop','Command Center · Guardia','Recepcionista · Jefe de Guardia')">
+    <div class="ni" onclick="abrir('guardia/command-center.html')">
       <div class="ni-icon" style="background:#EBF2FF;">📊</div>
       <div class="ni-info"><div class="ni-t">Command Center</div><div class="ni-r">Recepcionista · Jefe de Guardia</div></div>
       <span class="ni-dev">Desktop</span>
     </div>
-    <div class="ni" onclick="ir(this,'guardia/enfermeros-guardia.html','desktop','Triage · Enfermería','Enfermero/a de Triage')">
+    <div class="ni" onclick="abrir('guardia/enfermeros-guardia.html')">
       <div class="ni-icon" style="background:#E1F5EE;">🩺</div>
       <div class="ni-info"><div class="ni-t">Triage · Enfermería</div><div class="ni-r">Enfermero/a</div></div>
       <span class="ni-dev">Desktop</span>
     </div>
-    <div class="ni" onclick="ir(this,'guardia/app-paciente.html','mobile','App del Paciente','Paciente')">
+    <div class="ni" onclick="abrir('guardia/app-paciente.html')">
       <div class="ni-icon" style="background:#F3E8FF;">📱</div>
       <div class="ni-info"><div class="ni-t">App del Paciente</div><div class="ni-r">Paciente</div></div>
       <span class="ni-dev mob">Mobile</span>
     </div>
 
     <div class="grp-lbl">Imágenes</div>
-    <div class="ni" onclick="ir(this,'imagenes/command-center-imagenes.html','desktop','Command Center · Imágenes','Recepcionista de Imágenes')">
+    <div class="ni" onclick="abrir('imagenes/command-center-imagenes.html')">
       <div class="ni-icon" style="background:#E6F1FB;">🩻</div>
       <div class="ni-info"><div class="ni-t">Command Center</div><div class="ni-r">Recepcionista · Imágenes</div></div>
       <span class="ni-dev">Desktop</span>
     </div>
-    <div class="ni" onclick="ir(this,'imagenes/worklist-tc.html','desktop','Worklist · Técnico TC','Técnico Radiólogo')">
+    <div class="ni" onclick="abrir('imagenes/worklist-tc.html')">
       <div class="ni-icon" style="background:#E6F1FB;">🔬</div>
       <div class="ni-info"><div class="ni-t">Worklist · TC</div><div class="ni-r">Técnico Radiólogo</div></div>
       <span class="ni-dev">Desktop</span>
     </div>
 
     <div class="grp-lbl">Camilleros</div>
-    <div class="ni" onclick="ir(this,'camilleros/central-camilleros.html','desktop','Central de Camilleros','Coordinador de Traslados')">
+    <div class="ni" onclick="abrir('camilleros/central-camilleros.html')">
       <div class="ni-icon" style="background:#FEF3C7;">🚑</div>
       <div class="ni-info"><div class="ni-t">Central de Camilleros</div><div class="ni-r">Coordinador</div></div>
       <span class="ni-dev">Desktop</span>
     </div>
-    <div class="ni" onclick="ir(this,'camilleros/camilleros-mobile.html','mobile','App · Camillero','Camillero')">
+    <div class="ni" onclick="abrir('camilleros/camilleros-mobile.html')">
       <div class="ni-icon" style="background:#FEF3C7;">🛏</div>
       <div class="ni-info"><div class="ni-t">App · Camillero</div><div class="ni-r">Camillero</div></div>
       <span class="ni-dev mob">Mobile</span>
@@ -155,145 +182,163 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg3);height
   </div>
 </div>
 
-<div class="main" id="main">
+<!-- MAIN -->
+<div class="main">
+  <div class="welcome">
 
-  <!-- BIENVENIDA -->
-  <div class="welcome" id="welcome">
-    <div class="welcome-inner">
     <div class="wl-logo">
-      <svg width="40" height="40" viewBox="0 0 18 18" fill="none">
+      <svg width="32" height="32" viewBox="0 0 18 18" fill="none">
         <path d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9S4.86 16.5 9 16.5 16.5 13.14 16.5 9" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round"/>
         <path d="M9 5v4l3 2" stroke="rgba(255,255,255,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="14" cy="4" r="2" fill="rgba(163,192,248,.9)"/>
       </svg>
     </div>
+
     <div class="wl-title">Ecosistema <span>Cordis</span></div>
-    <div class="wl-sub">Plataforma de orquestación inteligente para Servicios de Urgencias.<br>Seleccioná un módulo para navegar como ese usuario.</div>
+    <div class="wl-sub">Plataforma de orquestación inteligente para Servicios de Urgencias.<br>Hacé clic en cualquier módulo para abrirlo en una nueva pestaña.</div>
+
     <div class="wl-stats">
       <div class="wls"><div class="wls-v">8</div><div class="wls-l">Módulos</div></div>
       <div class="wls"><div class="wls-v">6</div><div class="wls-l">Roles</div></div>
       <div class="wls"><div class="wls-v">3</div><div class="wls-l">Áreas</div></div>
       <div class="wls"><div class="wls-v">v2.0</div><div class="wls-l">Tokens</div></div>
     </div>
-    <div class="wl-cards">
-      <div class="wc" onclick="irDirecto('guardia/command-center.html','desktop','Command Center · Guardia','Recepcionista · Jefe de Guardia')">
-        <div class="wc-icon" style="background:#EBF2FF;">📊</div>
-        <div class="wc-t">Command Center · Guardia</div>
-        <div class="wc-s">Mapa de camas, cola de pacientes, servicios de imágenes y pendientes de internación</div>
-        <div class="wc-c">Recepcionista · Jefe de Guardia · Desktop</div>
-      </div>
-      <div class="wc" onclick="irDirecto('guardia/enfermeros-guardia.html','desktop','Triage · Enfermería','Enfermero/a')">
-        <div class="wc-icon" style="background:#E1F5EE;">🩺</div>
-        <div class="wc-t">Triage · Enfermería</div>
-        <div class="wc-s">MTS + ESI, vitales, CIE-10, IA sugiere nivel y asignación urgente de box</div>
-        <div class="wc-c">Enfermero/a · Desktop</div>
-      </div>
-      <div class="wc" onclick="irDirecto('guardia/app-paciente.html','mobile','App del Paciente','Paciente')">
-        <div class="wc-icon" style="background:#F3E8FF;">📱</div>
-        <div class="wc-t">App del Paciente</div>
-        <div class="wc-s">Pre-registro, síntomas, cola estimada y seguimiento en tiempo real</div>
-        <div class="wc-c">Paciente · Mobile</div>
-      </div>
-      <div class="wc" onclick="irDirecto('imagenes/command-center-imagenes.html','desktop','Command Center · Imágenes','Recepcionista de Imágenes')">
-        <div class="wc-icon" style="background:#E6F1FB;">🩻</div>
-        <div class="wc-t">Command Center · Imágenes</div>
-        <div class="wc-s">Cola de pedidos, equipos, RTT, aranceles, constancias y protocolos</div>
-        <div class="wc-c">Recepcionista · Imágenes · Desktop</div>
-      </div>
-      <div class="wc" onclick="irDirecto('imagenes/worklist-tc.html','desktop','Worklist · TC','Técnico Radiólogo')">
-        <div class="wc-icon" style="background:#E6F1FB;">🔬</div>
-        <div class="wc-t">Worklist · Técnico TC</div>
-        <div class="wc-s">Flujo de estudio, protocolo, SLA y notificación de retorno automático</div>
-        <div class="wc-c">Técnico Radiólogo · Desktop</div>
-      </div>
-      <div class="wc" onclick="irDirecto('camilleros/central-camilleros.html','desktop','Central de Camilleros','Coordinador')">
-        <div class="wc-icon" style="background:#FEF3C7;">🚑</div>
-        <div class="wc-t">Central de Camilleros</div>
-        <div class="wc-s">Cola de traslados, asignación inteligente y carga laboral del turno</div>
-        <div class="wc-c">Coordinador · Desktop</div>
-      </div>
-    </div>
-    </div><!-- /welcome-inner -->
-  </div>
 
-  <!-- FRAME -->
-  <div class="frame-wrap" id="frame-wrap">
-    <div class="frame-tb">
-      <div class="fbc">
-        <span>Cordis</span><span style="color:var(--brd2);">/</span>
-        <span id="f-area"></span><span style="color:var(--brd2);">/</span>
-        <span class="fbc-cur" id="f-titulo"></span>
-      </div>
-      <div class="fba">
-        <span class="role-tag" id="f-role"></span>
-        <button class="bxs" onclick="nuevaVentana()">↗ Nueva ventana</button>
-        <button class="bxs" onclick="volver()">← Inicio</button>
-      </div>
+    <!-- Aviso -->
+    <div class="aviso">
+      <span style="font-size:16px;flex-shrink:0;">💡</span>
+      <span>Cada módulo se abre en una <strong>nueva pestaña</strong>. Podés tener varias abiertas simultáneamente para simular distintos roles en paralelo.</span>
     </div>
-    <div class="desk-frame" id="desk-frame">
-      <iframe id="ifr-desk" src="" title="Cordis"></iframe>
-    </div>
-    <div class="mob-wrap" id="mob-wrap">
-      <div class="mob-shell">
-        <iframe id="ifr-mob" src="" title="Cordis Mobile"></iframe>
-      </div>
-    </div>
-  </div>
 
+    <!-- GUARDIA -->
+    <div class="sec-title">Guardia</div>
+    <div class="cards-grid">
+
+      <div class="mc" onclick="abrir('guardia/command-center.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#EBF2FF;">📊</div>
+          <span class="mc-dev desk">Desktop</span>
+        </div>
+        <div class="mc-t">Command Center · Guardia</div>
+        <div class="mc-s">Mapa de camas, cola de pacientes, SLA en tiempo real y pendientes de internación</div>
+        <div class="mc-rol">Recepcionista · Jefe de Guardia</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+      <div class="mc" onclick="abrir('guardia/enfermeros-guardia.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#E1F5EE;">🩺</div>
+          <span class="mc-dev desk">Desktop</span>
+        </div>
+        <div class="mc-t">Triage · Enfermería</div>
+        <div class="mc-s">MTS + ESI, vitales, CIE-10, IA sugiere nivel y asignación urgente de box</div>
+        <div class="mc-rol">Enfermero/a de Triage</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+      <div class="mc" onclick="abrir('guardia/app-paciente.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#F3E8FF;">📱</div>
+          <span class="mc-dev mob">Mobile</span>
+        </div>
+        <div class="mc-t">App del Paciente</div>
+        <div class="mc-s">Pre-registro con DNI, síntomas, cola estimada y seguimiento del estado en tiempo real</div>
+        <div class="mc-rol">Paciente</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+    </div>
+
+    <!-- IMÁGENES -->
+    <div class="sec-title">Imágenes</div>
+    <div class="cards-grid">
+
+      <div class="mc" onclick="abrir('imagenes/command-center-imagenes.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#E6F1FB;">🩻</div>
+          <span class="mc-dev desk">Desktop</span>
+        </div>
+        <div class="mc-t">Command Center · Imágenes</div>
+        <div class="mc-s">Cola de pedidos, equipos, RTT, aranceles, constancias y protocolos de preparación</div>
+        <div class="mc-rol">Recepcionista · Imágenes</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+      <div class="mc" onclick="abrir('imagenes/worklist-tc.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#E6F1FB;">🔬</div>
+          <span class="mc-dev desk">Desktop</span>
+        </div>
+        <div class="mc-t">Worklist · Técnico TC</div>
+        <div class="mc-s">Flujo de estudio, protocolo de adquisición, SLA y retorno automático al completar</div>
+        <div class="mc-rol">Técnico Radiólogo</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+      <div class="mc" style="border-style:dashed;opacity:.5;cursor:default;">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#f0efea;">🖥</div>
+          <span class="mc-dev desk">Próximamente</span>
+        </div>
+        <div class="mc-t">Worklist · RM / Eco / RX</div>
+        <div class="mc-s">Worklist para el resto de las modalidades de imágenes</div>
+        <div class="mc-rol">Técnico · otras modalidades</div>
+      </div>
+
+    </div>
+
+    <!-- CAMILLEROS -->
+    <div class="sec-title">Camilleros</div>
+    <div class="cards-grid">
+
+      <div class="mc" onclick="abrir('camilleros/central-camilleros.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#FEF3C7;">🚑</div>
+          <span class="mc-dev desk">Desktop</span>
+        </div>
+        <div class="mc-t">Central de Camilleros</div>
+        <div class="mc-s">Cola de traslados, asignación inteligente y carga laboral del turno con historial</div>
+        <div class="mc-rol">Coordinador de Traslados</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+      <div class="mc" onclick="abrir('camilleros/camilleros-mobile.html')">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#FEF3C7;">🛏</div>
+          <span class="mc-dev mob">Mobile</span>
+        </div>
+        <div class="mc-t">App · Camillero</div>
+        <div class="mc-s">Traslados asignados, flujo de 3 pasos y reporte de eventualidades</div>
+        <div class="mc-rol">Camillero</div>
+        <div class="mc-arrow">↗</div>
+      </div>
+
+      <div class="mc" style="border-style:dashed;opacity:.5;cursor:default;">
+        <div class="mc-top">
+          <div class="mc-icon" style="background:#f0efea;">📦</div>
+          <span class="mc-dev desk">Fase 2</span>
+        </div>
+        <div class="mc-t">Kairos · Quirófano</div>
+        <div class="mc-s">Orquestador del bloque quirúrgico — programado para Fase 2</div>
+        <div class="mc-rol">Circulante · Anestesista · Cirujano</div>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
 <script>
-function tick(){document.getElementById('reloj').textContent=[new Date().getHours(),new Date().getMinutes(),new Date().getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');}
+function tick(){
+  document.getElementById('reloj').textContent=
+    [new Date().getHours(),new Date().getMinutes(),new Date().getSeconds()]
+      .map(v=>String(v).padStart(2,'0')).join(':');
+}
 tick();setInterval(tick,1000);
 
-let modActual=null;
-
-const AREAS={'guardia':'Guardia','imagenes':'Imágenes','camilleros':'Camilleros'};
-
-function ir(navEl,ruta,tipo,titulo,rol){
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  navEl.classList.add('on');
-  if(ruta==='welcome'){volver();return;}
-  modActual={ruta,tipo,titulo,rol};
-  cargar(ruta,tipo,titulo,rol);
+function abrir(ruta){
+  window.open(ruta,'_blank');
 }
-
-function irDirecto(ruta,tipo,titulo,rol){
-  modActual={ruta,tipo,titulo,rol};
-  cargar(ruta,tipo,titulo,rol);
-}
-
-function cargar(ruta,tipo,titulo,rol){
-  document.getElementById('welcome').style.display='none';
-  document.getElementById('frame-wrap').classList.add('vis');
-  const area=Object.keys(AREAS).find(k=>ruta.startsWith(k))||'';
-  document.getElementById('f-area').textContent=AREAS[area]||'';
-  document.getElementById('f-titulo').textContent=titulo;
-  document.getElementById('f-role').textContent='👤 '+rol;
-  const dd=document.getElementById('desk-frame');
-  const mm=document.getElementById('mob-wrap');
-  if(tipo==='mobile'){
-    dd.style.display='none';mm.style.display='flex';
-    document.getElementById('ifr-mob').src=ruta;
-    document.getElementById('ifr-desk').src='';
-  }else{
-    dd.style.display='flex';mm.style.display='none';
-    document.getElementById('ifr-desk').src=ruta;
-    document.getElementById('ifr-mob').src='';
-  }
-}
-
-function volver(){
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
-  document.querySelector('.ni').classList.add('on');
-  document.getElementById('welcome').style.display='flex';
-  document.getElementById('frame-wrap').classList.remove('vis');
-  document.getElementById('ifr-desk').src='';
-  document.getElementById('ifr-mob').src='';
-  modActual=null;
-}
-
-function nuevaVentana(){if(modActual)window.open(modActual.ruta,'_blank');}
 </script>
 </body>
 </html>
